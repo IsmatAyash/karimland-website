@@ -3,7 +3,7 @@ import { graphql, Link } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { BsClock, BsClockHistory, BsPeople } from "react-icons/bs"
 import Layout from "../components/Layout"
-import Seo from "../components/Seo"
+import SEO from "../components/SEO"
 
 const ProductTemplate = ({ data }) => {
   const {
@@ -17,7 +17,7 @@ const ProductTemplate = ({ data }) => {
   const { tags, agriculture, instructions, usage } = content
   return (
     <Layout>
-      <Seo title={title} description={description} />
+      <SEO title={title} description={description} />
       <main className="page">
         <div className="product-page">
           <section className="product-hero">

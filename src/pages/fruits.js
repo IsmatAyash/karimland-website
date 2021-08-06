@@ -2,13 +2,13 @@ import React from "react"
 import Layout from "../components/Layout"
 import { StaticImage } from "gatsby-plugin-image"
 import AllFruits from "../components/AllFruits"
-import Seo from "../components/Seo"
+import SEO from "../components/SEO"
 
 const Fruits = () => {
   return (
     <Layout>
       <main className="page">
-        <Seo title="Fruits" />
+        <SEO title="Fruits" />
         <header className="hero">
           <StaticImage
             src="../assets/images/fruits.jpg"
