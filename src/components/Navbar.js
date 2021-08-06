@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Link } from "gatsby"
-import { FaHome, FaShoppingCart, FaBlog, FaInfoCircle } from "react-icons/fa"
+import { FaHome, FaBlog, FaInfoCircle } from "react-icons/fa"
 import { GiFruitBowl, GiTomato, GiPhone } from "react-icons/gi"
 import { FiAlignJustify } from "react-icons/fi"
 import MenuLink from "./MenuLink"

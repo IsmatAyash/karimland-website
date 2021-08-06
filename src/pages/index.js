@@ -3,14 +3,14 @@ import Layout from "../components/Layout"
 import { graphql } from "gatsby"
 import { StaticImage, GatsbyImage, getImage } from "gatsby-plugin-image"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
-import SEO from "../components/SEO"
+import Seo from "../components/Seo"
 
 const Home = ({ data }) => {
   const { body, images } = data.contentfulPages
 
   return (
     <Layout>
-      <SEO title="Home " />
+      <Seo title="Home " />
       <main className="page">
         <header className="hero">
           <StaticImage

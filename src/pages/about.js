@@ -5,14 +5,14 @@ import Layout from "../components/Layout"
 import { graphql } from "gatsby"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
 import FeaturedProduct from "../components/FeaturedProduct"
-import SEO from "../components/SEO"
+import Seo from "../components/Seo"
 
 const About = ({ data }) => {
   const { body, images, title } = data.contentfulPages
   const pathToImage = getImage(images[0])
   return (
     <Layout>
-      <SEO title="About " />
+      <Seo title="About " />
       <main className="page">
         <section className="about-page">
           <article>

@@ -1,11 +1,11 @@
 import React from "react"
 import Layout from "../components/Layout"
-import SEO from "../components/SEO"
+import Seo from "../components/Seo"
 
 const Error = () => {
   return (
     <Layout>
-      <SEO title="Error" />
+      <Seo title="Error" />
       <main className="error-page">
         <section>
           <h1>404</h1>
