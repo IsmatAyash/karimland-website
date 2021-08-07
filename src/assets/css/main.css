@@ -331,9 +331,12 @@ form > *:last-child {
 }
 
 .react-icons {
-  /* vertical-align: middle; */
-  vertical-align: text-top;
-  color: var(--grey-800);
+  vertical-align: middle;
+  color: var(--grey-50);
+  width: 28px;
+  height: 18px;
+  margin-right: 5px;
+  /* margin-left: 10px; */
 }
 
 /*#########*/

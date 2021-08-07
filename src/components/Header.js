@@ -1,37 +1,64 @@
 import React from "react"
 import { FaShoppingCart, FaLanguage } from "react-icons/fa"
+import { Link } from "gatsby"
+import styled from "styled-components"
 
 const Header = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        background: "var(--grey-1000)",
-        height: "4rem",
-        color: "var(--white)",
-      }}
-    >
-      <button
-        style={{ marginRight: 20, display: "flex", alignItems: "center" }}
-      >
-        آلعربيه
-        <FaLanguage
-          style={{
-            width: "30px",
-            height: "30px",
-            marginRight: 10,
-            marginLeft: 10,
-          }}
-        />
-      </button>
-      <FaShoppingCart
-        style={{ width: "30px", height: "30px", marginRight: 20 }}
-      />
-      <button style={{ marginRight: 20, marginLeft: 20 }}>Sign In</button>
-    </div>
+    <HeaderBar>
+      <LinkIconWrapper>
+        <FaLanguage className="react-icons" />
+        <HeaderIconLink to="/">English</HeaderIconLink>
+        <HeaderIconLink to="/">Arabic</HeaderIconLink>
+      </LinkIconWrapper>
+      <VerticalLine>|</VerticalLine>
+      <HeaderIconLink to="/">
+        <FaShoppingCart className="react-icons" />
+        <CartQty>100</CartQty>
+      </HeaderIconLink>
+      <VerticalLine>|</VerticalLine>
+      <SigninLink to="/">Sign In</SigninLink>
+    </HeaderBar>
   )
 }
+
+const HeaderBar = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: var(--grey-1000);
+  height: 2rem;
+`
+
+const LinkIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+`
+
+const HeaderIconLink = styled(Link)`
+  color: var(--grey-50);
+  font-size: 12px;
+  margin-right: 10px;
+  margin-left: 10px;
+`
+
+const SigninLink = styled(Link)`
+  color: white;
+  margin-right: 20px;
+  font-size: 12px;
+`
+
+const VerticalLine = styled.span`
+  color: var(--grey-50);
+  margin-left: 15px;
+  margin-right: 15px;
+`
+
+const CartQty = styled.span`
+  font-weight: bold;
+  font-size: 14px;
+`
 
 export default Header
