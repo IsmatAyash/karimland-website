@@ -61,7 +61,7 @@ const Navbar = () => {
 const NavBar = styled.nav`
   display: flex;
   align-items: center;
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 10;
   height: ${({ showLinks }) => (showLinks ? "32rem" : "7rem")};
