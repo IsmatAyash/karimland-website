@@ -1,11 +1,14 @@
-import React from "react"
+import React, { useState } from "react"
 import { graphql, Link } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import { BsClock, BsClockHistory, BsPeople } from "react-icons/bs"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
+import ProductDetails from "../components/ProductDetails"
 
 const ProductTemplate = ({ data }) => {
+  const [qtywgt, setQtywgt] = useState(0)
+  const [price, setPrice] = useState()
   const {
     title,
     subtitle,
@@ -27,7 +30,13 @@ const ProductTemplate = ({ data }) => {
               className="about-img"
             />
             <article className="product-info">
-              <h2>{title}</h2>
+              <ProductDetails
+                qtywgt={qtywgt}
+                setQtywgt={setQtywgt}
+                price={price}
+                setPrice={setPrice}
+              />
+              {/* <h2>{title}</h2>
               <p>{description}</p>
               <div className="product-icons">
                 <article>
@@ -42,7 +51,7 @@ const ProductTemplate = ({ data }) => {
                   <BsPeople />
                   <h5>10</h5>
                 </article>
-              </div>
+              </div> */}
               <div className="product-tags">
                 Tags:{" "}
                 {tags.map((tag, idx) => {
