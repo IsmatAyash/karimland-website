@@ -61,5 +61,19 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: "gatsby-source-graphql",
+      options: {
+        // Arbitrary name for the remote schema Query type
+        typeName: "Product",
+        // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
+        fieldName: "product",
+        // Url to query from
+        url: "https://xg6lx7eforal7fzdzxac4ijr6m.appsync-api.eu-west-2.amazonaws.com/graphql",
+        headers: {
+          "x-api-key": "da2-slpwfexhvvemxok2m6qnkjfzty",
+        },
+      },
+    },
   ],
 }

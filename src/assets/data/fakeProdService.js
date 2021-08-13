@@ -30,9 +30,9 @@ const products = [
   },
   {
     id: "3",
-    title: "Red Onion",
+    title: "Apples",
     image:
-      "https://firebasestorage.googleapis.com/v0/b/karimfarm-53a6c.appspot.com/o/strawberry1.jpg?alt=media&token=f9213436-a3f9-4b40-8119-bcbe9c3089c6",
+      "https://karimlandassets183905-dev.s3.us-east-1.amazonaws.com/images/fruits/apple.jpg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEMX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCWV1LXdlc3QtMyJIMEYCIQD016jrL%2FE%2BEhsRDPFl4Vu1Jk5D12mvuLoRhTQPIbY9QgIhAJtHsNxgVoqwYaHtvFl6dQaWMoGDGC8fYZ52rMNQGj2tKv8CCN7%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMODUwODYzNjA3MDgwIgyKAFpIyhiW0bWz8wkq0wIa7oz65o1aleA7KqLBUQoRuQAosiXVMnAuoqqkYWnrlCxWMuaQ1Ul1iz5CZHmNHjt0wdUxV2ApF%2FnTKCYZmBGnEkhaj59F7YHmm2r5GBtvGMzv2KJEs9rZvvrVvTAAWvNMKg6SN1kZwsKE9g5XThvWwxXgTG4vZorz%2F7LlEeF2IkHVSO%2BkR2%2B71mqP4CZhqqOBACUBXilY4pf9t6qCAZZzRYeMs%2FiYf0%2FznBO3A8ebbshPW2WXDkiFELRJMPE89otiboIinPa1Lce%2BjTAi0FHVwk2h7pT6oAwuScRan74Wae1xabGXLq%2BUXZ8dGfnBa5yBFtQDIsTYbr5It%2Fdi8%2FZAm3f77luXx6YwxoVrDwbqhoy1HCCIhyLUWCXhycVeBPid7zrHlKGb0tZ7X0sB2jC4OTsXV9EyD0dsVdgRGo2dIjGIfUwpN4%2Fm9WWQVbCMjv27RCAwrNHPiAY6sgIsC4Q%2F78rbBjj4fWMSOkssiZjJRkCcJKKLr1TGU5KT5SII3lzcks%2FS6mms6pC17S1V277ydEUOwTiYIP2b5njVH%2BuACZU3vwYFPo0EhRSRYy%2BtQHT67oDcfUrCfqfuI5rQ58Ix9nl8X791ji6cMzRO4B4a6qS3%2BPNAHsGrq8wtiQ1lPJ2N7awJrSEj0ksMoSzioAGFitZbvqMN1BURJCnAT4V3hMtjZ7eoma2noil%2FrpmM7OrbGvBN53Y3pI1KXhvBvIilb9%2B4avLrqOtgD%2BZuozgtGXbEePQ%2FpAk4SU5BuN6G%2Be9QoHgEW7DklDps2s31nma2KoIfb1Xtn5%2FLGmeIUGOna7BDhS%2FOjaHuHPihrCckOyfQKzJQ01qFuQsrlj6ZmXpbE1yGyorkCPmQVFyuVsw%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210811T214657Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA4MG3MJUUL3GWPBFG%2F20210811%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=176ff716148441245ac2ca8175cc691fdc84a15efd37fb03b53b6b38d5ae0cb5",
     quantity: 3,
     prices: [
       { wgt: "500g", price: 1.2 },
@@ -43,11 +43,11 @@ const products = [
     orders: 234,
     avgRating: 4.8,
     ratings: 2989,
+    featured: true
   },
   {
     id: "4",
-    title:
-      "Organic carrots. Sweet & crunchy Harvested early in the morning, great eaten raw or roasted Working with trusted growers who share our commitment",
+    title: "Organic Carrots",
     image:
       "https://firebasestorage.googleapis.com/v0/b/karimfarm-53a6c.appspot.com/o/carrot1.jpg?alt=media&token=08f13a10-b46d-4759-9fb4-282f2f1fc518",
     images: [
@@ -56,8 +56,12 @@ const products = [
       "https://firebasestorage.googleapis.com/v0/b/karimfarm-53a6c.appspot.com/o/carrot4.jpg?alt=media&token=7c54220a-07eb-4deb-bfa4-e0a20eb4603a",
     ],
     quantity: 10,
-    unit: "kg",
-    price: 4.9,
+    prices: [
+      { wgt: "500g", price: 1.2 },
+      { wgt: "1kg", price: 2.4 },
+      { wgt: "1 piece (150-200gms)", price: 0.5 },
+    ],
+    oldPrice: 2.6,
     orders: 1050,
     avgRating: 3.8,
     ratings: 2989,

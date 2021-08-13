@@ -195,8 +195,8 @@ button,
 .btn {
   cursor: pointer;
   appearance: none;
-  color: var(--white);
-  background: var(--primary-500);
+  /* color: var(--white); */
+  /* background: var(--primary-500); */
   border: none;
   border-radius: var(--borderRadius);
   letter-spacing: var(--letterSpacing);
@@ -413,7 +413,7 @@ form > *:last-child {
 }
 .about-img {
   border-radius: var(--borderRadius);
-  height: 500px;
+  height: 600px;
 }
 
 @media screen and (min-width: 992px) {

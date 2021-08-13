@@ -28,7 +28,7 @@ const Home = ({ data }) => {
           </div>
         </header>
         <section>
-          <p style={{ width: "100%" }}>{renderRichText(body)}</p>
+          {/* <p style={{ width: "100%" }}>{renderRichText(body)}</p> */}
           {images.map((image, idx) => (
             <GatsbyImage
               image={getImage(image)}

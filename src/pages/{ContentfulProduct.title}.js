@@ -5,6 +5,7 @@ import { BsClock, BsClockHistory, BsPeople } from "react-icons/bs"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import ProductDetails from "../components/ProductDetails"
+import { Carousel } from "react-bootstrap"
 
 const ProductTemplate = ({ data }) => {
   const [qtywgt, setQtywgt] = useState(0)
@@ -15,6 +16,7 @@ const ProductTemplate = ({ data }) => {
     content,
     description: { description },
     image,
+    images,
   } = data.contentfulProduct
   const pathToImage = getImage(image)
   const { tags, agriculture, instructions, usage } = content
@@ -24,11 +26,20 @@ const ProductTemplate = ({ data }) => {
       <main className="page">
         <div className="product-page">
           <section className="product-hero">
-            <GatsbyImage
+            <Carousel fade>
+              <Carousel.Item>
+                <GatsbyImage
+                  image={pathToImage}
+                  alt={title}
+                  className="d-block w-100"
+                />
+              </Carousel.Item>
+            </Carousel>
+            {/* <GatsbyImage
               image={pathToImage}
               alt={title}
               className="about-img"
-            />
+            /> */}
             <article className="product-info">
               <ProductDetails
                 qtywgt={qtywgt}
@@ -36,9 +47,8 @@ const ProductTemplate = ({ data }) => {
                 price={price}
                 setPrice={setPrice}
               />
-              {/* <h2>{title}</h2>
-              <p>{description}</p>
-              <div className="product-icons">
+              {/* <p>{description}</p> */}
+              {/* <div className="product-icons">
                 <article>
                   <BsClock />
                   <h5>{subtitle}</h5>
@@ -52,7 +62,7 @@ const ProductTemplate = ({ data }) => {
                   <h5>10</h5>
                 </article>
               </div> */}
-              <div className="product-tags">
+              {/* <div className="product-tags">
                 Tags:{" "}
                 {tags.map((tag, idx) => {
                   return (
@@ -61,12 +71,12 @@ const ProductTemplate = ({ data }) => {
                     </Link>
                   )
                 })}
-              </div>
+              </div> */}
             </article>
           </section>
           <section className="product-content">
             <article>
-              <h4>Instructions</h4>
+              {/* <h4>Description</h4> */}
               {instructions.map((item, idx) => {
                 return (
                   <div key={idx} className="single-instruction">
@@ -81,7 +91,7 @@ const ProductTemplate = ({ data }) => {
             </article>
             <article className="second-column">
               <div>
-                <h4>Agriculture</h4>
+                <h4>Return Policy</h4>
                 {agriculture.map((item, idx) => {
                   return (
                     <p key={idx} className="single-ingridient">
@@ -91,7 +101,7 @@ const ProductTemplate = ({ data }) => {
                 })}
               </div>
               <div>
-                <h4>Usage</h4>
+                <h4>Customer Review</h4>
                 {usage.map((item, idx) => {
                   return (
                     <p key={idx} className="single-tool">

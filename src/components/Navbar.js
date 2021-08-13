@@ -125,6 +125,7 @@ const NavItem = styled.li`
   border-top: 1px solid var(--grey-500);
   width: 100%;
   text-align: center;
+  text-decoration: none;
 
   @media screen and (min-width: 992px) {
     border: none;

@@ -42,12 +42,22 @@ const HeaderIconLink = styled(Link)`
   font-size: 12px;
   margin-right: 10px;
   margin-left: 10px;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    color: var(--green-light);
+  }
 `
 
 const SigninLink = styled(Link)`
   color: white;
   margin-right: 20px;
   font-size: 12px;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    color: var(--green-light);
+  }
 `
 
 const VerticalLine = styled.span`
