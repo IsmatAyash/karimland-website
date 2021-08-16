@@ -4,10 +4,10 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
   const result = await graphql(`
-    query getTags {
-      allContentfulProduct {
-        nodes {
-          content {
+    query GetTags {
+      product {
+        listProducts {
+          items {
             tags
           }
         }
@@ -15,8 +15,30 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `)
 
-  result.data.allContentfulProduct.nodes.forEach(product => {
-    product.content.tags.forEach(tag => {
+  const prods = await graphql(`
+    query getProducts {
+      product {
+        listProducts {
+          items {
+            title
+            id
+          }
+        }
+      }
+    }
+  `)
+
+  prods.data.product.listProducts.items.forEach(prod => {
+    const prodSlug = slugify(prod.title, { lower: true })
+    createPage({
+      path: `/${prodSlug}`,
+      component: path.resolve(`src/templates/product-template.js`),
+      context: { id: prod.id },
+    })
+  })
+
+  result.data.product.listProducts.items.forEach(product => {
+    product.tags.forEach(tag => {
       const tagSlug = slugify(tag, { lower: true })
       createPage({
         path: `/${tagSlug}`,

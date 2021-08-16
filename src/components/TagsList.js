@@ -7,7 +7,7 @@ const TagsList = ({ products = [] }) => {
   const newTags = setupTags(products)
   return (
     <div className="tag-container">
-      <h4>Vegetables</h4>
+      <h4>Tags</h4>
       <div className="tags-list">
         {newTags.map((tag, idx) => {
           const [text, value] = tag

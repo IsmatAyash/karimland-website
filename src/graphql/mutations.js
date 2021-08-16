@@ -20,6 +20,7 @@ export const createProduct = /* GraphQL */ `
       prices
       description
       queryName
+      tags
       _version
       _deleted
       _lastChangedAt
@@ -47,6 +48,7 @@ export const updateProduct = /* GraphQL */ `
       prices
       description
       queryName
+      tags
       _version
       _deleted
       _lastChangedAt
@@ -74,6 +76,7 @@ export const deleteProduct = /* GraphQL */ `
       prices
       description
       queryName
+      tags
       _version
       _deleted
       _lastChangedAt

@@ -28,6 +28,7 @@ export const syncProducts = /* GraphQL */ `
         prices
         description
         queryName
+        tags
         _version
         _deleted
         _lastChangedAt
@@ -55,6 +56,7 @@ export const getProduct = /* GraphQL */ `
       prices
       description
       queryName
+      tags
       _version
       _deleted
       _lastChangedAt
@@ -84,6 +86,7 @@ export const listProducts = /* GraphQL */ `
         prices
         description
         queryName
+        tags
         _version
         _deleted
         _lastChangedAt
@@ -126,6 +129,7 @@ export const productsByRating = /* GraphQL */ `
         prices
         description
         queryName
+        tags
         _version
         _deleted
         _lastChangedAt

@@ -1,24 +1,27 @@
 import React from "react"
 import { Link } from "gatsby"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import slugify from "slugify"
+import styled from "styled-components"
 
-const ProductList = ({ products = [] }) => {
+const ProductList = ({ prods = [] }) => {
   return (
     <div className="products-list">
-      {products.map(product => {
-        const { id, image, title, subtitle } = product
+      {prods.map(prod => {
+        const { id, images, title, prices, oldPrice, quantity } = prod
         const slug = slugify(title, { lower: true })
-        const pathToImage = getImage(image.gatsbyImageData)
+
         return (
           <Link key={id} to={`/${slug}`} className="product">
-            <GatsbyImage
-              image={pathToImage}
-              alt={title}
-              className="product-img"
-            />
+            <img src={images[0]} alt={title} className="product-img" />
             <h5>{title}</h5>
-            <p>{subtitle}</p>
+            {quantity === 0 ? (
+              <p>Out of stock</p>
+            ) : (
+              <PriceCtr>
+                From: KD {JSON.parse(prices[0]).price}
+                <OldPrice>KD {oldPrice}</OldPrice>
+              </PriceCtr>
+            )}
           </Link>
         )
       })}
@@ -26,4 +29,18 @@ const ProductList = ({ products = [] }) => {
   )
 }
 
+const OldPrice = styled.span`
+  text-decoration: line-through;
+  font-size: 12px;
+  color: var(--red-dark);
+  margin-left: 5px;
+  font-style: italic;
+  margin-left: 10px;
+`
+
+const PriceCtr = styled.div`
+  color: var(--grey-800);
+  font-size: 12px;
+  font-weight: bolder;
+`
 export default ProductList

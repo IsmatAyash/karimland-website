@@ -1,68 +1,82 @@
-import React from "react"
-import { getProd } from "../assets/data/fakeProdService"
+import React, { useState } from "react"
+import { Tabs, Tab } from "react-bootstrap"
 import styled from "styled-components"
-import QuantitySelector from "./QuantitySelector"
-import WeightSelector from "./WeightSelector"
-import { stars } from "../utils/reviewStars"
 
-const ProductDetails = ({ setQtywgt, qtywgt, setPrice, price }) => {
-  const prod = getProd("4")
-  const { avgRating, title, ratings, quantity, prices, oldPrice } = prod
-  if (!price) setPrice(prices[0].price)
-
+const ProductDetails = ({ description }) => {
+  const [key, setKey] = useState("description")
   return (
-    <>
-      <h2>{title}</h2>
-      <ReviewStars>
-        {Array(5)
-          .fill()
-          .map((_, i) => (
-            <div key={i}>{stars(i, avgRating)}</div>
-          ))}
-        {`${ratings} reviews`}
-      </ReviewStars>
-      <div>Seller: Karim Land</div>
-      <div>Availability: In Stock</div>
-      <PriceCtr>
-        Unit Price: KD {price} <OldPrice>KD {oldPrice}</OldPrice>
-      </PriceCtr>
-      <WeightSelector prices={prices} setPrice={setPrice} />
-      <QuantitySelector
-        qtywgt={qtywgt}
-        setQtywgt={setQtywgt}
-        qtyInStock={quantity}
-      />
-      <PriceCtr>Price: KD {(qtywgt * price).toFixed(2)}</PriceCtr>
-      <Button>Add to Cart</Button>
-    </>
+    <Tabs activeKey={key} onSelect={k => setKey(k)} className="mt-5 mb-2">
+      <Tab eventKey="description" title="Product Description">
+        <DescriptionCtr>
+          {description.map((item, idx) => {
+            const { header, detail } = JSON.parse(item)
+            return (
+              <DescriptionLine key={idx}>
+                <DescriptionHeader>{header}:</DescriptionHeader>
+                {detail}
+              </DescriptionLine>
+            )
+          })}
+        </DescriptionCtr>
+      </Tab>
+      <Tab eventKey="policy" title="Return Policy">
+        <PolicyCtr>
+          It is a long established fact that a reader will be distracted by the
+          readable content of a page when looking at its layout. The point of
+          using Lorem Ipsum is that it has a more-or-less normal distribution of
+          letters, as opposed to using 'Content here, content here', making it
+          look like readable English. Many desktop publishing packages and web
+          page editors now use Lorem Ipsum as their default model text, and a
+          search for 'lorem ipsum' will uncover many web sites still in their
+          infancy. Various versions have evolved over the years, sometimes by
+          accident, sometimes on purpose (injected humour and the like).
+        </PolicyCtr>
+      </Tab>
+      <Tab eventKey="reviews" title="Customer Reviews">
+        <article>
+          <form className="form contact-form">
+            <div className="form-row">
+              <label htmlFor="name">Your name</label>
+              <input type="text" name="name" id="name"></input>
+            </div>
+            <div className="form-row">
+              <label htmlFor="name">Your email</label>
+              <input type="email" name="email" id="email"></input>
+            </div>
+            <div className="form-row">
+              <label htmlFor="message">message</label>
+              <textarea name="message" id="message"></textarea>
+            </div>
+            <button type="submit" className="btn block btn-bgfg-colors">
+              Submit
+            </button>
+          </form>
+        </article>
+      </Tab>
+    </Tabs>
   )
 }
 
-const ReviewStars = styled.div`
+const PolicyCtr = styled.div`
+  background-color: aliceblue;
+  padding: 1em;
+  margin-bottom: 0.4em;
+  font-size: 14px;
+`
+
+const DescriptionCtr = styled.div`
   display: flex;
-  flex-direction: row;
-  margin-bottom: 20px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-size: 14px;
 `
 
-const PriceCtr = styled.div`
-  font-size: 18px;
-  font-weight: bolder;
-  margin-top: 20px;
+const DescriptionLine = styled.div`
+  margin-bottom: 10px;
 `
-
-const Button = styled.button`
-  margin-top: 20px;
-  margin-bottom: 20px;
-  color: var(--white);
-  background: var(--primary-500);
+const DescriptionHeader = styled.span`
+  font-weight: bold;
+  margin-right: 5px;
 `
-
-const OldPrice = styled.span`
-  text-decoration: line-through;
-  font-size: 12px;
-  color: var(--red-dark);
-  margin-left: 5px;
-  font-style: italic;
-`
-
 export default ProductDetails

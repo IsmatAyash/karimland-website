@@ -55,7 +55,7 @@
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   /* typography */
   --defaultFontSize: 87.5%;
-  --headingFont: "Inconsolata", monospace;
+  --headingFont: "Montserrat", monospace, "Inconsolata";
   --bodyFont: "Montserrat", sans-serif;
   --smallText: 0.8em;
   --extraSmallText: 0.7em;
@@ -205,6 +205,12 @@ button,
   transition: var(--transition);
   text-transform: capitalize;
 }
+
+.btn-bgfg-colors {
+  color: var(--white);
+  background: var(--primary-500);
+}
+
 button:hover,
 .btn:hover {
   color: var(--white);
@@ -509,7 +515,7 @@ form > *:last-child {
   display: block;
 }
 .product-img {
-  height: 15rem;
+  height: 21.3rem;
   border-radius: var(--borderRadius);
 }
 .product h5 {
@@ -540,11 +546,11 @@ form > *:last-child {
     gap: 1rem;
   }
   .products-list {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
   .product-img {
-    height: 9rem;
+    height: 8rem;
   }
 
   .product p {
@@ -562,10 +568,10 @@ form > *:last-child {
 
 @media screen and (min-width: 1200px) {
   .product h5 {
-    font-size: 1.15rem;
+    font-size: 0.8rem;
   }
   .products-list {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
 /*#########*/
@@ -701,4 +707,29 @@ form > *:last-child {
   padding-bottom: 0.75rem;
   color: var(--primary-500);
   text-transform: capitalize;
+}
+
+/*#########*/
+/* Bootstrap Tabs styling */
+/*#########*/
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  color: var(--white);
+  font-weight: bold;
+  background-color: var(--primary-500);
+}
+
+.nav-link {
+  color: var(--grey-600);
+}
+
+.nav-tabs {
+  font-size: 14px;
+  border-bottom: none;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: var(--primary-700);
+  color: var(--white);
 }

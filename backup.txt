@@ -19,4 +19,6 @@ type Product
   prices: [AWSJSON!]!
   description: [AWSJSON!]
   queryName: String!
+  tags: [String!]
 }
+

@@ -94,6 +94,8 @@ const MobileBtn = styled.button`
   right: 0;
   transform: translate(-40%, 150%);
   cursor: pointer;
+  background-color: var(--primary-500);
+  color: var(--white);
 
   > svg {
     font-size: 1.5rem;

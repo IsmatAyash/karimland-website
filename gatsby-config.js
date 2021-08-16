@@ -51,7 +51,7 @@ module.exports = {
           google: [
             {
               family: "Montserrat",
-              variants: ["400"],
+              variants: ["400", "700", "900"],
             },
             {
               family: "Inconsolata",

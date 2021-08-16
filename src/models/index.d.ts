@@ -22,6 +22,7 @@ export declare class Product {
   readonly prices: string[];
   readonly description?: string[];
   readonly queryName: string;
+  readonly tags?: string[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Product, ProductMetaData>);

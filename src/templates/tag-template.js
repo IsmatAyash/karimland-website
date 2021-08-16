@@ -5,14 +5,14 @@ import ProductList from "../components/ProductList"
 import SEO from "../components/SEO"
 
 const TagTemplate = ({ data, pageContext }) => {
-  const products = data.allContentfulProduct.nodes
+  const products = data.product.listProducts.items
   return (
     <Layout>
       <SEO title={pageContext.tag} />
       <main className="page">
         <h2>{pageContext.tag}</h2>
         <div className="tag-products">
-          <ProductList products={products} />
+          <ProductList prods={products} />
         </div>
       </main>
     </Layout>
@@ -20,18 +20,18 @@ const TagTemplate = ({ data, pageContext }) => {
 }
 
 export const query = graphql`
-  query getTags($tag: String) {
-    allContentfulProduct(
-      filter: { content: { tags: { eq: $tag } } }
-      sort: { fields: title, order: ASC }
-    ) {
-      nodes {
-        title
-        subtitle
-        image {
-          gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)
+  query GetTags($tag: String) {
+    product {
+      listProducts(filter: { tags: { contains: $tag } }) {
+        items {
+          id
+          title
+          oldPrice
+          prices
+          ratings
+          images
+          quantity
         }
-        id
       }
     }
   }

@@ -1,26 +1,13 @@
 import React, { useState } from "react"
-import {
-  ButtonGroup,
-  ToggleButton,
-  ButtonToolbar,
-  Button,
-} from "react-bootstrap"
+import { ButtonGroup, ToggleButton } from "react-bootstrap"
 import styled from "styled-components"
 
-const WeightSelector = ({ prices, setPrice }) => {
-  const [select, setSelect] = useState(prices[0].wgt)
-  const [checked, setChecked] = useState(false)
-  const [radioValue, setRadioValue] = useState("1")
-
-  const radios = [
-    { name: "Active", value: "1" },
-    { name: "Radio", value: "2" },
-    { name: "Radio", value: "3" },
-  ]
+const WeightSelector = ({ prices, setUnitPrice }) => {
+  const [unit, setUnit] = useState(JSON.parse(prices[0]).weight)
 
   const handleChange = e => {
-    setPrice(e.currentTarget.value)
-    setSelect(e.currentTarget.name)
+    setUnitPrice(e.currentTarget.value)
+    setUnit(e.currentTarget.name)
   }
 
   return (
@@ -29,27 +16,30 @@ const WeightSelector = ({ prices, setPrice }) => {
         <div style={{ marginTop: "20px" }}>
           Units:
           <WgtWrapper>
-            <ButtonGroup size="sm">
-              {prices.map((pp, idx) => (
-                <ToggleButton
-                  key={idx}
-                  id={`wgt-${idx}`}
-                  type="radio"
-                  variant="outline-success"
-                  name={pp.wgt}
-                  value={pp.price}
-                  checked={select === pp.wgt}
-                  onChange={e => handleChange(e)}
-                >
-                  {pp.wgt}
-                </ToggleButton>
-              ))}
+            <ButtonGroup>
+              {prices.map((pp, idx) => {
+                const { weight, price } = JSON.parse(pp)
+                return (
+                  <ToggleButton
+                    key={idx}
+                    id={`weight-${idx}`}
+                    type="radio"
+                    variant="outline-success"
+                    name={weight}
+                    value={price}
+                    checked={unit === weight}
+                    onChange={e => handleChange(e)}
+                  >
+                    {weight}
+                  </ToggleButton>
+                )
+              })}
             </ButtonGroup>
           </WgtWrapper>
         </div>
       ) : (
         <div style={{ fontSize: "15px", marginBottom: "20px" }}>
-          Unit: {prices[0].wgt}
+          Unit: {JSON.parse(prices[0]).weight}
         </div>
       )}
     </>

@@ -4,14 +4,17 @@ import { useStaticQuery, graphql } from "gatsby"
 
 const getData = graphql`
   {
-    allContentfulProduct(filter: { featured: { eq: true } }) {
-      nodes {
-        title
-        subtitle
-        image {
-          gatsbyImageData(layout: FULL_WIDTH, placeholder: TRACED_SVG)
+    product {
+      listProducts(filter: { featured: { eq: true } }) {
+        items {
+          id
+          title
+          images
+          prices
+          oldPrice
+          avgRating
+          quantity
         }
-        id
       }
     }
   }
@@ -19,12 +22,12 @@ const getData = graphql`
 
 const FeaturedProduct = () => {
   const data = useStaticQuery(getData)
-  const { nodes: featured } = data.allContentfulProduct
+  const { items: featured } = data.product.listProducts
 
   return (
     <section className="featured-products">
       <h5>Featured products</h5>
-      <ProductList products={featured} />
+      <ProductList prods={featured} />
     </section>
   )
 }

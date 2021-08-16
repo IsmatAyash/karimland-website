@@ -5,19 +5,19 @@ import TagsList from "./TagsList"
 
 const getData = graphql`
   {
-    fruit: allContentfulProduct(filter: { pagecode: { glob: "fruit-*" } }) {
-      nodes {
-        id
-        title
-        subtitle
-        image {
+    product {
+      listProducts(filter: { prodType: { eq: "fruit" } }) {
+        items {
+          id
+          title
+          quantity
+          images
+          prices
+          oldPrice
+          orders
+          ratings
+          avgRating
           description
-          gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)
-        }
-        content {
-          agriculture
-          instructions
-          usage
           tags
         }
       }
@@ -27,12 +27,12 @@ const getData = graphql`
 
 const AllFruits = () => {
   const data = useStaticQuery(getData)
-  const { nodes: fruits } = data.fruit
+  const { items: fruits } = data.product.listProducts
 
   return (
     <section className="products-container">
       <TagsList products={fruits} />
-      <ProductList products={fruits} />
+      <ProductList prods={fruits} />
     </section>
   )
 }

@@ -2,7 +2,7 @@ const setupTags = products => {
   const allTags = {}
 
   products.forEach(product => {
-    product.content.tags.forEach(tag => {
+    product.tags.forEach(tag => {
       if (allTags[tag]) allTags[tag] = allTags[tag] + 1
       else allTags[tag] = 1
     })
