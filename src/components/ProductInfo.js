@@ -19,12 +19,7 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
         {`${ratings} reviews`}
       </ReviewStars>
       <div>Seller: Karim Land</div>
-      <div>
-        Availability:{" "}
-        {quantity === 0
-          ? "In Stock"
-          : "Product Currently not available in stock"}
-      </div>
+      <div>Availability: {quantity !== 0 ? "In Stock" : "Out of stock"}</div>
       <PriceCtr>
         Unit Price: KD {unitPrice} <OldPrice>KD {oldPrice}</OldPrice>
       </PriceCtr>
