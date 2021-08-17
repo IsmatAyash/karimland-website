@@ -6,9 +6,9 @@ import "normalize.css"
 import "../assets/css/main.css"
 import Header from "./Header"
 
-import Amplify from "aws-amplify"
-import awsconfig from "../aws-exports"
-Amplify.configure(awsconfig)
+// import Amplify from "aws-amplify"
+// import awsconfig from "../aws-exports"
+// Amplify.configure(awsconfig)
 
 const Layout = ({ children }) => {
   return (
