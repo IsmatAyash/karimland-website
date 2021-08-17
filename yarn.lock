@@ -15001,6 +15001,11 @@ yargs@^16.1.0:
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
 
+yarn@1.18:
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.18.0.tgz#9ddfb3adb06c405c960f2d424e131df523c0a2d9"
+  integrity sha512-2xKaLeLQPXd4LBvkfeCXpua2oMLi5E4PACKqDw4U62KzY6qoVgi8iZdXWYLXFK4AExjP9GOxicwgySPoERONPA==
+
 yauzl@^2.4.2:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/yauzl/-/yauzl-2.10.0.tgz#c7eb17c93e112cb1086fa6d8e51fb0667b79a5f9"
