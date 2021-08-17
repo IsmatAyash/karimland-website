@@ -1,5 +1,4 @@
-import React, { useState } from "react"
-import { ButtonGroup, ToggleButton } from "react-bootstrap"
+import React from "react"
 import { stars } from "../utils/reviewStars"
 import styled from "styled-components"
 import WeightSelector from "./WeightSelector"

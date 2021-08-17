@@ -3,17 +3,17 @@ import Layout from "../components/Layout"
 import { graphql } from "gatsby"
 import FeaturedProduct from "../components/FeaturedProduct"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
-import SEO from "../components/SEO"
+import Seo from "../components/Seo"
 
 const Contact = ({ data }) => {
   const { body } = data.contentfulPages
   return (
     <Layout>
       <main className="page">
-        <SEO title="contact" />
+        <Seo title="contact" />
         <section className="contact-page">
           <article className="contact-info">
-            <p>{renderRichText(body)} </p>
+            <div>{renderRichText(body)} </div>
           </article>
           <article>
             <form
