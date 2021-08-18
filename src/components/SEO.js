@@ -33,7 +33,7 @@ const SEO = ({ title, description }) => {
 
 export default SEO
 
-Seo.propTypes = {
+SEO.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   solgan: PropTypes.string,
