@@ -54,7 +54,7 @@
   --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   /* typography */
-  --defaultFontSize: 87.5%;
+  --defaultFontSize: 80.5%;
   --headingFont: "Montserrat", monospace, "Inconsolata";
   --bodyFont: "Montserrat", sans-serif;
   --smallText: 0.8em;
