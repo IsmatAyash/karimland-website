@@ -5,7 +5,7 @@ import { getProduct } from "../graphql/queries"
 import Layout from "../components/Layout"
 import ImageCarousel from "../components/ImageCarousel"
 import ProductInfo from "../components/ProductInfo"
-import Seo from "../components/Seo"
+import SEO from "../components/seo"
 import ProductDetails from "../components/ProductDetails"
 
 const ProductTemplate = ({ pageContext }) => {
@@ -40,7 +40,7 @@ const ProductTemplate = ({ pageContext }) => {
     <Layout>
       {!loading && (
         <>
-          <Seo title={title} description={JSON.parse(description[0]).detail} />
+          <SEO title={title} description={JSON.parse(description[0]).detail} />
           <main className="page">
             <div className="product-page">
               <section className="product-hero">

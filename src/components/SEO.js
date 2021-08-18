@@ -16,7 +16,7 @@ const query = graphql`
   }
 `
 
-const Seo = ({ title, description }) => {
+const SEO = ({ title, description }) => {
   const { site } = useStaticQuery(query)
   const metaDescription = description || site.siteMetadata.description
   return (
@@ -31,7 +31,7 @@ const Seo = ({ title, description }) => {
   )
 }
 
-export default Seo
+export default SEO
 
 Seo.propTypes = {
   title: PropTypes.string,
