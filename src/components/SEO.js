@@ -1,6 +1,7 @@
 import React from "react"
 import { Helmet } from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
+import PropTypes from "prop-types"
 
 const query = graphql`
   {
@@ -14,16 +15,27 @@ const query = graphql`
     }
   }
 `
+
 const Seo = ({ title, description }) => {
   const { site } = useStaticQuery(query)
   const metaDescription = description || site.siteMetadata.description
   return (
     <Helmet
-      htmlAttributes={{ lang: "en" }}
       title={`${title} | ${site.siteMetadata.title}`}
-      meta={[{ name: `description`, content: metaDescription }]}
-    ></Helmet>
+      htmlAttributes={{ lang: "en" }}
+    >
+      <meta name="description" content={metaDescription} />
+      <meta name="slogan" content={site.siteMetadata.solgan} />
+      <meta name="author" content={site.siteMetadata.author} />
+    </Helmet>
   )
 }
 
 export default Seo
+
+Seo.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  solgan: PropTypes.string,
+  author: PropTypes.string,
+}
