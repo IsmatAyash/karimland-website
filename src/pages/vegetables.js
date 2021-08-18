@@ -2,7 +2,7 @@ import React from "react"
 import Layout from "../components/Layout"
 import { StaticImage } from "gatsby-plugin-image"
 import AllVeges from "../components/AllVeges"
-import SEO from "../components/seo"
+import SEO from "../components/SEO"
 
 const Vegetables = () => {
   return (

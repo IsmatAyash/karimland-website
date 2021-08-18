@@ -5,7 +5,7 @@ import Layout from "../components/Layout"
 import { graphql } from "gatsby"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
 import FeaturedProduct from "../components/FeaturedProduct"
-import SEO from "../components/seo"
+import SEO from "../components/SEO"
 
 const About = ({ data }) => {
   const { body, images, title } = data.contentfulPages

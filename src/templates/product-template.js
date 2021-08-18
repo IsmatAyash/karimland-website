@@ -5,7 +5,7 @@ import { getProduct } from "../graphql/queries"
 import Layout from "../components/Layout"
 import ImageCarousel from "../components/ImageCarousel"
 import ProductInfo from "../components/ProductInfo"
-import SEO from "../components/seo"
+import SEO from "../components/SEO"
 import ProductDetails from "../components/ProductDetails"
 
 const ProductTemplate = ({ pageContext }) => {

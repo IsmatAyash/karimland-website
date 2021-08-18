@@ -3,7 +3,7 @@ import Layout from "../components/Layout"
 import { graphql } from "gatsby"
 import FeaturedProduct from "../components/FeaturedProduct"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
-import SEO from "../components/seo"
+import SEO from "../components/SEO"
 
 const Contact = ({ data }) => {
   const { body } = data.contentfulPages

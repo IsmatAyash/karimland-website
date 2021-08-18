@@ -3,7 +3,7 @@ import Layout from "../components/Layout"
 import { graphql } from "gatsby"
 import { StaticImage, GatsbyImage, getImage } from "gatsby-plugin-image"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
-import SEO from "../components/seo"
+import SEO from "../components/SEO"
 
 const Home = ({ data }) => {
   const { body, images } = data.contentfulPages

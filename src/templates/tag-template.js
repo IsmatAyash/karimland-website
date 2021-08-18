@@ -2,7 +2,7 @@ import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/Layout"
 import ProductList from "../components/ProductList"
-import SEO from "../components/seo"
+import SEO from "../components/SEO"
 
 const TagTemplate = ({ data, pageContext }) => {
   const products = data.product.listProducts.items
