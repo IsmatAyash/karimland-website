@@ -12,11 +12,11 @@ const Blogs = ({ data }) => {
     <Layout>
       <SEO title="Blogs" />
       <main className="page">
-        {blogs.map(blog => {
+        {blogs.map((blog, idx) => {
           const { title, slug, posted, image, content, id } = blog
           return (
-            <>
-              <BlogCtr key={id}>
+            <React.Fragment key={`${id}-${idx}`}>
+              <BlogCtr>
                 <BlogImageCtr>
                   <BlogImage image={getImage(image)} alt={title} />
                 </BlogImageCtr>
@@ -27,7 +27,7 @@ const Blogs = ({ data }) => {
                   <ReadMoreLink to={`/${slug}`}>Read More...</ReadMoreLink>
                 </BlogDetail>
               </BlogCtr>
-            </>
+            </React.Fragment>
           )
         })}
       </main>
@@ -39,19 +39,15 @@ export const query = graphql`
   {
     allContentfulBlog {
       nodes {
-        id
         title
+        posted(formatString: "MMMMM D, YYYY hh:mm A")
         slug
-        posted(formatString: "MMMM D, YYYY hh:mm A")
+        id
+        image {
+          gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)
+        }
         content {
           raw
-        }
-        image {
-          gatsbyImageData(
-            layout: CONSTRAINED
-            placeholder: TRACED_SVG
-            resizingBehavior: SCALE
-          )
         }
       }
     }
@@ -117,10 +113,9 @@ const BlogDescription = styled.div`
 const ReadMoreLink = styled(Link)`
   max-width: 200px;
   text-align: center;
-  cursor: pointer;
-  appearance: none;
   color: var(--grey-900);
   border: 1px solid var(--grey-800);
+  cursor: pointer;
   border-radius: var(--borderRadius);
   letter-spacing: var(--letterSpacing);
   padding: 0.375rem 0.75rem;
