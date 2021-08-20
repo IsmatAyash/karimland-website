@@ -1,7 +1,6 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
-import { renderRichText } from "gatsby-source-contentful/rich-text"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import styled from "styled-components"
@@ -13,7 +12,7 @@ const Blogs = ({ data }) => {
       <SEO title="Blogs" />
       <main className="page">
         {blogs.map((blog, idx) => {
-          const { title, slug, posted, image, content, id } = blog
+          const { title, slug, posted, image, summary, id } = blog
           return (
             <React.Fragment key={`${id}-${idx}`}>
               <BlogCtr>
@@ -23,7 +22,7 @@ const Blogs = ({ data }) => {
                 <BlogDetail>
                   <h5 style={{ marginBottom: 0 }}>{title}</h5>
                   <small>posetd on {posted}</small>
-                  <BlogDescription>{renderRichText(content)}</BlogDescription>
+                  <BlogDescription>{summary}...</BlogDescription>
                   <ReadMoreLink to={`/${slug}`}>Read More...</ReadMoreLink>
                 </BlogDetail>
               </BlogCtr>
@@ -43,11 +42,9 @@ export const query = graphql`
         posted(formatString: "MMMMM D, YYYY hh:mm A")
         slug
         id
+        summary
         image {
           gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)
-        }
-        content {
-          raw
         }
       }
     }
@@ -97,13 +94,8 @@ const BlogDetail = styled.div`
   }
 `
 
-const BlogDescription = styled.div`
+const BlogDescription = styled.p`
   margin: 17px 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* number of lines to show */
-  -webkit-box-orient: vertical;
 
   @media screen and (min-width: 992px) {
     font-size: 1rem;

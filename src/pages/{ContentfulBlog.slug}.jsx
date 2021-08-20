@@ -31,6 +31,7 @@ export const query = graphql`
       slug
       author
       posted(formatString: "MMM D, YYYY hh:mm A")
+      summary
       content {
         raw
         references {
@@ -45,6 +46,11 @@ export const query = graphql`
               quality: 100
               cornerRadius: 10
             )
+            file {
+              contentType
+              fileName
+              url
+            }
           }
         }
       }
