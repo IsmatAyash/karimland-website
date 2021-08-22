@@ -2,7 +2,7 @@ import React from "react"
 import Layout from "../components/Layout"
 import { graphql } from "gatsby"
 import { StaticImage, GatsbyImage, getImage } from "gatsby-plugin-image"
-import { renderRichText } from "gatsby-source-contentful/rich-text"
+import RichTextRender from "../components/RichTextRender"
 import SEO from "../components/SEO"
 
 const Home = ({ data }) => {
@@ -28,7 +28,7 @@ const Home = ({ data }) => {
           </div>
         </header>
         <section>
-          <div style={{ width: "100%" }}>{renderRichText(body)}</div>
+          <RichTextRender richText={body} />
           {images.map((image, idx) => (
             <GatsbyImage
               image={getImage(image)}
@@ -47,9 +47,24 @@ const Home = ({ data }) => {
 
 export const query = graphql`
   {
-    contentfulPages(pagecode: { eq: "home" }) {
+    contentfulPages(slug: { eq: "home" }, node_locale: { eq: "en-US" }) {
       body {
         raw
+        references {
+          sys {
+            contentType {
+              sys {
+                linkType
+                id
+                type
+              }
+            }
+          }
+          contentful_id
+          id
+          slug
+          title
+        }
       }
       images {
         gatsbyImageData(

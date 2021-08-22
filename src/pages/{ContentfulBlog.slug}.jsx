@@ -1,11 +1,12 @@
 import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/Layout"
-import BlogBody from "../components/BlogBody"
 import styled from "styled-components"
+import RichTextRender from "../components/RichTextRender"
 
 const BlogTemplate = ({ data }) => {
   const { title, posted, author, content } = data.contentfulBlog
+
   return (
     <Layout>
       <main className="page">
@@ -14,9 +15,7 @@ const BlogTemplate = ({ data }) => {
           <small style={{ marginBottom: 20 }}>
             posted by {author} on {posted}
           </small>
-          <BlogBody content={content} />
-          {/* <BlogCtr>{output}</BlogCtr> */}
-          {/* <div>{renderRichText(content)}</div> */}
+          <RichTextRender richText={content} />
         </BlogCtr>
       </main>
     </Layout>
@@ -24,14 +23,12 @@ const BlogTemplate = ({ data }) => {
 }
 
 export const query = graphql`
-  query GetBlog($id: String!) {
+  query GetBlogById($id: String!) {
     contentfulBlog(id: { eq: $id }) {
-      id
+      contentful_id
       title
-      slug
       author
-      posted(formatString: "MMM D, YYYY hh:mm A")
-      summary
+      posted(formatString: "MMMM D, YYYY hh:mm A", locale: "en-US")
       content {
         raw
         references {
@@ -39,18 +36,18 @@ export const query = graphql`
             __typename
             contentful_id
             title
-            gatsbyImageData(
-              layout: CONSTRAINED
-              placeholder: TRACED_SVG
-              width: 350
-              quality: 100
-              cornerRadius: 10
-            )
+            gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)
             file {
               contentType
-              fileName
               url
             }
+          }
+          ... on ContentfulPages {
+            __typename
+            id
+            contentful_id
+            slug
+            title
           }
         }
       }
@@ -64,5 +61,4 @@ const BlogCtr = styled.div`
   justify-content: center;
   width: 100%;
 `
-
 export default BlogTemplate

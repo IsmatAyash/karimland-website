@@ -47,7 +47,7 @@ const Contact = ({ data }) => {
 
 export const query = graphql`
   {
-    contentfulPages(pagecode: { eq: "contact" }) {
+    contentfulPages(slug: { eq: "contact" }) {
       body {
         raw
       }

@@ -36,12 +36,13 @@ const Blogs = ({ data }) => {
 
 export const query = graphql`
   {
-    allContentfulBlog {
+    allContentfulBlog(filter: { node_locale: { eq: "en-US" } }) {
       nodes {
-        title
-        posted(formatString: "MMMMM D, YYYY hh:mm A")
-        slug
         id
+        title
+        slug
+        author
+        posted(formatString: "MMM D, YYYY hh:mm A")
         summary
         image {
           gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)

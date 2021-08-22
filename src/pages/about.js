@@ -31,7 +31,7 @@ const About = ({ data }) => {
 
 export const query = graphql`
   {
-    contentfulPages(pagecode: { eq: "about" }) {
+    contentfulPages(slug: { eq: "about" }) {
       body {
         raw
       }
