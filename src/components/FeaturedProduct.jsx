@@ -1,33 +1,14 @@
-import React from "react"
+import React, { useContext } from "react"
 import ProductList from "./ProductList"
-import { useStaticQuery, graphql } from "gatsby"
-
-// const getData = graphql`
-//   {
-//     product {
-//       listProducts(filter: { featured: { eq: true } }) {
-//         items {
-//           id
-//           title
-//           images
-//           prices
-//           oldPrice
-//           avgRating
-//           quantity
-//         }
-//       }
-//     }
-//   }
-// `
+import { ProductContext } from "../context/products"
 
 const FeaturedProduct = () => {
-  // const data = useStaticQuery(getData)
-  // const { items: featured } = data.product.listProducts
-
+  const { featured } = useContext(ProductContext)
+  console.log("featured", featured)
   return (
     <section className="featured-products">
       <h5>Featured products</h5>
-      {/* <ProductList prods={featured} /> */}
+      <ProductList prods={featured} />
     </section>
   )
 }

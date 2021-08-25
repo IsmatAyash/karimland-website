@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import { API, graphqlOperation } from "aws-amplify"
 import { getProduct } from "../api/queries"
 

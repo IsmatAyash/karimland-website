@@ -103,7 +103,7 @@ const Admin = () => {
                   <img
                     className="image-preview"
                     src={image}
-                    alt="image preview"
+                    alt="admin preview"
                   />
                 ) : (
                   <input
