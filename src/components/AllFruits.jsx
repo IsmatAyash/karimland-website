@@ -1,38 +1,27 @@
-import React from "react"
-import { useStaticQuery, graphql } from "gatsby"
+import React, { useState, useEffect, useContext } from "react"
+import { ProductContext } from "../context/products"
+
 import ProductList from "./ProductList"
 import TagsList from "./TagsList"
 
-const getData = graphql`
-  {
-    product {
-      listProducts(filter: { prodType: { eq: "fruit" } }) {
-        items {
-          id
-          title
-          quantity
-          images
-          prices
-          oldPrice
-          orders
-          ratings
-          avgRating
-          description
-          tags
-        }
-      }
-    }
-  }
-`
-
 const AllFruits = () => {
-  const data = useStaticQuery(getData)
-  const { items: fruits } = data.product.listProducts
+  const { products, loading } = useContext(ProductContext)
+  const [fruits, setFruits] = useState([])
+
+  useEffect(() => {
+    setFruits(products.filter(p => p.prodType === "Fruit"))
+  }, [products])
 
   return (
     <section className="products-container">
-      <TagsList products={fruits} />
-      <ProductList prods={fruits} />
+      {loading ? (
+        <h2>Loading...</h2>
+      ) : (
+        <>
+          <TagsList products={fruits} />
+          <ProductList prods={fruits} />
+        </>
+      )}
     </section>
   )
 }

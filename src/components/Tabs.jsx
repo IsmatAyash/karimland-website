@@ -1,12 +1,13 @@
-import React, { useState } from "react"
-import { Tabs, Tab } from "react-bootstrap"
+import React from "react"
 import styled from "styled-components"
 
-const ProductDetails = ({ description }) => {
-  const [key, setKey] = useState("description")
+const MyTabs = ({ description }) => {
   return (
-    <Tabs activeKey={key} onSelect={k => setKey(k)} className="mt-5 mb-2">
-      <Tab eventKey="description" title="Product Description">
+    <div className="tabs">
+      <input type="radio" name="tabgroup" id="description" />
+      <label htmlFor="description">Product Description</label>
+      <div className="tab">
+        <h4>Product details</h4>
         <DescriptionCtr>
           {description.map((item, idx) => {
             const { header, detail } = JSON.parse(item)
@@ -18,9 +19,12 @@ const ProductDetails = ({ description }) => {
             )
           })}
         </DescriptionCtr>
-      </Tab>
-      <Tab eventKey="policy" title="Return Policy">
-        <PolicyCtr>
+      </div>
+      <input type="radio" name="tabgroup" id="policy" />
+      <label htmlFor="policy">Returned Policy</label>
+      <div className="tab">
+        <h4>Returned Policy</h4>
+        <p>
           It is a long established fact that a reader will be distracted by the
           readable content of a page when looking at its layout. The point of
           using Lorem Ipsum is that it has a more-or-less normal distribution of
@@ -30,20 +34,23 @@ const ProductDetails = ({ description }) => {
           search for 'lorem ipsum' will uncover many web sites still in their
           infancy. Various versions have evolved over the years, sometimes by
           accident, sometimes on purpose (injected humour and the like).
-        </PolicyCtr>
-      </Tab>
-      <Tab eventKey="reviews" title="Customer Reviews">
+        </p>
+      </div>
+      <input type="radio" name="tabgroup" id="reviews" />
+      <label htmlFor="reviews">Customer Reviews</label>
+      <div className="tab">
+        <h4>Customer Reviews</h4>
         <article>
           <form className="form contact-form">
-            <div className="form-row">
+            <div className="form-field">
               <label htmlFor="name">Your name</label>
               <input type="text" name="name" id="name"></input>
             </div>
-            <div className="form-row">
+            <div className="form-field">
               <label htmlFor="name">Your email</label>
               <input type="email" name="email" id="email"></input>
             </div>
-            <div className="form-row">
+            <div className="form-field">
               <label htmlFor="message">message</label>
               <textarea name="message" id="message"></textarea>
             </div>
@@ -52,17 +59,10 @@ const ProductDetails = ({ description }) => {
             </button>
           </form>
         </article>
-      </Tab>
-    </Tabs>
+      </div>
+    </div>
   )
 }
-
-const PolicyCtr = styled.div`
-  background-color: aliceblue;
-  padding: 1em;
-  margin-bottom: 0.4em;
-  font-size: 14px;
-`
 
 const DescriptionCtr = styled.div`
   display: flex;
@@ -79,4 +79,5 @@ const DescriptionHeader = styled.span`
   font-weight: bold;
   margin-right: 5px;
 `
-export default ProductDetails
+
+export default MyTabs

@@ -24,7 +24,7 @@ export const getOrder = /* GraphQL */ `
       customer
     }
   }
-`;
+`
 export const listOrders = /* GraphQL */ `
   query ListOrders(
     $filter: ModelOrderFilterInput
@@ -47,7 +47,7 @@ export const listOrders = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const getProduct = /* GraphQL */ `
   query GetProduct($id: ID!) {
     getProduct(id: $id) {
@@ -78,7 +78,7 @@ export const getProduct = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listProducts = /* GraphQL */ `
   query ListProducts(
     $filter: ModelProductFilterInput
@@ -99,13 +99,10 @@ export const listProducts = /* GraphQL */ `
         prices
         description
         tags
-        orders {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       nextToken
     }
   }
-`;
+`

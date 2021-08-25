@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { API, graphqlOperation } from "aws-amplify"
-import { getProduct } from "../graphql/queries"
+import { getProduct } from "../api/queries"
 
 import Layout from "../components/Layout"
-import ImageCarousel from "../components/ImageCarousel"
 import ProductInfo from "../components/ProductInfo"
 import SEO from "../components/SEO"
-import ProductDetails from "../components/ProductDetails"
+import Tabs from "../components/Tabs"
 
 const ProductTemplate = ({ pageContext }) => {
   const [qty, setQty] = useState(0)
@@ -31,7 +30,7 @@ const ProductTemplate = ({ pageContext }) => {
     fetchProds()
   }, [loading, pageContext.id])
 
-  const { title, description, images, prices } = prod.getProduct || {}
+  const { title, description, image, prices } = prod.getProduct || {}
   if (!unitPrice && prod.getProduct) {
     setUnitPrice(JSON.parse(prices[0]).price)
   }
@@ -44,7 +43,12 @@ const ProductTemplate = ({ pageContext }) => {
           <main className="page">
             <div className="product-page">
               <section className="product-hero">
-                <ImageCarousel images={images} title={title} />
+                <img
+                  src={image}
+                  alt={title}
+                  width="100%"
+                  style={{ borderRadius: "10px" }}
+                />
                 <article className="product-info">
                   <ProductInfo
                     prod={prod.getProduct}
@@ -56,7 +60,7 @@ const ProductTemplate = ({ pageContext }) => {
                 </article>
               </section>
               <section>
-                <ProductDetails description={description} />
+                <Tabs description={description} />
               </section>
             </div>
           </main>

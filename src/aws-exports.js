@@ -3,10 +3,10 @@
 
 const awsmobile = {
     "aws_project_region": "eu-west-2",
-    "aws_cognito_identity_pool_id": "eu-west-2:df7c5a6c-c523-439c-9f6f-5d2c61188939",
+    "aws_cognito_identity_pool_id": "eu-west-2:305ec9e0-9e29-428f-a900-fb7d599d0b71",
     "aws_cognito_region": "eu-west-2",
-    "aws_user_pools_id": "eu-west-2_nztRd2zQH",
-    "aws_user_pools_web_client_id": "re3vs0lui52immfos67aeb13a",
+    "aws_user_pools_id": "eu-west-2_TsrFRqqhk",
+    "aws_user_pools_web_client_id": "jjl3jb2jl6ek5u5g1i13kk6n9",
     "oauth": {},
     "aws_cognito_login_mechanism": [
         "PREFERRED_USERNAME"
@@ -22,10 +22,12 @@ const awsmobile = {
         "passwordPolicyMinLength": 8,
         "passwordPolicyCharacters": []
     },
-    "aws_appsync_graphqlEndpoint": "https://xg6lx7eforal7fzdzxac4ijr6m.appsync-api.eu-west-2.amazonaws.com/graphql",
+    "aws_user_files_s3_bucket": "karimlandwebsite523f9d2840804269b44400814cd464b200112-prod",
+    "aws_user_files_s3_bucket_region": "eu-west-2",
+    "aws_appsync_graphqlEndpoint": "https://hcn2ijtspbdfrhlz5u2pkeeezm.appsync-api.eu-west-2.amazonaws.com/graphql",
     "aws_appsync_region": "eu-west-2",
-    "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-slpwfexhvvemxok2m6qnkjfzty"
+    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
+    "aws_appsync_apiKey": "da2-vn5yd7brtrhpfjra2ym7hlmw3u"
 };
 
 

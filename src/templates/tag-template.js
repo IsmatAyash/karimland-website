@@ -29,7 +29,7 @@ export const query = graphql`
           oldPrice
           prices
           ratings
-          images
+          image
           quantity
         }
       }

@@ -69,10 +69,26 @@ module.exports = {
         // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
         fieldName: "product",
         // Url to query from
-        url: "https://xg6lx7eforal7fzdzxac4ijr6m.appsync-api.eu-west-2.amazonaws.com/graphql",
+        url: "https://hcn2ijtspbdfrhlz5u2pkeeezm.appsync-api.eu-west-2.amazonaws.com/graphql",
         headers: {
-          "x-api-key": "da2-slpwfexhvvemxok2m6qnkjfzty",
+          "x-api-key": "da2-vn5yd7brtrhpfjra2ym7hlmw3u",
         },
+      },
+    },
+    {
+      resolve: `gatsby-source-stripe`,
+      options: {
+        objects: [
+          "Balance",
+          "BalanceTransaction",
+          "Product",
+          "ApplicationFee",
+          "Sku",
+          "Subscription",
+        ],
+        secretKey:
+          "sk_test_51HRNBKE41CMIaPCOww03taSl9ltP2blnlsTg4j8Tr5jNr50t7UyImVdFVgiI19QboWFNDaLhrUqlGHFHHmGAxf8u00kCDIT8DA",
+        downloadFiles: true,
       },
     },
   ],

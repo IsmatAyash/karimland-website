@@ -5,7 +5,7 @@ export const processOrder = /* GraphQL */ `
   mutation ProcessOrder($input: ProcessOrderInput!) {
     processOrder(input: $input)
   }
-`;
+`
 export const createProduct = /* GraphQL */ `
   mutation CreateProduct(
     $input: CreateProductInput!
@@ -39,7 +39,7 @@ export const createProduct = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const updateProduct = /* GraphQL */ `
   mutation UpdateProduct(
     $input: UpdateProductInput!
@@ -73,7 +73,7 @@ export const updateProduct = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const deleteProduct = /* GraphQL */ `
   mutation DeleteProduct(
     $input: DeleteProductInput!
@@ -107,7 +107,7 @@ export const deleteProduct = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const createProductOrder = /* GraphQL */ `
   mutation CreateProductOrder(
     $input: CreateProductOrderInput!
@@ -153,7 +153,7 @@ export const createProductOrder = /* GraphQL */ `
       customer
     }
   }
-`;
+`
 export const updateProductOrder = /* GraphQL */ `
   mutation UpdateProductOrder(
     $input: UpdateProductOrderInput!
@@ -199,7 +199,7 @@ export const updateProductOrder = /* GraphQL */ `
       customer
     }
   }
-`;
+`
 export const deleteProductOrder = /* GraphQL */ `
   mutation DeleteProductOrder(
     $input: DeleteProductOrderInput!
@@ -245,7 +245,7 @@ export const deleteProductOrder = /* GraphQL */ `
       customer
     }
   }
-`;
+`
 export const createOrder = /* GraphQL */ `
   mutation CreateOrder(
     $input: CreateOrderInput!
@@ -272,7 +272,7 @@ export const createOrder = /* GraphQL */ `
       customer
     }
   }
-`;
+`
 export const updateOrder = /* GraphQL */ `
   mutation UpdateOrder(
     $input: UpdateOrderInput!
@@ -299,7 +299,7 @@ export const updateOrder = /* GraphQL */ `
       customer
     }
   }
-`;
+`
 export const deleteOrder = /* GraphQL */ `
   mutation DeleteOrder(
     $input: DeleteOrderInput!
@@ -326,4 +326,4 @@ export const deleteOrder = /* GraphQL */ `
       customer
     }
   }
-`;
+`

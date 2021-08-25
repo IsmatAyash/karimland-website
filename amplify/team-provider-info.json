@@ -1,19 +1,29 @@
 {
-  "dev": {
+  "prod": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-karimlandwebsite-dev-234555-authRole",
-      "UnauthRoleArn": "arn:aws:iam::850863607080:role/amplify-karimlandwebsite-dev-234555-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::850863607080:role/amplify-karimlandwebsite-dev-234555-authRole",
+      "AuthRoleName": "amplify-karimlandwebsite-prod-200112-authRole",
+      "UnauthRoleArn": "arn:aws:iam::850863607080:role/amplify-karimlandwebsite-prod-200112-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::850863607080:role/amplify-karimlandwebsite-prod-200112-authRole",
       "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-karimlandwebsite-dev-234555-deployment",
-      "UnauthRoleName": "amplify-karimlandwebsite-dev-234555-unauthRole",
-      "StackName": "amplify-karimlandwebsite-dev-234555",
-      "StackId": "arn:aws:cloudformation:eu-west-2:850863607080:stack/amplify-karimlandwebsite-dev-234555/77c55160-fc77-11eb-8a90-0629cf456fb8",
-      "AmplifyAppId": "d1m3c1lwp3rxlf"
+      "DeploymentBucketName": "amplify-karimlandwebsite-prod-200112-deployment",
+      "UnauthRoleName": "amplify-karimlandwebsite-prod-200112-unauthRole",
+      "StackName": "amplify-karimlandwebsite-prod-200112",
+      "StackId": "arn:aws:cloudformation:eu-west-2:850863607080:stack/amplify-karimlandwebsite-prod-200112/e8636320-04fc-11ec-b2d1-0631c866826c",
+      "AmplifyAppId": "d3ae530fwaad6v"
     },
     "categories": {
       "auth": {
-        "karimlandwebsite8cb1653c": {}
+        "karimlandwebsitec0ae1f9f": {}
+      },
+      "function": {
+        "createOrder": {
+          "deploymentBucketName": "amplify-karimlandwebsite-prod-200112-deployment",
+          "s3Key": "amplify-builds/createOrder-3934644f687931686d4a-build.zip"
+        },
+        "processPayment": {
+          "deploymentBucketName": "amplify-karimlandwebsite-prod-200112-deployment",
+          "s3Key": "amplify-builds/processPayment-78376573364a72306478-build.zip"
+        }
       }
     }
   }

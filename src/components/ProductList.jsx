@@ -7,12 +7,12 @@ const ProductList = ({ prods = [] }) => {
   return (
     <div className="products-list">
       {prods.map(prod => {
-        const { id, images, title, prices, oldPrice, quantity } = prod
+        const { id, image, title, prices, oldPrice, quantity } = prod
         const slug = slugify(title, { lower: true })
 
         return (
           <Link key={id} to={`/${slug}`} className="product">
-            <img src={images[0]} alt={title} className="product-img" />
+            <img src={image} alt={title} className="product-img" />
             <h5>{title}</h5>
             {quantity === 0 ? (
               <p>Out of stock</p>
