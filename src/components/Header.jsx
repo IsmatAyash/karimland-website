@@ -1,70 +1,102 @@
-import React from "react"
-import { FaShoppingCart, FaLanguage } from "react-icons/fa"
+import React, { useContext } from "react"
+import {
+  FaShoppingCart,
+  FaUser,
+  FaSignOutAlt,
+  FaSignInAlt,
+  FaUserCircle,
+  FaEdit,
+} from "react-icons/fa"
+import { MdLanguage, MdArrowDropDown, MdList } from "react-icons/md"
 import { Link } from "gatsby"
 import styled from "styled-components"
+import { UserContext } from "../context/users"
+import { CartContext } from "../context/carts"
 
 const Header = () => {
+  const { user } = useContext(UserContext)
+  const { cart } = useContext(CartContext)
+
   return (
-    <HeaderBar>
-      <LinkIconWrapper>
-        <FaLanguage className="react-icons" />
-        <HeaderIconLink to="/">English</HeaderIconLink>
-        <HeaderIconLink to="/">Arabic</HeaderIconLink>
-      </LinkIconWrapper>
-      <VerticalLine>|</VerticalLine>
-      <HeaderIconLink to="/">
-        <FaShoppingCart className="react-icons" />
-        <CartQty>100</CartQty>
-      </HeaderIconLink>
-      <VerticalLine>|</VerticalLine>
-      <SigninLink to="/">Sign In</SigninLink>
-    </HeaderBar>
+    <div className="header-bar">
+      <ul>
+        <li>
+          <Link to="/">
+            <MdLanguage className="react-icons" />
+            Language
+            <MdArrowDropDown className="react-icons" />{" "}
+          </Link>
+          <ul>
+            <li>
+              <Link to="/">
+                <span style={{ fontSize: "14px" }}>English</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/">
+                <span style={{ fontSize: "14px" }}>Arabic</span>
+              </Link>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <Link to="/cart">
+            <FaShoppingCart className="react-icons" />
+            <CartQty>{cart.length || 0}</CartQty>
+          </Link>
+        </li>
+        {!user ? (
+          <li>
+            <Link to="/signin">
+              <FaSignInAlt className="react-icons" />
+              <span style={{ fontSize: "12px", fontWeight: "bold" }}>
+                Sign In
+              </span>
+            </Link>
+          </li>
+        ) : (
+          <li>
+            <Link to="/">
+              <FaUser className="react-icons" />
+              <span style={{ fontSize: "12px", fontWeight: "bold" }}>
+                {user.username}
+              </span>
+              <MdArrowDropDown className="react-icons" />{" "}
+            </Link>
+            <ul>
+              {user && user.username === "admin" && (
+                <li>
+                  <Link to="/admin">
+                    <FaEdit className="react-icons" />
+                    Products
+                  </Link>
+                </li>
+              )}
+              <li>
+                <Link to="/">
+                  <FaUserCircle className="react-icons" />
+                  My Profile
+                </Link>
+              </li>
+              <li>
+                <Link to="/">
+                  <MdList className="react-icons" />
+                  My Orders
+                </Link>
+              </li>
+              <li>
+                <Link to="/">
+                  <FaSignOutAlt className="react-icons" />
+                  Sign Out
+                </Link>
+              </li>
+            </ul>
+          </li>
+        )}
+      </ul>
+    </div>
   )
 }
-
-const HeaderBar = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: var(--grey-1000);
-  height: 2rem;
-`
-
-const LinkIconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 10px;
-`
-
-const HeaderIconLink = styled(Link)`
-  color: var(--grey-50);
-  font-size: 12px;
-  margin-right: 10px;
-  margin-left: 10px;
-
-  &:hover {
-    transition: all 0.2s ease-in-out;
-    color: var(--green-light);
-  }
-`
-
-const SigninLink = styled(Link)`
-  color: white;
-  margin-right: 20px;
-  font-size: 12px;
-
-  &:hover {
-    transition: all 0.2s ease-in-out;
-    color: var(--green-light);
-  }
-`
-
-const VerticalLine = styled.span`
-  color: var(--grey-50);
-  margin-left: 15px;
-  margin-right: 15px;
-`
 
 const CartQty = styled.span`
   font-weight: bold;

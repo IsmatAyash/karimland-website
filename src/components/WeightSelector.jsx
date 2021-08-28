@@ -20,7 +20,7 @@ const WeightSelector = ({ prices, setUnitPrice }) => {
               {prices.map((pp, idx) => {
                 const { weight, price } = JSON.parse(pp)
                 return (
-                  <>
+                  <React.Fragment key={`wgt-${idx}`}>
                     <input
                       className="radio-input"
                       type="radio"
@@ -33,7 +33,7 @@ const WeightSelector = ({ prices, setUnitPrice }) => {
                     <label className="radio-label" htmlFor={`radio${idx}`}>
                       {weight}
                     </label>
-                  </>
+                  </React.Fragment>
                 )
               })}
             </div>

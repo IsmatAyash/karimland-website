@@ -307,10 +307,7 @@ form > *:last-child {
 .react-icons {
   vertical-align: middle;
   color: var(--grey-50);
-  width: 28px;
-  height: 18px;
-  margin-right: 5px;
-  /* margin-left: 10px; */
+  margin: 0 5px;
 }
 
 /*#########*/
@@ -899,4 +896,99 @@ textarea {
   /* background: var(--primary-500); */
   color: var(--green-dark);
   border-bottom: 2px solid var(--primary-600);
+}
+
+/* Header menu language and user and cart */
+.header-bar {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  background-color: var(--grey-1000);
+  height: 3rem;
+}
+
+.header-bar ul {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  z-index: 99;
+}
+
+.header-bar ul li {
+  float: left;
+  margin-top: 0.19rem;
+}
+
+.header-bar ul li a {
+  width: 12.5rem;
+  color: var(--grey-300);
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  padding: 0.4rem;
+  font-size: 1rem;
+}
+
+.header-bar ul li a:hover {
+  background-color: var(--green-light);
+  border-radius: 5px;
+}
+
+.header-bar ul li ul {
+  background-color: var(--grey-1000);
+}
+
+.header-bar ul li ul li {
+  float: none;
+}
+
+.header-bar ul li ul {
+  display: none;
+}
+
+.header-bar ul li:hover ul {
+  display: block;
+}
+
+/* Cart Section */
+
+.cart {
+  width: 90%;
+  margin: auto;
+  text-align: center;
+}
+
+.cart-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-item {
+  margin: 2rem 0rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cart-item .image {
+  flex: 1 1 10rem;
+}
+
+.cart-item img {
+  width: 10rem;
+}
+
+.cart-item .details {
+  flex: 2 1 10rem;
+}
+
+.cart-item .amount {
+  flex: 1 1 10rem;
+}
+
+.cart-empty {
+  position: absolute;
+  top: 48%;
+  left: 40%;
 }

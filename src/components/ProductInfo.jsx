@@ -1,11 +1,15 @@
-import React from "react"
+import React, { useContext } from "react"
 import { stars } from "../utils/reviewStars"
 import styled from "styled-components"
 import WeightSelector from "./WeightSelector"
 import QuantitySelector from "./QuantitySelector"
+import { CartContext } from "../context/carts"
 
 const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
-  const { title, avgRating, ratings, quantity, prices, oldPrice } = prod
+  const { id, title, image, avgRating, ratings, quantity, prices, oldPrice } =
+    prod
+  const { addToCart } = useContext(CartContext)
+
   return (
     <>
       <h2>{title}</h2>
@@ -29,7 +33,13 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
         qtyInStock={quantity}
         unitPrice={unitPrice}
       />
-      <button className="btn btn-bgfg-colors" style={{ marginTop: "10px" }}>
+      <button
+        className="btn btn-bgfg-colors"
+        style={{ marginTop: "10px" }}
+        onClick={() =>
+          addToCart({ id, title, image, price: unitPrice, amount: qty })
+        }
+      >
         Add to Cart
       </button>
     </>
