@@ -43,6 +43,8 @@ const CartProvider = ({ children }) => {
     }
   }
 
+  const delFromCart = id => setCart([...cart].filter(c => c.id !== id))
+
   const clearCart = () => {
     setCart([])
   }
@@ -53,6 +55,7 @@ const CartProvider = ({ children }) => {
         cart,
         total,
         addToCart,
+        delFromCart,
         increaseAmount,
         decreaseAmount,
         clearCart,

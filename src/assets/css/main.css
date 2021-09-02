@@ -674,31 +674,6 @@ form > *:last-child {
   text-transform: capitalize;
 }
 
-/*#########*/
-/* Bootstrap Tabs styling */
-/*#########*/
-
-.nav-tabs .nav-item.show .nav-link,
-.nav-tabs .nav-link.active {
-  color: var(--white);
-  font-weight: bold;
-  background-color: var(--primary-500);
-}
-
-.nav-link {
-  color: var(--grey-600);
-}
-
-.nav-tabs {
-  font-size: 14px;
-  border-bottom: none;
-}
-
-.nav-tabs .nav-link:hover {
-  background-color: var(--primary-700);
-  color: var(--white);
-}
-
 /* admin section form */
 
 .admin-page {
@@ -951,44 +926,159 @@ textarea {
 }
 
 /* Cart Section */
-
-.cart {
-  width: 90%;
-  margin: auto;
-  text-align: center;
-}
-
 .cart-wrapper {
   display: flex;
   flex-direction: column;
+  margin-top: 1rem;
 }
 
 .cart-item {
-  margin: 2rem 0rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--grey-500);
 }
 
 .cart-item .image {
-  flex: 1 1 10rem;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-item img {
-  width: 10rem;
+  width: 8rem;
+  margin-left: 0.5rem;
+  object-fit: contain;
+  border-radius: 5px;
 }
 
 .cart-item .details {
-  flex: 2 1 10rem;
+  display: flex;
+  flex: 4;
+  flex-direction: column;
+  margin: 0 0.6rem;
 }
 
 .cart-item .amount {
-  flex: 1 1 10rem;
+  /* flex: 1 1 10rem; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.cart-empty {
-  position: absolute;
-  top: 48%;
-  left: 40%;
+.cart-qty {
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 10rem;
+  height: 2rem;
+  border: 1px solid var(--grey-100);
+  border-radius: 5px;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  color: var(--grey-900);
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+/* Modal styling */
+/* The Modal (background) */
+.modal {
+  animation: slideleft 0.45s ease-out forwards;
+}
+
+.modal.reverse {
+  animation-name: slideleftReverse;
+}
+
+@keyframes slideleft {
+  from {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideleftReverse {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+}
+
+@keyframes backdropFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backdropFadeReverse {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.backdrop {
+  animation: backdropFade 0.45s ease-out forwards;
+}
+
+.backdrop.reverse {
+  animation-name: backdropFadeReverse;
+}
+
+.close {
+  color: white;
+  float: right;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  flex: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 16px;
+  background-color: var(--green-light);
+  color: var(--white);
+}
+
+.modal-body {
+  flex: 10;
+}
+
+.modal-footer {
+  flex: 0.8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 16px;
+  border-top: 1px solid var(--grey-500);
+  color: white;
 }

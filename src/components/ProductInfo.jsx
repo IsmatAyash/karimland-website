@@ -1,17 +1,32 @@
-import React, { useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { stars } from "../utils/reviewStars"
 import styled from "styled-components"
 import WeightSelector from "./WeightSelector"
 import QuantitySelector from "./QuantitySelector"
 import { CartContext } from "../context/carts"
+import Modal from "../components/Modal"
 
 const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
+  const [showCart, setShowCart] = useState(false)
   const { id, title, image, avgRating, ratings, quantity, prices, oldPrice } =
     prod
   const { addToCart } = useContext(CartContext)
 
+  const onAddCart = () => {
+    addToCart({ id, title, image, price: unitPrice, amount: qty })
+    setShowCart(true)
+  }
+
   return (
     <>
+      {showCart && (
+        <Modal
+          closeModal={setShowCart}
+          qty={qty}
+          setQty={setQty}
+          unitPrice={unitPrice}
+        />
+      )}
       <h2>{title}</h2>
       <ReviewStars>
         {Array(5)
@@ -36,9 +51,7 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
       <button
         className="btn btn-bgfg-colors"
         style={{ marginTop: "10px" }}
-        onClick={() =>
-          addToCart({ id, title, image, price: unitPrice, amount: qty })
-        }
+        onClick={onAddCart}
       >
         Add to Cart
       </button>

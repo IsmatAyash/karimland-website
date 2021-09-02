@@ -18,7 +18,10 @@ const ProductTemplate = ({ pageContext }) => {
       // setLoading(true)
       try {
         const { data } = await API.graphql(
-          graphqlOperation(getProduct, { id: pageContext.id })
+          graphqlOperation(getProduct, {
+            id: pageContext.id,
+            authMode: "API_KEY",
+          })
         )
         setProd(data)
         setLoading(false)
