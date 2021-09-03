@@ -17,12 +17,17 @@ const ProductTemplate = ({ pageContext }) => {
     const fetchProds = async () => {
       // setLoading(true)
       try {
-        const { data } = await API.graphql(
-          graphqlOperation(getProduct, {
-            id: pageContext.id,
-            authMode: "API_KEY",
-          })
-        )
+        const { data } = await API.graphql({
+          query: getProduct,
+          authMode: "API_KEY",
+          variables: { id: pageContext.id },
+        })
+        // const { data } = await API.graphql(
+        //   graphqlOperation(getProduct, {
+        //     id: pageContext.id,
+        //     authMode: "API_KEY",
+        //   })
+        // )
         setProd(data)
         setLoading(false)
       } catch (error) {

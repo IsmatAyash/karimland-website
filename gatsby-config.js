@@ -71,24 +71,8 @@ module.exports = {
         // Url to query from
         url: "https://hcn2ijtspbdfrhlz5u2pkeeezm.appsync-api.eu-west-2.amazonaws.com/graphql",
         headers: {
-          "x-api-key": "da2-vn5yd7brtrhpfjra2ym7hlmw3u",
+          "x-api-key": process.env.GRAPHQL_API_KEY,
         },
-      },
-    },
-    {
-      resolve: `gatsby-source-stripe`,
-      options: {
-        objects: [
-          "Balance",
-          "BalanceTransaction",
-          "Product",
-          "ApplicationFee",
-          "Sku",
-          "Subscription",
-        ],
-        secretKey:
-          "sk_test_51HRNBKE41CMIaPCOww03taSl9ltP2blnlsTg4j8Tr5jNr50t7UyImVdFVgiI19QboWFNDaLhrUqlGHFHHmGAxf8u00kCDIT8DA",
-        downloadFiles: true,
       },
     },
   ],

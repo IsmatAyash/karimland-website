@@ -18,11 +18,11 @@
       "function": {
         "createOrder": {
           "deploymentBucketName": "amplify-karimlandwebsite-prod-200112-deployment",
-          "s3Key": "amplify-builds/createOrder-3934644f687931686d4a-build.zip"
+          "s3Key": "amplify-builds/createOrder-34475a39344967697367-build.zip"
         },
         "processPayment": {
           "deploymentBucketName": "amplify-karimlandwebsite-prod-200112-deployment",
-          "s3Key": "amplify-builds/processPayment-78376573364a72306478-build.zip"
+          "s3Key": "amplify-builds/processPayment-4554454c64746f4f6b30-build.zip"
         }
       }
     }

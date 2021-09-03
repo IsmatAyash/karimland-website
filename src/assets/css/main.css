@@ -895,7 +895,7 @@ textarea {
 }
 
 .header-bar ul li a {
-  width: 12.5rem;
+  width: 12rem;
   color: var(--grey-300);
   display: block;
   text-decoration: none;
@@ -1081,4 +1081,21 @@ textarea {
   padding: 2px 16px;
   border-top: 1px solid var(--grey-500);
   color: white;
+}
+
+/* Checkout Section */
+.checkout-wrapper {
+  width: 60%;
+  margin: auto;
+  text-align: center;
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  margin: 3rem 0;
+}
+
+.stripe-section {
+  margin-top: 2rem;
 }

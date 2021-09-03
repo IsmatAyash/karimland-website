@@ -2,11 +2,11 @@ type Product
   @model(subscriptions: null)
   @auth(
     rules: [
-      # allow admins to create, update and delete books
+      # allow admins to create, update and delete products
       { allow: groups, groups: ["Admin"] }
-      # allow all authenticated users to view books
+      # allow all authenticated users to view products
       { allow: private, operations: [read] }
-      # allow all guest users (not authenticated) to view books
+      # allow all guest users (not authenticated) to view products
       { allow: public, operations: [read] }
     ]
   ) {

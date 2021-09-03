@@ -63,17 +63,6 @@ export const getProduct = /* GraphQL */ `
       prices
       description
       tags
-      orders {
-        items {
-          id
-          product_id
-          order_id
-          createdAt
-          updatedAt
-          customer
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }

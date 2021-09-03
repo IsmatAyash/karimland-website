@@ -78,11 +78,22 @@ const Modal = ({ closeModal }) => {
         <div className="modal-footer">
           <div className="cart-total">
             <span>SubTotal :</span>
-            <span style={{ fontWeight: "bold", color: "black" }}>
+            <span
+              style={{
+                fontWeight: "bold",
+                color: "black",
+              }}
+            >
               KD {total}
             </span>
           </div>
-          <button className="btn block btn-bgfg-colors">Checkout</button>
+          <Link
+            to="/checkout"
+            className="btn btn-bgfg-colors small"
+            style={{ width: "100%", textAlign: "center" }}
+          >
+            Checkout
+          </Link>
           <Link
             style={{ fontStyle: "italic", fontSize: 16, marginTop: 5 }}
             to="/"
