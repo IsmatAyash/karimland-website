@@ -23,8 +23,16 @@ const ProductProvider = ({ children }) => {
     try {
       await API.graphql(graphqlOperation(processOrder, { input: payload }))
       console.log("Order is successful")
+      return {
+        statusCode: "SUCCESS",
+        msg: "Payment processed and order created successfully",
+      }
     } catch (err) {
       console.log(err)
+      return {
+        statusCode: "ERROR",
+        msg: `something went wrong please check your card info and retry`,
+      }
     }
   }
 
