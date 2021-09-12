@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useState, useContext } from "react"
 import {
   FaShoppingCart,
   FaUser,
@@ -12,13 +12,16 @@ import { Link } from "gatsby"
 import styled from "styled-components"
 import { UserContext } from "../context/users"
 import { CartContext } from "../context/carts"
+import Modal from "./Modal"
 
 const Header = () => {
   const { user } = useContext(UserContext)
-  const { cart } = useContext(CartContext)
+  const { cart, total } = useContext(CartContext)
+  const [showCart, setShowCart] = useState(false)
 
   return (
     <div className="header-bar">
+      {showCart && <Modal closeModal={setShowCart} />}
       <ul>
         <li>
           <Link to="/">
@@ -40,10 +43,14 @@ const Header = () => {
           </ul>
         </li>
         <li>
-          <Link to="/cart">
+          <button
+            disabled={total === 0}
+            small
+            onClick={() => setShowCart(true)}
+          >
             <FaShoppingCart className="react-icons" />
             <CartQty>{cart.length || 0}</CartQty>
-          </Link>
+          </button>
         </li>
         {!user ? (
           <li>
@@ -101,6 +108,7 @@ const Header = () => {
 const CartQty = styled.span`
   font-weight: bold;
   font-size: 14px;
+  color: var(--grey-100);
 `
 
 export default Header

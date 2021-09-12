@@ -22,7 +22,7 @@
         },
         "processPayment": {
           "deploymentBucketName": "amplify-karimlandwebsite-prod-200112-deployment",
-          "s3Key": "amplify-builds/processPayment-4554454c64746f4f6b30-build.zip"
+          "s3Key": "amplify-builds/processPayment-712b4d425063325a5165-build.zip"
         }
       }
     }

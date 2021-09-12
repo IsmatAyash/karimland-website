@@ -79,6 +79,8 @@ input ProcessOrderInput {
   cart: [CartItem]
   total: Float!
   token: String!
+  name: String
+  phone: String
   address: String
 }
 

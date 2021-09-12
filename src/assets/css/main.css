@@ -909,6 +909,23 @@ textarea {
   border-radius: 5px;
 }
 
+.header-bar ul li button {
+  background-color: transparent;
+  border-style: none;
+  margin-top: 0.3rem;
+}
+
+.header-bar ul li button:hover {
+  background-color: var(--green-light);
+  border-style: none;
+}
+
+.header-bar ul li button:disabled {
+  cursor: default;
+  color: var(--grey-500);
+  background-color: transparent;
+}
+
 .header-bar ul li ul {
   background-color: var(--grey-1000);
 }
@@ -988,14 +1005,6 @@ textarea {
 
 /* Modal styling */
 /* The Modal (background) */
-.modal {
-  animation: slideleft 0.45s ease-out forwards;
-}
-
-.modal.reverse {
-  animation-name: slideleftReverse;
-}
-
 @keyframes slideleft {
   from {
     transform: translateX(50%);
@@ -1016,6 +1025,14 @@ textarea {
     transform: translateX(50%);
     opacity: 0;
   }
+}
+
+.modal {
+  animation: slideleft 0.45s ease-out forwards;
+}
+
+.modal.reverse {
+  animation-name: slideleftReverse;
 }
 
 @keyframes backdropFade {
@@ -1081,21 +1098,4 @@ textarea {
   padding: 2px 16px;
   border-top: 1px solid var(--grey-500);
   color: white;
-}
-
-/* Checkout Section */
-.checkout-wrapper {
-  width: 60%;
-  margin: auto;
-  text-align: center;
-}
-
-.checkout-form {
-  display: flex;
-  flex-direction: column;
-  margin: 3rem 0;
-}
-
-.stripe-section {
-  margin-top: 2rem;
 }

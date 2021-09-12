@@ -46,19 +46,6 @@ const Admin = () => {
     return () => Hub.remove("auth", updUser) // cleanup
   }, [])
 
-  // useEffect(() => {
-  //   Hub.listen("auth", data => {
-  //     switch (data.payload.event) {
-  //       case "signIn":
-  //         updateUser(Auth.currentAuthenticatedUser())
-  //         break
-  //       case "signOut":
-  //         updateUser("")
-  //         break
-  //     }
-  //   })
-  // }, [])
-
   const handleSubmit = async e => {
     console.log("Submit clicked")
     e.preventDefault()

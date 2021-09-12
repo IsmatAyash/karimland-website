@@ -2,6 +2,9 @@ import React, { useState, useEffect, createContext } from "react"
 
 const CartContext = createContext()
 
+const TAXRATE = 0.15
+const SHIPPING = 0.05
+
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([])
   const [total, setTotal] = useState(0)
@@ -10,7 +13,7 @@ const CartProvider = ({ children }) => {
     const total = [...cart].reduce((total, { amount, price }) => {
       return (total += amount * price)
     }, 0)
-    setTotal(parseFloat(total.toFixed(2)))
+    setTotal(parseFloat(total).toFixed(2))
   }, [cart])
 
   const increaseAmount = id => {
@@ -53,7 +56,13 @@ const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cart,
-        total,
+        total: (
+          parseFloat(total) +
+          parseFloat(total * TAXRATE) +
+          parseFloat(total * SHIPPING)
+        ).toFixed(2),
+        tax: parseFloat(total * TAXRATE),
+        shipping: parseFloat(total * SHIPPING),
         addToCart,
         delFromCart,
         increaseAmount,

@@ -15,19 +15,12 @@ const ProductTemplate = ({ pageContext }) => {
 
   useEffect(() => {
     const fetchProds = async () => {
-      // setLoading(true)
       try {
         const { data } = await API.graphql({
           query: getProduct,
           authMode: "API_KEY",
           variables: { id: pageContext.id },
         })
-        // const { data } = await API.graphql(
-        //   graphqlOperation(getProduct, {
-        //     id: pageContext.id,
-        //     authMode: "API_KEY",
-        //   })
-        // )
         setProd(data)
         setLoading(false)
       } catch (error) {
@@ -57,7 +50,7 @@ const ProductTemplate = ({ pageContext }) => {
                   width="100%"
                   style={{ borderRadius: "10px" }}
                 />
-                <article className="product-info">
+                <article>
                   <ProductInfo
                     prod={prod.getProduct}
                     setUnitPrice={setUnitPrice}

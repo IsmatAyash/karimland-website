@@ -19,14 +19,7 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
 
   return (
     <>
-      {showCart && (
-        <Modal
-          closeModal={setShowCart}
-          qty={qty}
-          setQty={setQty}
-          unitPrice={unitPrice}
-        />
-      )}
+      {showCart && <Modal closeModal={setShowCart} />}
       <h2>{title}</h2>
       <ReviewStars>
         {Array(5)

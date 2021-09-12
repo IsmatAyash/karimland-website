@@ -27,7 +27,8 @@ const getUserEmail = async event => {
  */
 exports.handler = async event => {
   try {
-    const { id, cart, total, address, token } = event.arguments.input
+    const { id, cart, total, address, name, phone, token } =
+      event.arguments.input
     const { username } = event.identity.claims
     const email = await getUserEmail(event)
 
@@ -37,7 +38,7 @@ exports.handler = async event => {
       source: token,
       description: `Order ${new Date()} by ${email}`,
     })
-    return { id, cart, total, address, username, email }
+    return { id, cart, total, address, name, phone, username, email }
   } catch (err) {
     throw new Error(err)
   }
