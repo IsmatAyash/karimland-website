@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect } from "react"
-import { stars } from "../utils/reviewStars"
 import styled from "styled-components"
+
+import { CartContext } from "../context/carts"
 import WeightSelector from "./WeightSelector"
 import QuantitySelector from "./QuantitySelector"
-import { CartContext } from "../context/carts"
+import RatingStars from "./RatingStars"
 import Modal from "../components/Modal"
 
 const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
@@ -21,14 +22,7 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
     <>
       {showCart && <Modal closeModal={setShowCart} />}
       <h2>{title}</h2>
-      <ReviewStars>
-        {Array(5)
-          .fill()
-          .map((_, i) => (
-            <div key={i}>{stars(i, avgRating)}</div>
-          ))}
-        {`${ratings} reviews`}
-      </ReviewStars>
+      <RatingStars avgRating={avgRating} ratings={ratings} />
       <div>Seller: Karim Land</div>
       <div>Availability: {quantity !== 0 ? "In Stock" : "Out of stock"}</div>
       <PriceCtr>
@@ -51,12 +45,6 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
     </>
   )
 }
-
-const ReviewStars = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 20px;
-`
 
 const PriceCtr = styled.div`
   font-size: 16px;

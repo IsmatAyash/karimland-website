@@ -1,10 +1,21 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
+import Reviews from "./Reviews"
+
 const MyTabs = ({ description }) => {
+  const [activeTab, setActiveTab] = useState("description")
+
   return (
     <div className="tabs">
-      <input type="radio" name="tabgroup" id="description" />
+      <input
+        type="radio"
+        name="tabgroup"
+        id="description"
+        value="description"
+        checked={activeTab === "description"}
+        onChange={e => setActiveTab(e.target.value)}
+      />
       <label htmlFor="description">Product Description</label>
       <div className="tab">
         <h4>Product details</h4>
@@ -20,7 +31,14 @@ const MyTabs = ({ description }) => {
           })}
         </DescriptionCtr>
       </div>
-      <input type="radio" name="tabgroup" id="policy" />
+      <input
+        type="radio"
+        name="tabgroup"
+        id="policy"
+        value="policy"
+        checked={activeTab === "policy"}
+        onChange={e => setActiveTab(e.target.value)}
+      />
       <label htmlFor="policy">Returned Policy</label>
       <div className="tab">
         <h4>Returned Policy</h4>
@@ -36,29 +54,18 @@ const MyTabs = ({ description }) => {
           accident, sometimes on purpose (injected humour and the like).
         </p>
       </div>
-      <input type="radio" name="tabgroup" id="reviews" />
+      <input
+        type="radio"
+        name="tabgroup"
+        id="reviews"
+        value="reviews"
+        checked={activeTab === "reviews"}
+        onChange={e => setActiveTab(e.target.value)}
+      />
       <label htmlFor="reviews">Customer Reviews</label>
       <div className="tab">
-        <h4>Customer Reviews</h4>
-        <article>
-          <form className="form contact-form">
-            <div className="form-field">
-              <label htmlFor="name">Your name</label>
-              <input type="text" name="name" id="name"></input>
-            </div>
-            <div className="form-field">
-              <label htmlFor="name">Your email</label>
-              <input type="email" name="email" id="email"></input>
-            </div>
-            <div className="form-field">
-              <label htmlFor="message">message</label>
-              <textarea name="message" id="message"></textarea>
-            </div>
-            <button type="submit" className="btn block btn-bgfg-colors">
-              Submit
-            </button>
-          </form>
-        </article>
+        <h4>Write a Review</h4>
+        <Reviews />
       </div>
     </div>
   )
