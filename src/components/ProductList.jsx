@@ -2,6 +2,7 @@ import React from "react"
 import { Link } from "gatsby"
 import slugify from "slugify"
 import styled from "styled-components"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 const ProductList = ({ prods = [] }) => {
   return (
@@ -9,10 +10,15 @@ const ProductList = ({ prods = [] }) => {
       {prods.map(prod => {
         const { id, image, title, prices, oldPrice, quantity } = prod
         const slug = slugify(title, { lower: true })
+        const pathToImage = getImage(image)
 
         return (
           <Link key={id} to={`/${slug}`} className="product">
-            <img src={image} alt={title} className="product-img" />
+            <GatsbyImage
+              image={pathToImage}
+              alt={title}
+              className="product-img"
+            />
             <h5>{title}</h5>
             {quantity === 0 ? (
               <p>Out of stock</p>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { API, graphqlOperation } from "aws-amplify"
+import { API } from "aws-amplify"
 import { getProduct } from "../api/queries"
 
 import Layout from "../components/Layout"

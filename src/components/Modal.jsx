@@ -3,8 +3,10 @@ import { CartContext } from "../context/carts"
 import { MdClose, MdAdd, MdRemove, MdDeleteForever } from "react-icons/md"
 import { Link } from "gatsby"
 import styled from "styled-components"
+import { UserContext } from "../context/users"
 
 const Modal = ({ closeModal }) => {
+  const { user } = useContext(UserContext)
   const [reverse, setReverse] = useState(false)
   const { cart, total, increaseAmount, decreaseAmount, delFromCart } =
     useContext(CartContext)
@@ -88,7 +90,8 @@ const Modal = ({ closeModal }) => {
             </span>
           </div>
           <Link
-            to="/checkout"
+            to={user ? "/checkout" : "/signin"}
+            state={{ fromCheckout: true }}
             className="btn btn-bgfg-colors small"
             style={{ width: "100%", textAlign: "center" }}
           >

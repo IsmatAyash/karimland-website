@@ -75,5 +75,21 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: `@robinmetral/gatsby-source-s3`,
+      options: {
+        aws: {
+          accessKeyId: process.env.AWS_ACCESS_KEY,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+          region: process.env.AWS_REGION,
+        },
+        buckets: ["karimlandwebsite523f9d2840804269b44400814cd464b200112-prod"],
+        expiration: 120,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/logged/*`] },
+    },
   ],
 }

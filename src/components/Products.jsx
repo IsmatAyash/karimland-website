@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useContext } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { API, graphqlOperation, Storage, Hub, Auth } from "aws-amplify"
-import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react"
 import { createProduct } from "../api/mutations"
 import config from "../aws-exports"
-import Layout from "../components/Layout"
+import Layout from "./Layout"
 import { UserContext } from "../context/users"
 
 const {
@@ -25,26 +24,26 @@ const initialValues = {
   description: [{ header: "", detail: "" }],
   tags: [],
 }
-const Admin = () => {
+const Products = () => {
   const { updateUser } = useContext(UserContext)
   const [image, setImage] = useState("")
   const [productDetails, setProductDetails] = useState(initialValues)
 
-  useEffect(() => {
-    const updUser = async () => {
-      try {
-        const usr = await Auth.currentAuthenticatedUser()
-        updateUser(usr)
-      } catch {
-        updateUser(null)
-      }
-    }
-    Hub.listen("auth", updUser) // listen for login/signup events
+  // useEffect(() => {
+  //   const updUser = async () => {
+  //     try {
+  //       const usr = await Auth.currentAuthenticatedUser()
+  //       updateUser(usr)
+  //     } catch {
+  //       updateUser(null)
+  //     }
+  //   }
+  //   Hub.listen("auth", updUser) // listen for login/signup events
 
-    // we are not using async to wait for updateUser, so there will be a flash of page where the user is assumed not to be logged in. If we use a flag
-    updUser() // check manually the first time because we won't get a Hub event
-    return () => Hub.remove("auth", updUser) // cleanup
-  }, [])
+  //   // we are not using async to wait for updateUser, so there will be a flash of page where the user is assumed not to be logged in. If we use a flag
+  //   updUser() // check manually the first time because we won't get a Hub event
+  //   return () => Hub.remove("auth", updUser) // cleanup
+  // }, [])
 
   const handleSubmit = async e => {
     console.log("Submit clicked")
@@ -99,6 +98,7 @@ const Admin = () => {
         ...productDetails,
         image: url,
       })
+      console.log("image key", image)
     } catch (err) {
       console.log(err)
     }
@@ -110,12 +110,13 @@ const Admin = () => {
         <section className="admin-page">
           <header className="form-header">
             <h4>Add New Product</h4>
-            <AmplifySignOut />
           </header>
           <form className="form contact-form" onSubmit={handleSubmit}>
             <div className="form-image">
+              <div>Product image</div>
               {image ? (
                 <img
+                  level="public"
                   className="image-preview"
                   src={image}
                   alt="admin preview"
@@ -123,7 +124,7 @@ const Admin = () => {
               ) : (
                 <input
                   type="file"
-                  accept="image/jpg"
+                  accept="image/*"
                   onChange={e => handleImageUpload(e)}
                 />
               )}
@@ -248,4 +249,4 @@ const Admin = () => {
   )
 }
 
-export default withAuthenticator(Admin)
+export default Products

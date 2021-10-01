@@ -1,8 +1,8 @@
 import React, { useReducer, useEffect, useContext } from "react"
-import { navigate } from "gatsby"
+// import { navigate } from "gatsby"
 import { ProductContext } from "../../context/products"
 import { CartContext } from "../../context/carts"
-import { UserContext } from "../../context/users"
+// import { UserContext } from "../../context/users"
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import reducer, {
   CARDCOMPLETE,
@@ -47,8 +47,8 @@ const CheckoutForm = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const { checkout } = useContext(ProductContext)
-  const { cart, total } = useContext(CartContext)
-  const { user } = useContext(UserContext)
+  const { cart, total, clearCart } = useContext(CartContext)
+  // const { user } = useContext(UserContext)
 
   const stripe = useStripe()
   const elements = useElements()
@@ -74,9 +74,12 @@ const CheckoutForm = () => {
           text: "Error while creating order, please check your billing details",
         },
       })
+    clearCart()
   }
 
-  useEffect(() => checkOut(), [state.orderDetails])
+  useEffect(() => {
+    checkOut()
+  }, [state.orderDetails])
 
   const handleSubmit = async event => {
     event.preventDefault()

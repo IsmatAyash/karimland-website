@@ -67,7 +67,13 @@
   --transition: 0.3s ease-in-out all;
   --max-width: 1120px;
   --fixed-width: 600px;
+
+  /* override amplify authentication forms theme */
+  --amplify-primary-color: #645cff;
+  --amplify-primary-tint: #554ed9;
+  --amplify-primary-shade: #37338c;
 }
+
 html {
   font-size: var(--defaultFontSize);
 }

@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react"
+import { AmplifySignOut } from "@aws-amplify/ui-react"
 import {
   FaShoppingCart,
   FaUser,
@@ -13,6 +14,7 @@ import styled from "styled-components"
 import { UserContext } from "../context/users"
 import { CartContext } from "../context/carts"
 import Modal from "./Modal"
+import Auth from "@aws-amplify/auth"
 
 const Header = () => {
   const { user } = useContext(UserContext)
@@ -54,12 +56,20 @@ const Header = () => {
         </li>
         {!user ? (
           <li>
-            <Link to="/signin">
-              <FaSignInAlt className="react-icons" />
-              <span style={{ fontSize: "12px", fontWeight: "bold" }}>
-                Sign In
-              </span>
-            </Link>
+            <button
+              style={{ fontSize: 14, color: "var(--white)" }}
+              small
+              onClick={() => Auth.signIn()}
+            >
+              <FaSignInAlt style={{ marginRight: 5 }} />
+              Sign In
+            </button>
+            {/* <Link to="/signin">
+        <FaSignInAlt className="react-icons" />
+        <span style={{ fontSize: "12px", fontWeight: "bold" }}>
+          Sign In
+        </span>
+      </Link> */}
           </li>
         ) : (
           <li>
@@ -92,10 +102,11 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/">
-                  <FaSignOutAlt className="react-icons" />
-                  Sign Out
-                </Link>
+                <AmplifySignOut buttonText="Sign Out"></AmplifySignOut>
+                {/* <Link to="/">
+            <FaSignOutAlt className="react-icons" />
+            Sign Out
+          </Link> */}
               </li>
             </ul>
           </li>
