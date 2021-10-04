@@ -2,7 +2,7 @@ import React from "react"
 import Layout from "../components/Layout"
 import { graphql } from "gatsby"
 import { StaticImage, GatsbyImage, getImage } from "gatsby-plugin-image"
-import RichTextRender from "../components/RichTextRender"
+import RichTextRender from "../components/blog/RichTextRender"
 import SEO from "../components/SEO"
 
 const Home = ({ data }) => {

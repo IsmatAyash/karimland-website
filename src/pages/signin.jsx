@@ -19,9 +19,6 @@ const SignIn = ({ location }) => {
 
   const { username, password, authCode, email } = authState
 
-  console.log("location", location)
-  console.log("fromCheckout", location.state.fromCheckout)
-
   useEffect(() => checkUser(), [])
 
   async function checkUser() {

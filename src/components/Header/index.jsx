@@ -11,7 +11,7 @@ import { MdLanguage, MdArrowDropDown, MdList } from "react-icons/md"
 import styled from "styled-components"
 import { UserContext } from "../../context/users"
 import { CartContext } from "../../context/carts"
-import Modal from "../Modal"
+import Cart from "../ProductInfo/Cart"
 import NavItemLink from "./NavItemLink"
 import NavItemButton from "./NavItemButton"
 import Badge from "./Badge"
@@ -39,7 +39,7 @@ const Header = () => {
 
   return (
     <Nav>
-      {showCart && <Modal closeModal={setShowCart} />}
+      {showCart && <Cart closeCart={setShowCart} />}
       <NavList>
         <NavListItem>
           <MdLanguage />

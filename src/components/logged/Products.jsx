@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { API, graphqlOperation, Storage, Hub, Auth } from "aws-amplify"
-import { createProduct } from "../api/mutations"
-import config from "../aws-exports"
-import Layout from "./Layout"
-import { UserContext } from "../context/users"
+import { createProduct } from "../../api/mutations"
+import config from "../../aws-exports"
+import Layout from "../Layout"
+import { UserContext } from "../../context/users"
 
 const {
   aws_user_files_s3_bucket_region: region,

@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from "react"
 import styled from "styled-components"
 
-import { CartContext } from "../context/carts"
+import { CartContext } from "../../context/carts"
 import WeightSelector from "./WeightSelector"
 import QuantitySelector from "./QuantitySelector"
-import RatingStars from "./RatingStars"
-import Modal from "../components/Modal"
+import RatingStars from "../Reviews/RatingStars"
+import Cart from "./Cart"
 
 const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
   const [showCart, setShowCart] = useState(false)
@@ -20,7 +20,7 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
 
   return (
     <>
-      {showCart && <Modal closeModal={setShowCart} />}
+      {showCart && <Cart closeCart={setShowCart} />}
       <h2>{title}</h2>
       <RatingStars avgRating={avgRating} ratings={ratings} />
       <div>Seller: Karim Land</div>

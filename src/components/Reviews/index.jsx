@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import RatingStars from "../RatingStars"
+import RatingStars from "./RatingStars"
 import UserReview from "./UserReview"
 import { Rating, RatingView } from "react-simple-star-rating"
 

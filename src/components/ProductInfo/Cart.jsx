@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react"
-import { CartContext } from "../context/carts"
+import { CartContext } from "../../context/carts"
 import { MdClose, MdAdd, MdRemove, MdDeleteForever } from "react-icons/md"
 import { Link } from "gatsby"
 import styled from "styled-components"
-import { UserContext } from "../context/users"
+import { UserContext } from "../../context/users"
 
-const Modal = ({ closeModal }) => {
+const Cart = ({ closeCart }) => {
   const { user } = useContext(UserContext)
   const [reverse, setReverse] = useState(false)
   const { cart, total, increaseAmount, decreaseAmount, delFromCart } =
@@ -14,7 +14,7 @@ const Modal = ({ closeModal }) => {
   const onClose = () => {
     setReverse(true)
     setTimeout(() => {
-      closeModal(false)
+      closeCart(false)
       setReverse(false)
     }, 450)
   }
@@ -34,7 +34,7 @@ const Modal = ({ closeModal }) => {
                   <img src={image} alt="cart item" />
                 </div>
                 <div className="details">
-                  <span>
+                  <DetailLine>
                     {title}
                     <MdDeleteForever
                       style={{
@@ -48,14 +48,14 @@ const Modal = ({ closeModal }) => {
                         delFromCart(id)
                       }
                     />
-                  </span>
-                  <span>$ {price}</span>
+                  </DetailLine>
+                  <DetailLine>$ {price}</DetailLine>
                   <div className="amount">
                     <div className="cart-qty">
                       <button onClick={() => decreaseAmount(id, amount)}>
                         <MdRemove />
                       </button>
-                      <span
+                      <DetailLine
                         style={{
                           minWidth: "2rem",
                           textAlign: "center",
@@ -63,14 +63,14 @@ const Modal = ({ closeModal }) => {
                         }}
                       >
                         {amount}
-                      </span>
+                      </DetailLine>
                       <button onClick={() => increaseAmount(id)}>
                         <MdAdd />
                       </button>
                     </div>
-                    <span style={{ fontWeight: "bold" }}>
+                    <DetailLine style={{ fontWeight: "bold" }}>
                       Total: KD {(price * amount).toFixed(2)}
-                    </span>
+                    </DetailLine>
                   </div>
                 </div>
               </article>
@@ -140,4 +140,8 @@ const ModalContent = styled.div`
   }
 `
 
-export default Modal
+const DetailLine = styled.span`
+  color: var(--grey-900);
+`
+
+export default Cart

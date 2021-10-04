@@ -5,9 +5,11 @@ const Badge = ({ icon, amount, onShow }) => {
   return (
     <BadgeButton type="button" disabled={amount === 0} onClick={onShow}>
       {icon}
-      <BadgeData>
-        <CartQty>{amount}</CartQty>
-      </BadgeData>
+      {amount !== 0 && (
+        <BadgeData>
+          <CartQty>{amount}</CartQty>
+        </BadgeData>
+      )}
     </BadgeButton>
   )
 }

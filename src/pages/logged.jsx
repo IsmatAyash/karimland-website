@@ -1,9 +1,9 @@
 import React from "react"
 import { Router } from "@reach/router"
 import Layout from "../components/Layout"
-import Products from "../components/Products"
-import Orders from "../components/Orders"
-import Profile from "../components/Profile"
+import Products from "../components/logged/Products"
+import Orders from "../components/logged/Orders"
+import Profile from "../components/logged/Profile"
 import PrivateRoute from "../components/common/PrivateRoute"
 
 const Logged = () => {

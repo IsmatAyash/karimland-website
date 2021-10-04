@@ -2,7 +2,7 @@ import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/Layout"
 import styled from "styled-components"
-import RichTextRender from "../components/RichTextRender"
+import RichTextRender from "../components/blog/RichTextRender"
 
 const BlogTemplate = ({ data }) => {
   const { title, posted, author, content } = data.contentfulBlog

@@ -5,7 +5,7 @@ import { getProduct } from "../api/queries"
 import Layout from "../components/Layout"
 import ProductInfo from "../components/ProductInfo"
 import SEO from "../components/SEO"
-import Tabs from "../components/Tabs"
+import Tabs from "../components/ProductInfo/Tabs"
 
 const ProductTemplate = ({ pageContext }) => {
   const [qty, setQty] = useState(0)

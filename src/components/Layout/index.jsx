@@ -3,8 +3,8 @@ import Footer from "./Footer"
 import Navbar from "./Navbar"
 
 import "normalize.css"
-import "../assets/css/main.css"
-import Header from "./Header"
+import "../../assets/css/main.css"
+import Header from "../Header"
 
 // import Amplify from "aws-amplify"
 // import awsconfig from "../aws-exports"

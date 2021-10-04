@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { stars } from "../utils/reviewStars"
+import { stars } from "../../utils/reviewStars"
 
 const RatingStars = ({ avgRating, ratings, basedOn }) => {
   return (

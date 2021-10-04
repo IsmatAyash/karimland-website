@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 
-import Reviews from "./Reviews"
+import Reviews from "../Reviews"
 
 const MyTabs = ({ description }) => {
   const [activeTab, setActiveTab] = useState("description")
