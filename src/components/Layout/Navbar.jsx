@@ -1,17 +1,16 @@
 import React, { useState } from "react"
 import { Link } from "gatsby"
+import { StaticImage } from "gatsby-plugin-image"
 import { FaHome, FaBlog, FaInfoCircle } from "react-icons/fa"
 import { GiFruitBowl, GiTomato, GiPhone } from "react-icons/gi"
 import { FiAlignJustify } from "react-icons/fi"
-import MenuLink from "./MenuLink"
 import styled from "styled-components"
-import { StaticImage } from "gatsby-plugin-image"
+import MenuLink from "./MenuLink"
 
 const links = [
   { name: "home", icon: <FaHome style={{ marginRight: 3 }} /> },
   { name: "vegetables", icon: <GiTomato style={{ marginRight: 3 }} /> },
   { name: "fruits", icon: <GiFruitBowl style={{ marginRight: 3 }} /> },
-  // { name: "shopping", icon: <FaShoppingCart style={{ marginRight: 3 }} /> },
   { name: "blogs", icon: <FaBlog style={{ marginRight: 3 }} /> },
   { name: "about", icon: <FaInfoCircle style={{ marginRight: 3 }} /> },
   { name: "contact", icon: <GiPhone style={{ marginRight: 3 }} /> },

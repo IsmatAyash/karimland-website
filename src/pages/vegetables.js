@@ -1,10 +1,35 @@
-import React from "react"
-import Layout from "../components/Layout"
+import React, { useState, useEffect, useContext } from "react"
 import { StaticImage } from "gatsby-plugin-image"
-import AllVeges from "../components/AllVeges"
-import SEO from "../components/SEO"
+import { graphql } from "gatsby"
 
-const Vegetables = () => {
+import SEO from "../components/SEO"
+import Layout from "../components/Layout"
+import ProductList from "../components/ProductList"
+import TagsList from "../components/TagsList"
+import { ProductContext } from "../context/products"
+
+// get vegetables data using graphql here
+
+const Vegetables = ({ data }) => {
+  const { prodImages } = useContext(ProductContext)
+  const [veges, setVeges] = useState([])
+
+  const { items } = data.product.listProducts
+
+  useEffect(() => {
+    if (prodImages) {
+      const prods = items.map(prod => {
+        const idx = prod.image.split("/").pop()
+        return {
+          ...prod,
+          image: prodImages.find(i => i.localFile.base === idx).localFile
+            .childImageSharp.gatsbyImageData,
+        }
+      })
+      setVeges(prods || [])
+    }
+  }, [prodImages])
+
   return (
     <Layout>
       <main className="page">
@@ -24,10 +49,34 @@ const Vegetables = () => {
             </div>
           </div>
         </header>
-        <AllVeges />
+        <section className="products-container">
+          <TagsList products={veges} />
+          <ProductList prods={veges} />
+        </section>
       </main>
     </Layout>
   )
 }
+
+export const query = graphql`
+  {
+    product {
+      listProducts(filter: { prodType: { eq: "Veges" } }) {
+        items {
+          title
+          id
+          description
+          avgRating
+          image
+          ratings
+          quantity
+          prices
+          tags
+          oldPrice
+        }
+      }
+    }
+  }
+`
 
 export default Vegetables

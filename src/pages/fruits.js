@@ -1,10 +1,32 @@
-import React from "react"
-import Layout from "../components/Layout"
+import React, { useState, useEffect, useContext } from "react"
 import { StaticImage } from "gatsby-plugin-image"
-import AllFruits from "../components/AllFruits"
+import { graphql } from "gatsby"
+import Layout from "../components/Layout"
 import SEO from "../components/SEO"
+import ProductList from "../components/ProductList"
+import TagsList from "../components/TagsList"
+import { ProductContext } from "../context/products"
 
-const Fruits = () => {
+const Fruits = ({ data }) => {
+  const { prodImages } = useContext(ProductContext)
+  const [fruits, setFruits] = useState([])
+
+  const { items } = data.product.listProducts
+
+  useEffect(() => {
+    if (prodImages) {
+      const prods = items.map(prod => {
+        const idx = prod.image.split("/").pop()
+        return {
+          ...prod,
+          image: prodImages.find(i => i.localFile.base === idx).localFile
+            .childImageSharp.gatsbyImageData,
+        }
+      })
+      setFruits(prods || [])
+    }
+  }, [prodImages])
+
   return (
     <Layout>
       <main className="page">
@@ -24,10 +46,34 @@ const Fruits = () => {
             </div>
           </div>
         </header>
-        <AllFruits />
+        <section className="products-container">
+          <TagsList products={fruits} />
+          <ProductList prods={fruits} />
+        </section>
       </main>
     </Layout>
   )
 }
+
+export const query = graphql`
+  {
+    product {
+      listProducts(filter: { prodType: { eq: "Fruit" } }) {
+        items {
+          title
+          id
+          description
+          avgRating
+          image
+          ratings
+          quantity
+          prices
+          tags
+          oldPrice
+        }
+      }
+    }
+  }
+`
 
 export default Fruits

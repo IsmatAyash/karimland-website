@@ -1,13 +1,12 @@
 import React, { useState, useEffect, createContext } from "react"
 import { API, graphqlOperation } from "aws-amplify"
 import { v4 as uuidv4 } from "uuid"
-import { listProducts } from "../api/queries"
 import { processOrder } from "../api/mutations"
 import { graphql, useStaticQuery } from "gatsby"
 
 const ProductContext = createContext()
 
-const getProdImages = graphql`
+const getData = graphql`
   {
     allS3Object {
       nodes {
@@ -21,17 +20,33 @@ const getProdImages = graphql`
         }
       }
     }
+    product {
+      listProducts(filter: { featured: { eq: true } }) {
+        items {
+          title
+          id
+          description
+          avgRating
+          image
+          ratings
+          quantity
+          prices
+          tags
+          oldPrice
+        }
+      }
+    }
   }
 `
 
 const ProductProvider = ({ children }) => {
-  const images = useStaticQuery(getProdImages)
-  const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(false)
+  const prodData = useStaticQuery(getData)
+  const [featured, setFeatured] = useState([])
+  const [prodImages, setProdImages] = useState([])
 
   useEffect(() => {
     fetchProducts()
-  }, [images])
+  }, [prodData])
 
   const checkout = async orderDetails => {
     const payload = {
@@ -55,20 +70,20 @@ const ProductProvider = ({ children }) => {
   }
 
   const fetchProducts = async () => {
+    const { items } = prodData.product.listProducts
+    const { nodes } = prodData.allS3Object || null
     try {
-      setLoading(true)
       // Switch authMode to API_KEY for public access
-      const { data } = await API.graphql({
-        query: listProducts,
-        authMode: "API_KEY",
-      })
-      const products = data.listProducts.items
+      // const { data } = await API.graphql({
+      //   query: listProducts,
+      //   authMode: "API_KEY",
+      // })
 
       // get gatsby images and append to products array
-      if (images) {
-        const { nodes } = images.allS3Object
-        setProducts(
-          products.map(prod => {
+      if (nodes) {
+        setProdImages(nodes)
+        setFeatured(
+          items.map(prod => {
             const idx = prod.image.split("/").pop()
             return {
               ...prod,
@@ -78,14 +93,13 @@ const ProductProvider = ({ children }) => {
           })
         )
       }
-      setLoading(false)
     } catch (err) {
       console.log(err)
     }
   }
 
   return (
-    <ProductContext.Provider value={{ products, loading, checkout }}>
+    <ProductContext.Provider value={{ prodImages, featured, checkout }}>
       {children}
     </ProductContext.Provider>
   )

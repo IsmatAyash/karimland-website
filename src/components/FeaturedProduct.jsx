@@ -3,11 +3,11 @@ import ProductList from "./ProductList"
 import { ProductContext } from "../context/products"
 
 const FeaturedProduct = () => {
-  const { products } = useContext(ProductContext)
+  const { featured } = useContext(ProductContext)
   return (
     <section className="featured-products">
       <h5>Featured products</h5>
-      <ProductList prods={products.filter(p => !!p.featured)} />
+      <ProductList prods={featured} />
     </section>
   )
 }

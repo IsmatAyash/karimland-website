@@ -1,5 +1,5 @@
-import { Link } from "gatsby"
 import React from "react"
+import { Link } from "gatsby"
 import setupTags from "../utils/setupTags"
 import slugify from "slugify"
 
