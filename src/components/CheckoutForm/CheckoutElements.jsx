@@ -11,11 +11,11 @@ export const Fieldset = styled.fieldset`
   border-radius: 4px;
   margin-bottom: 10px;
 `
-
 export const Form = styled.form`
   animation: fade 200ms ease-out;
 `
-const fade = keyframes`
+
+export const fade = keyframes`
  from {
     opacity: 0;
     transform: scale3D(0.95, 0.95, 0.95);
@@ -69,10 +69,10 @@ export const FormRowInput = styled.input`
   }
 `
 
-const VoidAnimationOut = keyframes`
-    0%,
-    to {opacity: 1;}
-`
+// const VoidAnimationOut = keyframes`
+//     0%,
+//     to {opacity: 1;}
+// `
 
 export const StripeElement = styled(CardElement)`
   width: 100%;

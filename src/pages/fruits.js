@@ -14,18 +14,17 @@ const Fruits = ({ data }) => {
   const { items } = data.product.listProducts
 
   useEffect(() => {
-    if (prodImages) {
+    if (prodImages && items) {
       const prods = items.map(prod => {
         const idx = prod.image.split("/").pop()
         return {
           ...prod,
-          image: prodImages.find(i => i.localFile.base === idx).localFile
-            .childImageSharp.gatsbyImageData,
+          image: prodImages.find(i => i.name === idx).image,
         }
       })
       setFruits(prods || [])
     }
-  }, [prodImages])
+  }, [prodImages, items])
 
   return (
     <Layout>
@@ -48,6 +47,7 @@ const Fruits = ({ data }) => {
         </header>
         <section className="products-container">
           <TagsList products={fruits} />
+          {fruits.length === 0 && <h3>No fruits products available</h3>}
           <ProductList prods={fruits} />
         </section>
       </main>

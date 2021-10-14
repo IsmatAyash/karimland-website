@@ -19,7 +19,7 @@ import { navigate } from "gatsby"
 
 const Header = () => {
   const { user, updateUser } = useContext(UserContext)
-  const { cart, total } = useContext(CartContext)
+  const { cart } = useContext(CartContext)
   const [showCart, setShowCart] = useState(false)
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Header = () => {
   })
 
   const signOut = async () => {
-    Auth.signOut()
+    await Auth.signOut()
     navigate("/")
   }
 

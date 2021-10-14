@@ -1,5 +1,5 @@
 import React from "react"
-import styled, { keyframes } from "styled-components"
+import styled from "styled-components"
 
 const ErrorMessage = ({ children }) => {
   return (
@@ -18,17 +18,6 @@ const ErrorMessage = ({ children }) => {
     </ErrMessage>
   )
 }
-
-const fade = keyframes`
-  from {
-    opacity: 0;
-    transform: scale3D(0.95, 0.95, 0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale3D(1, 1, 1);
-  }
-`
 
 const ErrMessage = styled.div`
   color: var(--grey-1000);

@@ -1,10 +1,8 @@
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import { v4 as uuidv4 } from "uuid"
-import { API, graphqlOperation, Storage, Hub, Auth } from "aws-amplify"
+import { API, graphqlOperation, Storage } from "aws-amplify"
 import { createProduct } from "../../api/mutations"
 import config from "../../aws-exports"
-import Layout from "../Layout"
-import { UserContext } from "../../context/users"
 
 const {
   aws_user_files_s3_bucket_region: region,
@@ -18,50 +16,46 @@ const initialValues = {
   oldPrice: 0.0,
   avgRating: 0.0,
   ratings: 0,
-  prodType: "",
+  prodType: "Veges",
   featured: false,
-  prices: [{ weight: "", proce: 0 }],
-  description: [{ header: "", detail: "" }],
+  prices: [],
+  description: [],
   tags: [],
 }
 const Products = () => {
-  const { updateUser } = useContext(UserContext)
   const [image, setImage] = useState("")
+  const [file, setFile] = useState(null)
   const [productDetails, setProductDetails] = useState(initialValues)
 
-  // useEffect(() => {
-  //   const updUser = async () => {
-  //     try {
-  //       const usr = await Auth.currentAuthenticatedUser()
-  //       updateUser(usr)
-  //     } catch {
-  //       updateUser(null)
-  //     }
-  //   }
-  //   Hub.listen("auth", updUser) // listen for login/signup events
-
-  //   // we are not using async to wait for updateUser, so there will be a flash of page where the user is assumed not to be logged in. If we use a flag
-  //   updUser() // check manually the first time because we won't get a Hub event
-  //   return () => Hub.remove("auth", updUser) // cleanup
-  // }, [])
-
   const handleSubmit = async e => {
-    console.log("Submit clicked")
+    const { title, prices } = productDetails
     e.preventDefault()
-    try {
-      if (
-        !productDetails.title ||
-        !productDetails.prices ||
-        !productDetails.image
-      )
-        return
-      await API.graphql(
-        graphqlOperation(createProduct, { input: productDetails })
-      )
-      setProductDetails(initialValues)
-      alert("Successfully added")
-    } catch (err) {
-      console.log("error creating product:", err)
+    if (file) {
+      console.log("inside if file block", image)
+      const extension = file.name.split(".")[1]
+      const name = file.name.split(".")[0]
+      const key = `images/${uuidv4()}${name}.${extension}`
+      const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
+
+      try {
+        if (!title || !prices) return
+        // setProductDetails({ ...productDetails, image: url })
+        await Storage.put(key, file, { contentType: file.type })
+        await API.graphql(
+          graphqlOperation(createProduct, {
+            input: { ...productDetails, image: url },
+          })
+        )
+
+        // Retrieve the uploaded file to display
+        const image = await Storage.get(key, { level: "public" })
+        setImage(image)
+        setProductDetails(initialValues)
+        alert("Successfully added")
+      } catch (err) {
+        console.log("error creating product:", err)
+        alert("Error while posting", err)
+      }
     }
   }
 
@@ -78,34 +72,16 @@ const Products = () => {
     else setProductDetails({ ...productDetails, [name]: value })
   }
 
-  const handleImageUpload = async e => {
-    e.preventDefault()
-    const file = e.target.files[0]
-    const extension = file.name.split(".")[1]
-    const name = file.name.split(".")[0]
-    const key = `images/${uuidv4()}${name}.${extension}`
-    const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
-    try {
-      // Upload the file to s3 with public access level.
-      await Storage.put(key, file, {
-        level: "public",
-        contentType: file.type,
-      })
-      // Retrieve the uploaded file to display
-      const image = await Storage.get(key, { level: "public" })
-      setImage(image)
-      setProductDetails({
-        ...productDetails,
-        image: url,
-      })
-      console.log("image key", image)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // function handleFileUpload(event) {
+  //   const {
+  //     target: { value, files },
+  //   } = event
+  //   const fileForUpload = files[0]
+  //   setFile(fileForUpload || value)
+  // }
 
   return (
-    <Layout>
+    <>
       <main className="page">
         <section className="admin-page">
           <header className="form-header">
@@ -125,7 +101,7 @@ const Products = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={e => handleImageUpload(e)}
+                  onChange={e => setFile(e.target.files[0] || e.target.value)}
                 />
               )}
             </div>
@@ -136,6 +112,7 @@ const Products = () => {
                   type="text"
                   name="title"
                   id="title"
+                  value={productDetails.title}
                   onChange={e => handleChange(e)}
                   required
                 />
@@ -146,6 +123,7 @@ const Products = () => {
                   type="text"
                   name="quantity"
                   id="quantity"
+                  value={productDetails.quantity}
                   onChange={e => handleChange(e)}
                 ></input>
               </div>
@@ -155,7 +133,7 @@ const Products = () => {
                   <input
                     className="radio-input"
                     type="radio"
-                    value="Veges"
+                    value={productDetails.prodType}
                     name="prodType"
                     id="radio1"
                     checked={productDetails.prodType === "Veges"}
@@ -167,7 +145,7 @@ const Products = () => {
                   <input
                     className="radio-input"
                     type="radio"
-                    value="Fruit"
+                    value={productDetails.prodType}
                     name="prodType"
                     id="radio2"
                     checked={productDetails.prodType === "Fruit"}
@@ -190,6 +168,7 @@ const Products = () => {
                     type="checkbox"
                     name="featured"
                     id="featured"
+                    value={productDetails.featured}
                     checked={productDetails.featured}
                     onChange={e => handleChange(e)}
                   />
@@ -204,6 +183,7 @@ const Products = () => {
                 name="prices"
                 placeholder="of the form  seperated by -"
                 id="prices"
+                value={productDetails.prices}
                 onChange={e => handleChange(e)}
                 required
               />
@@ -215,6 +195,7 @@ const Products = () => {
                   type="text"
                   name="oldPrice"
                   id="oldPrice"
+                  value={productDetails.oldPrice}
                   onChange={e => handleChange(e)}
                 ></input>
               </div>
@@ -226,6 +207,7 @@ const Products = () => {
                 name="description"
                 placeholder="of the form {header:..., detail:...} seperated by -"
                 id="description"
+                value={productDetails.description}
                 onChange={e => handleChange(e)}
               ></input>
             </div>
@@ -236,6 +218,7 @@ const Products = () => {
                 name="tags"
                 placeholder="of the form (tag1-tag2-tag3) seperated by -"
                 id="tags"
+                value={productDetails.tags}
                 onChange={e => handleChange(e)}
               ></input>
             </div>
@@ -245,7 +228,7 @@ const Products = () => {
           </form>
         </section>
       </main>
-    </Layout>
+    </>
   )
 }
 

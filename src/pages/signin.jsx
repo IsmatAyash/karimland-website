@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
-import { Auth } from "aws-amplify"
+import { Auth, Hub } from "aws-amplify"
 import Layout from "../components/Layout"
 import { UserContext } from "../context/users"
 import { navigate } from "gatsby"
@@ -19,7 +19,31 @@ const SignIn = ({ location }) => {
 
   const { username, password, authCode, email } = authState
 
-  useEffect(() => checkUser(), [])
+  useEffect(() => {
+    Hub.listen("auth", checkUser)
+    checkUser()
+    return () => Hub.remove("auth", checkUser)
+  }, [])
+
+  // useEffect(() => {
+  //   const updUser = async () => {
+  //     try {
+  //       const user = await Auth.currentAuthenticatedUser()
+  //       setUser({
+  //         id: user.attributes.sub,
+  //         username: user.username,
+  //         email: user.attributes.email,
+  //       })
+  //     } catch {
+  //       setUser(null)
+  //     }
+  //   }
+  //   Hub.listen("auth", updUser) // listen for login/signup events
+
+  //   // we are not using async to wait for updateUser, so there will be a flash of page where the user is assumed not to be logged in. If we use a flag
+  //   updUser() // check manually the first time because we won't get a Hub event
+  //   return () => Hub.remove("auth", updUser) // cleanup
+  // }, [])
 
   async function checkUser() {
     try {

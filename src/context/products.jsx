@@ -8,12 +8,10 @@ const ProductContext = createContext()
 
 const getData = graphql`
   {
-    allS3Object {
+    images: allS3Object {
       nodes {
         localFile {
-          ext
           base
-          name
           childImageSharp {
             gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)
           }
@@ -21,7 +19,7 @@ const getData = graphql`
       }
     }
     product {
-      listProducts(filter: { featured: { eq: true } }) {
+      prods: listProducts(filter: { featured: { eq: true } }) {
         items {
           title
           id
@@ -45,6 +43,33 @@ const ProductProvider = ({ children }) => {
   const [prodImages, setProdImages] = useState([])
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      const { items } = prodData.product.prods
+      const { nodes } = prodData.images
+
+      try {
+        // get gatsby images and append to products array
+        if (nodes) {
+          setProdImages(
+            nodes.map(node => ({
+              name: node.localFile.base,
+              image: node.localFile.childImageSharp.gatsbyImageData,
+            }))
+          )
+          setFeatured(
+            items.map(prod => {
+              const idx = prod.image.split("/").pop()
+              return {
+                ...prod,
+                image: prodImages.find(i => i.name === idx).image || null,
+              }
+            })
+          )
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
     fetchProducts()
   }, [prodData])
 
@@ -66,35 +91,6 @@ const ProductProvider = ({ children }) => {
         statusCode: "ERROR",
         msg: `something went wrong please check your card info and retry`,
       }
-    }
-  }
-
-  const fetchProducts = async () => {
-    const { items } = prodData.product.listProducts
-    const { nodes } = prodData.allS3Object || null
-    try {
-      // Switch authMode to API_KEY for public access
-      // const { data } = await API.graphql({
-      //   query: listProducts,
-      //   authMode: "API_KEY",
-      // })
-
-      // get gatsby images and append to products array
-      if (nodes) {
-        setProdImages(nodes)
-        setFeatured(
-          items.map(prod => {
-            const idx = prod.image.split("/").pop()
-            return {
-              ...prod,
-              image: nodes.find(i => i.localFile.base === idx).localFile
-                .childImageSharp.gatsbyImageData,
-            }
-          })
-        )
-      }
-    } catch (err) {
-      console.log(err)
     }
   }
 

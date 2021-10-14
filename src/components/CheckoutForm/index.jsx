@@ -11,7 +11,6 @@ import reducer, {
   initialState,
   ERROR,
   ORDERDETAILS,
-  RESET,
   SUCCESS,
 } from "./reducer"
 import { Form, Fieldset, FormRow, StripeElement } from "./CheckoutElements"
@@ -53,31 +52,30 @@ const CheckoutForm = () => {
   const stripe = useStripe()
   const elements = useElements()
 
-  const checkOut = async () => {
-    if (!state.orderDetails.token) return
-
-    const res = await checkout(state.orderDetails)
-    dispatch({ type: PROCESSING, payload: false })
-    if (res.statusCode === "SUCCESS")
-      dispatch({
-        type: SUCCESS,
-        payload: {
-          res: true,
-          text: "Successful payment - Your Order has been created",
-        },
-      })
-    else
-      dispatch({
-        type: SUCCESS,
-        payload: {
-          res: false,
-          text: "Error while creating order, please check your billing details",
-        },
-      })
-    clearCart()
-  }
-
   useEffect(() => {
+    const checkOut = async () => {
+      if (!state.orderDetails.token) return
+
+      const res = await checkout(state.orderDetails)
+      dispatch({ type: PROCESSING, payload: false })
+      if (res.statusCode === "SUCCESS")
+        dispatch({
+          type: SUCCESS,
+          payload: {
+            res: true,
+            text: "Successful payment - Your Order has been created",
+          },
+        })
+      else
+        dispatch({
+          type: SUCCESS,
+          payload: {
+            res: false,
+            text: "Error while creating order, please check your billing details",
+          },
+        })
+      clearCart()
+    }
     checkOut()
   }, [state.orderDetails])
 
