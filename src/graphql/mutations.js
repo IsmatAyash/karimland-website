@@ -9,7 +9,6 @@ export const createProduct = /* GraphQL */ `
     createProduct(input: $input, condition: $condition) {
       id
       seller_id
-      user_id
       title
       image
       inventory
@@ -26,12 +25,8 @@ export const createProduct = /* GraphQL */ `
       orders {
         nextToken
       }
-      cart {
-        id
-        total
-        createdAt
-        updatedAt
-        customer
+      carts {
+        nextToken
       }
       createdAt
       updatedAt
@@ -54,7 +49,6 @@ export const updateProduct = /* GraphQL */ `
     updateProduct(input: $input, condition: $condition) {
       id
       seller_id
-      user_id
       title
       image
       inventory
@@ -71,12 +65,8 @@ export const updateProduct = /* GraphQL */ `
       orders {
         nextToken
       }
-      cart {
-        id
-        total
-        createdAt
-        updatedAt
-        customer
+      carts {
+        nextToken
       }
       createdAt
       updatedAt
@@ -99,7 +89,6 @@ export const deleteProduct = /* GraphQL */ `
     deleteProduct(input: $input, condition: $condition) {
       id
       seller_id
-      user_id
       title
       image
       inventory
@@ -116,12 +105,8 @@ export const deleteProduct = /* GraphQL */ `
       orders {
         nextToken
       }
-      cart {
-        id
-        total
-        createdAt
-        updatedAt
-        customer
+      carts {
+        nextToken
       }
       createdAt
       updatedAt
@@ -204,6 +189,11 @@ export const createProductOrder = /* GraphQL */ `
         user
         date
         total
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
         createdAt
         updatedAt
         customer
@@ -213,7 +203,6 @@ export const createProductOrder = /* GraphQL */ `
       product {
         id
         seller_id
-        user_id
         title
         image
         inventory
@@ -248,6 +237,11 @@ export const updateProductOrder = /* GraphQL */ `
         user
         date
         total
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
         createdAt
         updatedAt
         customer
@@ -257,7 +251,6 @@ export const updateProductOrder = /* GraphQL */ `
       product {
         id
         seller_id
-        user_id
         title
         image
         inventory
@@ -292,6 +285,11 @@ export const deleteProductOrder = /* GraphQL */ `
         user
         date
         total
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
         createdAt
         updatedAt
         customer
@@ -301,7 +299,6 @@ export const deleteProductOrder = /* GraphQL */ `
       product {
         id
         seller_id
-        user_id
         title
         image
         inventory
@@ -332,6 +329,11 @@ export const createOrder = /* GraphQL */ `
       user
       date
       total
+      status
+      shippedto
+      shippedfrom
+      trackingNo
+      shippedAt
       products {
         nextToken
       }
@@ -351,6 +353,11 @@ export const updateOrder = /* GraphQL */ `
       user
       date
       total
+      status
+      shippedto
+      shippedfrom
+      trackingNo
+      shippedAt
       products {
         nextToken
       }
@@ -370,62 +377,16 @@ export const deleteOrder = /* GraphQL */ `
       user
       date
       total
+      status
+      shippedto
+      shippedfrom
+      trackingNo
+      shippedAt
       products {
         nextToken
       }
       createdAt
       updatedAt
-      customer
-    }
-  }
-`;
-export const createCart = /* GraphQL */ `
-  mutation CreateCart(
-    $input: CreateCartInput!
-    $condition: ModelCartConditionInput
-  ) {
-    createCart(input: $input, condition: $condition) {
-      id
-      total
-      createdAt
-      updatedAt
-      products {
-        nextToken
-      }
-      customer
-    }
-  }
-`;
-export const updateCart = /* GraphQL */ `
-  mutation UpdateCart(
-    $input: UpdateCartInput!
-    $condition: ModelCartConditionInput
-  ) {
-    updateCart(input: $input, condition: $condition) {
-      id
-      total
-      createdAt
-      updatedAt
-      products {
-        nextToken
-      }
-      customer
-    }
-  }
-`;
-export const deleteCart = /* GraphQL */ `
-  mutation DeleteCart(
-    $input: DeleteCartInput!
-    $condition: ModelCartConditionInput
-  ) {
-    deleteCart(input: $input, condition: $condition) {
-      id
-      total
-      createdAt
-      updatedAt
-      products {
-        nextToken
-      }
       customer
     }
   }
@@ -442,7 +403,6 @@ export const createProductCart = /* GraphQL */ `
       quantity
       cart {
         id
-        total
         createdAt
         updatedAt
         customer
@@ -452,7 +412,6 @@ export const createProductCart = /* GraphQL */ `
       product {
         id
         seller_id
-        user_id
         title
         image
         inventory
@@ -485,7 +444,6 @@ export const updateProductCart = /* GraphQL */ `
       quantity
       cart {
         id
-        total
         createdAt
         updatedAt
         customer
@@ -495,7 +453,6 @@ export const updateProductCart = /* GraphQL */ `
       product {
         id
         seller_id
-        user_id
         title
         image
         inventory
@@ -528,7 +485,6 @@ export const deleteProductCart = /* GraphQL */ `
       quantity
       cart {
         id
-        total
         createdAt
         updatedAt
         customer
@@ -538,7 +494,6 @@ export const deleteProductCart = /* GraphQL */ `
       product {
         id
         seller_id
-        user_id
         title
         image
         inventory
@@ -555,6 +510,54 @@ export const deleteProductCart = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      customer
+    }
+  }
+`;
+export const createCart = /* GraphQL */ `
+  mutation CreateCart(
+    $input: CreateCartInput!
+    $condition: ModelCartConditionInput
+  ) {
+    createCart(input: $input, condition: $condition) {
+      id
+      products {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      customer
+    }
+  }
+`;
+export const updateCart = /* GraphQL */ `
+  mutation UpdateCart(
+    $input: UpdateCartInput!
+    $condition: ModelCartConditionInput
+  ) {
+    updateCart(input: $input, condition: $condition) {
+      id
+      products {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      customer
+    }
+  }
+`;
+export const deleteCart = /* GraphQL */ `
+  mutation DeleteCart(
+    $input: DeleteCartInput!
+    $condition: ModelCartConditionInput
+  ) {
+    deleteCart(input: $input, condition: $condition) {
+      id
+      products {
+        nextToken
+      }
+      createdAt
+      updatedAt
       customer
     }
   }

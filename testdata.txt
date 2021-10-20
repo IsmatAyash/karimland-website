@@ -1,35 +1,103 @@
-// Product
+// seller
 mutation MyMutation {
-  createProduct(
-    input: {title: "Organic Apples", image: "https://karimlandwebapp2e16e782de77449c9da770d45c1c93ee130635-prod.s3.eu-west-2.amazonaws.com/fruit-apples.jpg", featured: false, prices: "{\"weight\":\"1kg\", \"price\":1.5}", oldPrice: 1.5, inventory: 100, tags: "[\"Jam\",\"Pickles\"]", seller_id: "\"5c53c891-6f71-4113-84c0-3ed9446d3a21\"", category: "Fruit"}
+  createSeller(
+    input: {
+      name: "Ismat Ayash", 
+      address: "Baawarta", 
+      country: "Lebanon"}
   ) {
     id
-    prices
-    category
-    inventory
-  }
-    createProduct(
-    input: {title: "Organic Carrots", image: "https://karimlandwebapp2e16e782de77449c9da770d45c1c93ee130635-prod.s3.eu-west-2.amazonaws.com/vegs-carrots.jpg", featured: false, prices: "{\"weight\":\"1kg\", \"price\":1.5}", oldPrice: 1.5, inventory: 100, tags: "[\"Jam\",\"Pickles\"]", seller_id: "\"7097507d-7e8a-4e9a-aba9-35fc8c70bdbf\"", category: "Veges"}
-  ) {
-    id
-    prices
-    category
-    inventory
+    name
+    country
+    address
   }
 }
 
 
-// Shopping cart items
+// Product
 mutation MyMutation {
-  createShoppingCart(
-    input: {product_id: "a686b846-09ef-4838-aed4-078d47a3bd20", user: "layale", quantity: 2}
+  createProduct(
+    input: {
+      title: "Apples", 
+      image: "https://karimlandwebapp2e16e782de77449c9da770d45c1c93ee130635-prod.s3.eu-west-2.amazonaws.com/fruit-apples.jpg", 
+      featured: false, 
+      price: 1.5, 
+      unit: "kg",
+      oldPrice: 2, 
+      inventory: 100, 
+      tags: "[\"Jam\",\"Pickles\"]", 
+      seller_id: "\"5c53c891-6f71-4113-84c0-3ed9446d3a21\"", 
+      category: "Fruit",
+      baseType: "Product"
+      }
   ) {
     id
-    product {
-      title
-      prices
-    }
+    title
+    price
+    unit
+    inventory
+    category
+    baseType
+    image
+    tags
+  }
+  createProduct(
+    input: {
+      title: "AppCarrots", 
+      image: "https://karimlandwebapp2e16e782de77449c9da770d45c1c93ee130635-prod.s3.eu-west-2.amazonaws.com/vegs-carrots.jpg", 
+      featured: false, 
+      price: 2, 
+      unit: "kg",
+      oldPrice: 3, 
+      inventory: 100, 
+      tags: "[\"Jam\",\"Pickles\"]", 
+      seller_id: "\"5c53c891-6f71-4113-84c0-3ed9446d3a21\"", 
+      category: "Veges",
+      baseType: "Product"
+      }
+  ) {
+    id
+    title
+    price
+    unit
+    inventory
+    category
+    baseType
+    image
+    tags
+  }
+}
+
+
+mutation MyMutation {
+  createProductCart(
+    input: {
+      product_id: "\"063257b6-9973-4f47-af5e-3e9615495917\"", 
+      user_id: "\"123-user1\"", 
+      quantity: 20}
+  ) {
+    id
+    customer
     quantity
-    user
+    user_id
+  }
+}
+
+// query cart by user id
+query GetCart {
+  getCart(id: "123-user1") {
+    products {
+      items {
+        quantity
+        product {
+          title
+          price
+          image
+          seller {
+            name
+          }
+        }
+      }
+    }
   }
 }

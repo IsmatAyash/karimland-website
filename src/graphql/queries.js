@@ -8,6 +8,11 @@ export const getOrder = /* GraphQL */ `
       user
       date
       total
+      status
+      shippedto
+      shippedfrom
+      trackingNo
+      shippedAt
       products {
         nextToken
       }
@@ -29,6 +34,11 @@ export const listOrders = /* GraphQL */ `
         user
         date
         total
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
         createdAt
         updatedAt
         customer
@@ -41,12 +51,11 @@ export const getCart = /* GraphQL */ `
   query GetCart($id: ID!) {
     getCart(id: $id) {
       id
-      total
-      createdAt
-      updatedAt
       products {
         nextToken
       }
+      createdAt
+      updatedAt
       customer
     }
   }
@@ -60,7 +69,107 @@ export const listCarts = /* GraphQL */ `
     listCarts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        createdAt
+        updatedAt
+        customer
+      }
+      nextToken
+    }
+  }
+`;
+export const ordersByStatus = /* GraphQL */ `
+  query OrdersByStatus(
+    $status: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    OrdersByStatus(
+      status: $status
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user
+        date
         total
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
+        createdAt
+        updatedAt
+        customer
+      }
+      nextToken
+    }
+  }
+`;
+export const ordersByUserAndDate = /* GraphQL */ `
+  query OrdersByUserAndDate(
+    $user: String
+    $date: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    OrdersByUserAndDate(
+      user: $user
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user
+        date
+        total
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
+        createdAt
+        updatedAt
+        customer
+      }
+      nextToken
+    }
+  }
+`;
+export const ordersByDate = /* GraphQL */ `
+  query OrdersByDate(
+    $date: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    OrdersByDate(
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user
+        date
+        total
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
         createdAt
         updatedAt
         customer
@@ -74,7 +183,6 @@ export const getProduct = /* GraphQL */ `
     getProduct(id: $id) {
       id
       seller_id
-      user_id
       title
       image
       inventory
@@ -91,12 +199,8 @@ export const getProduct = /* GraphQL */ `
       orders {
         nextToken
       }
-      cart {
-        id
-        total
-        createdAt
-        updatedAt
-        customer
+      carts {
+        nextToken
       }
       createdAt
       updatedAt
@@ -121,7 +225,6 @@ export const listProducts = /* GraphQL */ `
       items {
         id
         seller_id
-        user_id
         title
         image
         inventory
@@ -162,7 +265,6 @@ export const productsByPrice = /* GraphQL */ `
       items {
         id
         seller_id
-        user_id
         title
         image
         inventory
@@ -203,7 +305,6 @@ export const productsByTitle = /* GraphQL */ `
       items {
         id
         seller_id
-        user_id
         title
         image
         inventory
@@ -244,7 +345,6 @@ export const productsByCategory = /* GraphQL */ `
       items {
         id
         seller_id
-        user_id
         title
         image
         inventory
@@ -285,7 +385,6 @@ export const productsByInventory = /* GraphQL */ `
       items {
         id
         seller_id
-        user_id
         title
         image
         inventory

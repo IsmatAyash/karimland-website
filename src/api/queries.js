@@ -8,15 +8,12 @@ export const getOrder = /* GraphQL */ `
       user
       date
       total
+      status
+      shippedto
+      shippedfrom
+      trackingNo
+      shippedAt
       products {
-        items {
-          id
-          product_id
-          order_id
-          createdAt
-          updatedAt
-          customer
-        }
         nextToken
       }
       createdAt
@@ -37,9 +34,142 @@ export const listOrders = /* GraphQL */ `
         user
         date
         total
-        products {
-          nextToken
-        }
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
+        createdAt
+        updatedAt
+        customer
+      }
+      nextToken
+    }
+  }
+`
+export const getCart = /* GraphQL */ `
+  query GetCart($id: ID!) {
+    getCart(id: $id) {
+      id
+      products {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      customer
+    }
+  }
+`
+export const listCarts = /* GraphQL */ `
+  query ListCarts(
+    $filter: ModelCartFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCarts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        createdAt
+        updatedAt
+        customer
+      }
+      nextToken
+    }
+  }
+`
+export const ordersByStatus = /* GraphQL */ `
+  query OrdersByStatus(
+    $status: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    OrdersByStatus(
+      status: $status
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user
+        date
+        total
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
+        createdAt
+        updatedAt
+        customer
+      }
+      nextToken
+    }
+  }
+`
+export const ordersByUserAndDate = /* GraphQL */ `
+  query OrdersByUserAndDate(
+    $user: String
+    $date: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    OrdersByUserAndDate(
+      user: $user
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user
+        date
+        total
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
+        createdAt
+        updatedAt
+        customer
+      }
+      nextToken
+    }
+  }
+`
+export const ordersByDate = /* GraphQL */ `
+  query OrdersByDate(
+    $date: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    OrdersByDate(
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user
+        date
+        total
+        status
+        shippedto
+        shippedfrom
+        trackingNo
+        shippedAt
         createdAt
         updatedAt
         customer
@@ -52,19 +182,36 @@ export const getProduct = /* GraphQL */ `
   query GetProduct($id: ID!) {
     getProduct(id: $id) {
       id
+      seller_id
       title
       image
-      quantity
+      inventory
+      price
+      unit
       oldPrice
       avgRating
       ratings
-      prodType
+      category
       featured
-      prices
       description
       tags
+      baseType
+      orders {
+        nextToken
+      }
+      carts {
+        nextToken
+      }
       createdAt
       updatedAt
+      seller {
+        id
+        name
+        address
+        country
+        createdAt
+        updatedAt
+      }
     }
   }
 `
@@ -77,17 +224,20 @@ export const listProducts = /* GraphQL */ `
     listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        seller_id
         title
         image
-        quantity
+        inventory
+        price
+        unit
         oldPrice
         avgRating
         ratings
-        prodType
+        category
         featured
-        prices
         description
         tags
+        baseType
         createdAt
         updatedAt
       }
@@ -95,40 +245,195 @@ export const listProducts = /* GraphQL */ `
     }
   }
 `
-
-export const getCart = /* GraphQL */ `
-  query GetCart($id: ID!) {
-    getCart(id: $id) {
-      id
-      user
-      title
-      image
-      price
-      quantity
-      createdAt
-      updatedAt
-      customer
-    }
-  }
-`
-
-export const listCarts = /* GraphQL */ `
-  query ListCarts(
-    $filter: ModelCartFilterInput
+export const productsByPrice = /* GraphQL */ `
+  query ProductsByPrice(
+    $baseType: String
+    $price: ModelFloatKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelProductFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listCarts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    ProductsByPrice(
+      baseType: $baseType
+      price: $price
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
-        user
+        seller_id
         title
         image
+        inventory
         price
-        quantity
+        unit
+        oldPrice
+        avgRating
+        ratings
+        category
+        featured
+        description
+        tags
+        baseType
         createdAt
         updatedAt
-        customer
+      }
+      nextToken
+    }
+  }
+`
+export const productsByTitle = /* GraphQL */ `
+  query ProductsByTitle(
+    $baseType: String
+    $title: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    ProductsByTitle(
+      baseType: $baseType
+      title: $title
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        seller_id
+        title
+        image
+        inventory
+        price
+        unit
+        oldPrice
+        avgRating
+        ratings
+        category
+        featured
+        description
+        tags
+        baseType
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`
+export const productsByCategory = /* GraphQL */ `
+  query ProductsByCategory(
+    $baseType: String
+    $category: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    ProductsByCategory(
+      baseType: $baseType
+      category: $category
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        seller_id
+        title
+        image
+        inventory
+        price
+        unit
+        oldPrice
+        avgRating
+        ratings
+        category
+        featured
+        description
+        tags
+        baseType
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`
+export const productsByInventory = /* GraphQL */ `
+  query ProductsByInventory(
+    $baseType: String
+    $inventory: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    productsByInventory(
+      baseType: $baseType
+      inventory: $inventory
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        seller_id
+        title
+        image
+        inventory
+        price
+        unit
+        oldPrice
+        avgRating
+        ratings
+        category
+        featured
+        description
+        tags
+        baseType
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`
+export const getSeller = /* GraphQL */ `
+  query GetSeller($id: ID!) {
+    getSeller(id: $id) {
+      id
+      name
+      address
+      country
+      createdAt
+      updatedAt
+      products {
+        nextToken
+      }
+    }
+  }
+`
+export const listSellers = /* GraphQL */ `
+  query ListSellers(
+    $filter: ModelSellerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSellers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        address
+        country
+        createdAt
+        updatedAt
       }
       nextToken
     }

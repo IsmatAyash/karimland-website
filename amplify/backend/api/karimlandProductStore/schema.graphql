@@ -8,7 +8,6 @@ type Product
     ]
   )
   @key(name: "bySeller", fields: ["seller_id"])
-  @key(name: "cartByUser", fields: ["user_id"])
   @key(
     name: "productByPrice"
     fields: ["baseType", "price"]
@@ -31,7 +30,6 @@ type Product
   ) {
   id: ID!
   seller_id: ID!
-  user_id: ID!
   title: String!
   image: String!
   inventory: Int
@@ -47,7 +45,7 @@ type Product
   baseType: String!
   orders: [ProductOrder] @connection(keyName: "byProduct", fields: ["id"])
   seller: Seller @connection(fields: ["seller_id"])
-  cart: Cart @connection(fields: ["user_id"])
+  carts: [ProductCart] @connection(keyName: "cartByProduct", fields: ["id"])
 }
 
 type Seller
@@ -92,31 +90,30 @@ type Order
       { allow: groups, groups: ["Admin"] }
     ]
   )
-  @key(name: "byUser", fields: ["user"]) {
+  @key(name: "byUser", fields: ["user"])
+  @key(name: "ordersByStatus", fields: ["status"], queryField: "OrdersByStatus")
+  @key(
+    name: "ordersByUserAndDate"
+    fields: ["user", "date"]
+    queryField: "OrdersByUserAndDate"
+  )
+  @key(name: "ordersByDate", fields: ["date"], queryField: "OrdersByDate") {
   id: ID!
   user: String!
   date: String
   total: Float
+  status: String!
+  shippedto: String
+  shippedfrom: String
+  trackingNo: String
+  shippedAt: String
   products: [ProductOrder] @connection(keyName: "byOrder", fields: ["id"])
-}
-
-type Cart
-  @model(subscriptions: null)
-  @auth(
-    rules: [
-      { allow: owner, identityClaim: "email", ownerField: "customer" }
-      { allow: groups, groups: ["Admin"] }
-    ]
-  ) {
-  id: ID!
-  total: Float
-  products: [Product] @connection(keyName: "cartByUser", fields: ["id"])
 }
 
 type ProductCart
   @model(queries: null, subscriptions: null)
   @key(name: "cartByProduct", fields: ["product_id", "user_id"])
-  @key(name: "byCart", fields: ["user_id", "product_id"])
+  @key(name: "cartByUser", fields: ["user_id", "product_id"])
   @auth(
     rules: [
       # allow admins to create productorders for customers by using customer email in lambda
@@ -128,6 +125,18 @@ type ProductCart
   product_id: ID!
   user_id: ID!
   quantity: Int
-  product: Product @connection(fields: ["product_id"])
-  cart: Cart @connection(fields: ["user_id"])
+  product: Product! @connection(fields: ["product_id"])
+  cart: Cart! @connection(fields: ["user_id"])
+}
+
+type Cart
+  @model(subscriptions: null)
+  @auth(
+    rules: [
+      { allow: owner, identityClaim: "email", ownerField: "customer" }
+      { allow: groups, groups: ["Admin"] }
+    ]
+  ) {
+  id: ID!
+  products: [ProductCart] @connection(keyName: "cartByUser", fields: ["id"])
 }
