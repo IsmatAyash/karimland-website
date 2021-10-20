@@ -7,25 +7,58 @@ type Product
       { allow: public, operations: [read] }
     ]
   )
-  @key(name: "bySeller", fields: ["id"]) {
+  @key(name: "bySeller", fields: ["seller_id"])
+  @key(name: "cartByUser", fields: ["user_id"])
+  @key(
+    name: "productByPrice"
+    fields: ["baseType", "price"]
+    queryField: "ProductsByPrice"
+  )
+  @key(
+    name: "productByTitle"
+    fields: ["baseType", "title"]
+    queryField: "ProductsByTitle"
+  )
+  @key(
+    name: "productByCategory"
+    fields: ["baseType", "category"]
+    queryField: "ProductsByCategory"
+  )
+  @key(
+    name: "productByInventory"
+    fields: ["baseType", "inventory"]
+    queryField: "productsByInventory"
+  ) {
   id: ID!
   seller_id: ID!
+  user_id: ID!
   title: String!
   image: String!
   inventory: Int
+  price: Float!
+  unit: String!
   oldPrice: Float
   avgRating: Float
   ratings: Int
   category: String!
   featured: Boolean!
-  prices: [AWSJSON!]!
   description: [AWSJSON!]
   tags: [String!]
+  baseType: String!
   orders: [ProductOrder] @connection(keyName: "byProduct", fields: ["id"])
   seller: Seller @connection(fields: ["seller_id"])
+  cart: Cart @connection(fields: ["user_id"])
 }
 
-type Seller @model(subscriptions: null) {
+type Seller
+  @model(subscriptions: null)
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Admin"] }
+      { allow: private, operations: [read] }
+      { allow: public, operations: [read] }
+    ]
+  ) {
   id: ID!
   name: String!
   address: String!
@@ -67,45 +100,34 @@ type Order
   products: [ProductOrder] @connection(keyName: "byOrder", fields: ["id"])
 }
 
-type ShoppingCart
+type Cart
   @model(subscriptions: null)
   @auth(
     rules: [
       { allow: owner, identityClaim: "email", ownerField: "customer" }
       { allow: groups, groups: ["Admin"] }
     ]
-  )
-  @key(name: "byUser", fields: ["user"]) {
+  ) {
   id: ID!
-  user: String!
+  total: Float
+  products: [Product] @connection(keyName: "cartByUser", fields: ["id"])
+}
+
+type ProductCart
+  @model(queries: null, subscriptions: null)
+  @key(name: "cartByProduct", fields: ["product_id", "user_id"])
+  @key(name: "byCart", fields: ["user_id", "product_id"])
+  @auth(
+    rules: [
+      # allow admins to create productorders for customers by using customer email in lambda
+      { allow: owner, identityClaim: "email", ownerField: "customer" }
+      { allow: groups, groups: ["Admin"] }
+    ]
+  ) {
+  id: ID!
   product_id: ID!
+  user_id: ID!
   quantity: Int
   product: Product @connection(fields: ["product_id"])
-}
-
-enum OrderStatus {
-  SUCCESS
-  FAILED
-}
-
-input CartItem {
-  id: ID!
-  title: String
-  image: String
-  price: Float
-  amount: Int
-}
-
-input ProcessOrderInput {
-  id: ID!
-  cart: [CartItem]
-  total: Float!
-  token: String!
-  address: String
-}
-
-type Mutation {
-  processOrder(input: ProcessOrderInput!): OrderStatus
-    @function(name: "processPayment-${env}")
-    @function(name: "createOrder-${env}")
+  cart: Cart @connection(fields: ["user_id"])
 }

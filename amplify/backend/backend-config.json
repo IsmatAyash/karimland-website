@@ -1,12 +1,12 @@
 {
   "auth": {
-    "karimlandwebsitec0ae1f9f": {
+    "karimlandwebappf696c4d7": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
-        "loginMechanism": [
+        "loginMechanisms": [
           "PREFERRED_USERNAME"
         ],
         "signupAttributes": [
@@ -19,30 +19,21 @@
         "mfaConfiguration": "OFF",
         "mfaTypes": [
           "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
         ]
       }
     }
   },
   "storage": {
-    "karimlandImages": {
+    "ProductImages": {
       "service": "S3",
       "providerPlugin": "awscloudformation"
     }
   },
-  "function": {
-    "processPayment": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "createOrder": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
   "api": {
-    "karimlandwebsite": {
+    "karimlandProductStore": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -50,7 +41,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authkarimlandwebsitec0ae1f9f"
+              "userPoolId": "authkarimlandwebappf696c4d7"
             }
           },
           "additionalAuthenticationProviders": [
@@ -58,7 +49,7 @@
               "authenticationType": "API_KEY",
               "apiKeyConfig": {
                 "apiKeyExpirationDays": 365,
-                "description": "Guest user access to products"
+                "description": "Guest user access rights"
               }
             }
           ]

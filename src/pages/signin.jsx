@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from "react"
-import { Auth, Hub } from "aws-amplify"
+import { Auth, Hub, API, graphqlOperation } from "aws-amplify"
+import { getCart } from "../api/queries"
 import Layout from "../components/Layout"
 import { UserContext } from "../context/users"
+import { SavedCartContext } from "../context/cart"
 import { navigate } from "gatsby"
 import styled from "styled-components"
 
@@ -15,6 +17,7 @@ const initialState = {
 
 const SignIn = ({ location }) => {
   const { updateUser } = useContext(UserContext)
+  const { updateCart } = useContext(SavedCartContext)
   const [authState, setAuthState] = useState(initialState)
 
   const { username, password, authCode, email } = authState
@@ -48,6 +51,12 @@ const SignIn = ({ location }) => {
   async function checkUser() {
     try {
       const user = await Auth.currentAuthenticatedUser()
+      // const oneTodo = await API.graphql(
+      //   graphqlOperation(queries.getTodo, { id: "some id" })
+      // )
+      // const cart = await API.graphql(
+      //   graphqlOperation(getCart, { user: user.username })
+      // )
       updateUser({
         id: user.attributes.sub,
         username: user.username,

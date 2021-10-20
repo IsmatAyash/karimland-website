@@ -1,10 +1,10 @@
 {
-  "AppSyncApiName": "karimlandwebsite",
+  "AppSyncApiName": "karimlandProductStore",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
-      "authkarimlandwebsitec0ae1f9f",
+      "authkarimlandwebappf696c4d7",
       "Outputs.UserPoolId"
     ]
   }

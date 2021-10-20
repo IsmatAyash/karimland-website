@@ -2,20 +2,26 @@ import React, { useState, useContext } from "react"
 import styled from "styled-components"
 
 import { CartContext } from "../../context/carts"
+import { UserContext } from "../../context/users"
 import WeightSelector from "./WeightSelector"
 import QuantitySelector from "./QuantitySelector"
 import RatingStars from "../Reviews/RatingStars"
 import Cart from "./Cart"
+import { navigate } from "gatsby"
 
 const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
   const [showCart, setShowCart] = useState(false)
   const { id, title, image, avgRating, ratings, quantity, prices, oldPrice } =
     prod
   const { addToCart } = useContext(CartContext)
+  const { user } = useContext(UserContext)
 
   const onAddCart = () => {
-    addToCart({ id, title, image, price: unitPrice, amount: qty })
-    setShowCart(true)
+    if (!user) navigate("/signin")
+    else {
+      addToCart({ id, title, image, price: unitPrice, amount: qty })
+      setShowCart(true)
+    }
   }
 
   return (

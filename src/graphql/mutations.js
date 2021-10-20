@@ -1,11 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const processOrder = /* GraphQL */ `
-  mutation ProcessOrder($input: ProcessOrderInput!) {
-    processOrder(input: $input)
-  }
-`;
 export const createProduct = /* GraphQL */ `
   mutation CreateProduct(
     $input: CreateProductInput!
@@ -13,30 +8,41 @@ export const createProduct = /* GraphQL */ `
   ) {
     createProduct(input: $input, condition: $condition) {
       id
+      seller_id
+      user_id
       title
       image
-      quantity
+      inventory
+      price
+      unit
       oldPrice
       avgRating
       ratings
-      prodType
+      category
       featured
-      prices
       description
       tags
+      baseType
       orders {
-        items {
-          id
-          product_id
-          order_id
-          createdAt
-          updatedAt
-          customer
-        }
         nextToken
+      }
+      cart {
+        id
+        total
+        createdAt
+        updatedAt
+        customer
       }
       createdAt
       updatedAt
+      seller {
+        id
+        name
+        address
+        country
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -47,30 +53,41 @@ export const updateProduct = /* GraphQL */ `
   ) {
     updateProduct(input: $input, condition: $condition) {
       id
+      seller_id
+      user_id
       title
       image
-      quantity
+      inventory
+      price
+      unit
       oldPrice
       avgRating
       ratings
-      prodType
+      category
       featured
-      prices
       description
       tags
+      baseType
       orders {
-        items {
-          id
-          product_id
-          order_id
-          createdAt
-          updatedAt
-          customer
-        }
         nextToken
+      }
+      cart {
+        id
+        total
+        createdAt
+        updatedAt
+        customer
       }
       createdAt
       updatedAt
+      seller {
+        id
+        name
+        address
+        country
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -81,30 +98,95 @@ export const deleteProduct = /* GraphQL */ `
   ) {
     deleteProduct(input: $input, condition: $condition) {
       id
+      seller_id
+      user_id
       title
       image
-      quantity
+      inventory
+      price
+      unit
       oldPrice
       avgRating
       ratings
-      prodType
+      category
       featured
-      prices
       description
       tags
+      baseType
       orders {
-        items {
-          id
-          product_id
-          order_id
-          createdAt
-          updatedAt
-          customer
-        }
         nextToken
+      }
+      cart {
+        id
+        total
+        createdAt
+        updatedAt
+        customer
       }
       createdAt
       updatedAt
+      seller {
+        id
+        name
+        address
+        country
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const createSeller = /* GraphQL */ `
+  mutation CreateSeller(
+    $input: CreateSellerInput!
+    $condition: ModelSellerConditionInput
+  ) {
+    createSeller(input: $input, condition: $condition) {
+      id
+      name
+      address
+      country
+      createdAt
+      updatedAt
+      products {
+        nextToken
+      }
+    }
+  }
+`;
+export const updateSeller = /* GraphQL */ `
+  mutation UpdateSeller(
+    $input: UpdateSellerInput!
+    $condition: ModelSellerConditionInput
+  ) {
+    updateSeller(input: $input, condition: $condition) {
+      id
+      name
+      address
+      country
+      createdAt
+      updatedAt
+      products {
+        nextToken
+      }
+    }
+  }
+`;
+export const deleteSeller = /* GraphQL */ `
+  mutation DeleteSeller(
+    $input: DeleteSellerInput!
+    $condition: ModelSellerConditionInput
+  ) {
+    deleteSeller(input: $input, condition: $condition) {
+      id
+      name
+      address
+      country
+      createdAt
+      updatedAt
+      products {
+        nextToken
+      }
     }
   }
 `;
@@ -122,9 +204,6 @@ export const createProductOrder = /* GraphQL */ `
         user
         date
         total
-        products {
-          nextToken
-        }
         createdAt
         updatedAt
         customer
@@ -133,20 +212,21 @@ export const createProductOrder = /* GraphQL */ `
       updatedAt
       product {
         id
+        seller_id
+        user_id
         title
         image
-        quantity
+        inventory
+        price
+        unit
         oldPrice
         avgRating
         ratings
-        prodType
+        category
         featured
-        prices
         description
         tags
-        orders {
-          nextToken
-        }
+        baseType
         createdAt
         updatedAt
       }
@@ -168,9 +248,6 @@ export const updateProductOrder = /* GraphQL */ `
         user
         date
         total
-        products {
-          nextToken
-        }
         createdAt
         updatedAt
         customer
@@ -179,20 +256,21 @@ export const updateProductOrder = /* GraphQL */ `
       updatedAt
       product {
         id
+        seller_id
+        user_id
         title
         image
-        quantity
+        inventory
+        price
+        unit
         oldPrice
         avgRating
         ratings
-        prodType
+        category
         featured
-        prices
         description
         tags
-        orders {
-          nextToken
-        }
+        baseType
         createdAt
         updatedAt
       }
@@ -214,9 +292,6 @@ export const deleteProductOrder = /* GraphQL */ `
         user
         date
         total
-        products {
-          nextToken
-        }
         createdAt
         updatedAt
         customer
@@ -225,20 +300,21 @@ export const deleteProductOrder = /* GraphQL */ `
       updatedAt
       product {
         id
+        seller_id
+        user_id
         title
         image
-        quantity
+        inventory
+        price
+        unit
         oldPrice
         avgRating
         ratings
-        prodType
+        category
         featured
-        prices
         description
         tags
-        orders {
-          nextToken
-        }
+        baseType
         createdAt
         updatedAt
       }
@@ -257,14 +333,6 @@ export const createOrder = /* GraphQL */ `
       date
       total
       products {
-        items {
-          id
-          product_id
-          order_id
-          createdAt
-          updatedAt
-          customer
-        }
         nextToken
       }
       createdAt
@@ -284,14 +352,6 @@ export const updateOrder = /* GraphQL */ `
       date
       total
       products {
-        items {
-          id
-          product_id
-          order_id
-          createdAt
-          updatedAt
-          customer
-        }
         nextToken
       }
       createdAt
@@ -311,18 +371,190 @@ export const deleteOrder = /* GraphQL */ `
       date
       total
       products {
-        items {
-          id
-          product_id
-          order_id
-          createdAt
-          updatedAt
-          customer
-        }
         nextToken
       }
       createdAt
       updatedAt
+      customer
+    }
+  }
+`;
+export const createCart = /* GraphQL */ `
+  mutation CreateCart(
+    $input: CreateCartInput!
+    $condition: ModelCartConditionInput
+  ) {
+    createCart(input: $input, condition: $condition) {
+      id
+      total
+      createdAt
+      updatedAt
+      products {
+        nextToken
+      }
+      customer
+    }
+  }
+`;
+export const updateCart = /* GraphQL */ `
+  mutation UpdateCart(
+    $input: UpdateCartInput!
+    $condition: ModelCartConditionInput
+  ) {
+    updateCart(input: $input, condition: $condition) {
+      id
+      total
+      createdAt
+      updatedAt
+      products {
+        nextToken
+      }
+      customer
+    }
+  }
+`;
+export const deleteCart = /* GraphQL */ `
+  mutation DeleteCart(
+    $input: DeleteCartInput!
+    $condition: ModelCartConditionInput
+  ) {
+    deleteCart(input: $input, condition: $condition) {
+      id
+      total
+      createdAt
+      updatedAt
+      products {
+        nextToken
+      }
+      customer
+    }
+  }
+`;
+export const createProductCart = /* GraphQL */ `
+  mutation CreateProductCart(
+    $input: CreateProductCartInput!
+    $condition: ModelProductCartConditionInput
+  ) {
+    createProductCart(input: $input, condition: $condition) {
+      id
+      product_id
+      user_id
+      quantity
+      cart {
+        id
+        total
+        createdAt
+        updatedAt
+        customer
+      }
+      createdAt
+      updatedAt
+      product {
+        id
+        seller_id
+        user_id
+        title
+        image
+        inventory
+        price
+        unit
+        oldPrice
+        avgRating
+        ratings
+        category
+        featured
+        description
+        tags
+        baseType
+        createdAt
+        updatedAt
+      }
+      customer
+    }
+  }
+`;
+export const updateProductCart = /* GraphQL */ `
+  mutation UpdateProductCart(
+    $input: UpdateProductCartInput!
+    $condition: ModelProductCartConditionInput
+  ) {
+    updateProductCart(input: $input, condition: $condition) {
+      id
+      product_id
+      user_id
+      quantity
+      cart {
+        id
+        total
+        createdAt
+        updatedAt
+        customer
+      }
+      createdAt
+      updatedAt
+      product {
+        id
+        seller_id
+        user_id
+        title
+        image
+        inventory
+        price
+        unit
+        oldPrice
+        avgRating
+        ratings
+        category
+        featured
+        description
+        tags
+        baseType
+        createdAt
+        updatedAt
+      }
+      customer
+    }
+  }
+`;
+export const deleteProductCart = /* GraphQL */ `
+  mutation DeleteProductCart(
+    $input: DeleteProductCartInput!
+    $condition: ModelProductCartConditionInput
+  ) {
+    deleteProductCart(input: $input, condition: $condition) {
+      id
+      product_id
+      user_id
+      quantity
+      cart {
+        id
+        total
+        createdAt
+        updatedAt
+        customer
+      }
+      createdAt
+      updatedAt
+      product {
+        id
+        seller_id
+        user_id
+        title
+        image
+        inventory
+        price
+        unit
+        oldPrice
+        avgRating
+        ratings
+        category
+        featured
+        description
+        tags
+        baseType
+        createdAt
+        updatedAt
+      }
       customer
     }
   }

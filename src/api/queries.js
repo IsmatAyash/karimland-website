@@ -95,3 +95,42 @@ export const listProducts = /* GraphQL */ `
     }
   }
 `
+
+export const getCart = /* GraphQL */ `
+  query GetCart($id: ID!) {
+    getCart(id: $id) {
+      id
+      user
+      title
+      image
+      price
+      quantity
+      createdAt
+      updatedAt
+      customer
+    }
+  }
+`
+
+export const listCarts = /* GraphQL */ `
+  query ListCarts(
+    $filter: ModelCartFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCarts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        user
+        title
+        image
+        price
+        quantity
+        createdAt
+        updatedAt
+        customer
+      }
+      nextToken
+    }
+  }
+`

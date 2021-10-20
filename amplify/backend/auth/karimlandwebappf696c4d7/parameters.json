@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "karimlandwebsitec0ae1f9f_identitypool_c0ae1f9f",
+    "identityPoolName": "karimlandwebappf696c4d7_identitypool_f696c4d7",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "karimlc0ae1f9f",
-    "userPoolName": "karimlandwebsitec0ae1f9f_userpool_c0ae1f9f",
+    "resourceNameTruncated": "karimlf696c4d7",
+    "userPoolName": "karimlandwebappf696c4d7_userpool_f696c4d7",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -20,9 +20,7 @@
     "requiredAttributes": [
         "email"
     ],
-    "aliasAttributes": [
-        "preferred_username"
-    ],
+    "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
@@ -31,10 +29,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "karimlc0ae1f9f_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "karimlf696c4d7_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "c0ae1f9f",
-    "resourceName": "karimlandwebsitec0ae1f9f",
+    "sharedId": "f696c4d7",
+    "resourceName": "karimlandwebappf696c4d7",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [

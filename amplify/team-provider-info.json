@@ -1,29 +1,19 @@
 {
   "prod": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-karimlandwebsite-prod-200112-authRole",
-      "UnauthRoleArn": "arn:aws:iam::850863607080:role/amplify-karimlandwebsite-prod-200112-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::850863607080:role/amplify-karimlandwebsite-prod-200112-authRole",
+      "AuthRoleName": "amplify-karimlandwebapp-prod-130635-authRole",
+      "UnauthRoleArn": "arn:aws:iam::850863607080:role/amplify-karimlandwebapp-prod-130635-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::850863607080:role/amplify-karimlandwebapp-prod-130635-authRole",
       "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-karimlandwebsite-prod-200112-deployment",
-      "UnauthRoleName": "amplify-karimlandwebsite-prod-200112-unauthRole",
-      "StackName": "amplify-karimlandwebsite-prod-200112",
-      "StackId": "arn:aws:cloudformation:eu-west-2:850863607080:stack/amplify-karimlandwebsite-prod-200112/e8636320-04fc-11ec-b2d1-0631c866826c",
-      "AmplifyAppId": "d3ae530fwaad6v"
+      "DeploymentBucketName": "amplify-karimlandwebapp-prod-130635-deployment",
+      "UnauthRoleName": "amplify-karimlandwebapp-prod-130635-unauthRole",
+      "StackName": "amplify-karimlandwebapp-prod-130635",
+      "StackId": "arn:aws:cloudformation:eu-west-2:850863607080:stack/amplify-karimlandwebapp-prod-130635/40d580e0-30c4-11ec-b665-024aa48951a6",
+      "AmplifyAppId": "d111bu3j2we39f"
     },
     "categories": {
       "auth": {
-        "karimlandwebsitec0ae1f9f": {}
-      },
-      "function": {
-        "createOrder": {
-          "deploymentBucketName": "amplify-karimlandwebsite-prod-200112-deployment",
-          "s3Key": "amplify-builds/createOrder-34475a39344967697367-build.zip"
-        },
-        "processPayment": {
-          "deploymentBucketName": "amplify-karimlandwebsite-prod-200112-deployment",
-          "s3Key": "amplify-builds/processPayment-712b4d425063325a5165-build.zip"
-        }
+        "karimlandwebappf696c4d7": {}
       }
     }
   }

@@ -327,3 +327,60 @@ export const deleteOrder = /* GraphQL */ `
     }
   }
 `
+
+export const createCart = /* GraphQL */ `
+  mutation CreateCart(
+    $input: CreateCartInput!
+    $condition: ModelCartConditionInput
+  ) {
+    createCart(input: $input, condition: $condition) {
+      id
+      user
+      title
+      image
+      price
+      quantity
+      createdAt
+      updatedAt
+      customer
+    }
+  }
+`
+
+export const updateCart = /* GraphQL */ `
+  mutation UpdateCart(
+    $input: UpdateCartInput!
+    $condition: ModelCartConditionInput
+  ) {
+    updateCart(input: $input, condition: $condition) {
+      id
+      user
+      title
+      image
+      price
+      quantity
+      createdAt
+      updatedAt
+      customer
+    }
+  }
+`
+
+export const deleteCart = /* GraphQL */ `
+  mutation DeleteCart(
+    $input: DeleteCartInput!
+    $condition: ModelCartConditionInput
+  ) {
+    deleteCart(input: $input, condition: $condition) {
+      id
+      user
+      title
+      image
+      price
+      quantity
+      createdAt
+      updatedAt
+      customer
+    }
+  }
+`

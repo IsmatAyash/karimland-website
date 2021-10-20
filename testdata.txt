@@ -1,0 +1,35 @@
+// Product
+mutation MyMutation {
+  createProduct(
+    input: {title: "Organic Apples", image: "https://karimlandwebapp2e16e782de77449c9da770d45c1c93ee130635-prod.s3.eu-west-2.amazonaws.com/fruit-apples.jpg", featured: false, prices: "{\"weight\":\"1kg\", \"price\":1.5}", oldPrice: 1.5, inventory: 100, tags: "[\"Jam\",\"Pickles\"]", seller_id: "\"5c53c891-6f71-4113-84c0-3ed9446d3a21\"", category: "Fruit"}
+  ) {
+    id
+    prices
+    category
+    inventory
+  }
+    createProduct(
+    input: {title: "Organic Carrots", image: "https://karimlandwebapp2e16e782de77449c9da770d45c1c93ee130635-prod.s3.eu-west-2.amazonaws.com/vegs-carrots.jpg", featured: false, prices: "{\"weight\":\"1kg\", \"price\":1.5}", oldPrice: 1.5, inventory: 100, tags: "[\"Jam\",\"Pickles\"]", seller_id: "\"7097507d-7e8a-4e9a-aba9-35fc8c70bdbf\"", category: "Veges"}
+  ) {
+    id
+    prices
+    category
+    inventory
+  }
+}
+
+
+// Shopping cart items
+mutation MyMutation {
+  createShoppingCart(
+    input: {product_id: "a686b846-09ef-4838-aed4-078d47a3bd20", user: "layale", quantity: 2}
+  ) {
+    id
+    product {
+      title
+      prices
+    }
+    quantity
+    user
+  }
+}
