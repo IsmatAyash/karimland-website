@@ -1,0 +1,81 @@
+mutation CREATE_PRODUCT($newProduct: ProductInput) {
+  createProduct(newProduct: $newProduct) {
+    _id
+    title
+    unit
+    price
+    image
+  }
+  }
+   "newProduct": {
+    "title": "Organic Oranges",
+    "unit": "kg",
+    "price": 10.2,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.ocado.com%2Fproducts%2Fwholegood-organic-oranges-91359011&psig=AOvVaw0Fj0KrX4UST_DoNs4YKSez&ust=1635499118901000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNDCvpXj7PMCFQAAAAAdAAAAABAJ"
+}
+
+mutation EditProductByIdMutation($id: ID!, $updatedProduct: ProductInput) {
+  editProductById(id: $id, updatedProduct: $updatedProduct) {
+    _id
+    title
+    unit
+    price
+    image
+  }
+}
+
+{
+  "updatedProduct": {
+    "title": "Organic Oranges Updated",
+    "unit": "kg",
+    "price": 9.5,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.ocado.com%2Fproducts%2Fwholegood-organic-oranges-91359011&psig=AOvVaw0Fj0KrX4UST_DoNs4YKSez&ust=1635499118901000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNDCvpXj7PMCFQAAAAAdAAAAABAJ"
+  },
+  "id": "617a6e2a8c3fc88a1ad8e77c"
+}
+
+mutation DELETE_PRODUCT($id: ID!) {
+  delProductById(id: $id) {
+    id
+    message
+    success
+  }
+}
+
+{
+  "id": "617a6e2a8c3fc88a1ad8e77c"
+}
+
+mutation CREATE_SELLER($newSeller: SellerInput) {
+  createSeller(newSeller: $newSeller) {
+    _id
+    name
+    address
+    country
+  }
+}
+
+"newSeller": {
+    "name": "Ismat Ayash",
+    "country": "Lebanon",
+    "address": "Bawertly Hills"
+  }
+
+  mutation RegisterUserMutation($newUser: UserInput) {
+  registerUser(newUser: $newUser) {
+    token
+    user {
+      name
+      email
+      avatar
+    }
+  }
+
+  {
+  "newUser": {
+    "email": "ismat.ayash@gmail.com",
+    "name": "Ismat Ayash",
+    "password": "oam007",
+    "avatar": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fismatayash%2F&psig=AOvVaw2V7bIlQw4m1vuexHebf9hV&ust=1635578262329000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCJjs_P2J7_MCFQAAAAAdAAAAABAD"
+  }
+}

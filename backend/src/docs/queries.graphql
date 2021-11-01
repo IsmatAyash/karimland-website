@@ -1,0 +1,28 @@
+query GET_PRODUCTS {
+  products {
+    _id
+    title
+    unit
+    price
+    image
+  }
+}
+
+query GET_PRODUCT($getProductId: ID!) {
+  getProduct(id: $getProductId) {
+    _id
+    title
+    unit
+    price
+    image
+  }
+}
+
+query GET_SELLERS {
+  sellers {
+    _id
+    name
+    country
+    address
+  }
+}

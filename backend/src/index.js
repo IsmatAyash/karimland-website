@@ -1,27 +1,67 @@
-import { ApolloServer, gql } from "apollo-server-express"
-import { ApolloServerPluginDrainHttpServer } from "apollo-server-core"
-import { typeDefs } from "./models/typeDefs"
-import { resolvers } from "./models/resolvers"
+import { error, success } from "consola"
 import express from "express"
-import http from "http"
+import { ApolloServer } from "apollo-server-express"
+import {
+  ApolloServerPluginLandingPageGraphQLPlayground,
+  ApolloServerPluginLandingPageDisabled,
+} from "apollo-server-core"
+import { makeExecutableSchema } from "@graphql-tools/schema"
+import { applyMiddleware } from "graphql-middleware"
+import expressJwt from "express-jwt"
 import mongoose from "mongoose"
+import { join } from "path"
 
-async function startApolloServer(typeDefs, resolvers) {
-  const app = express()
-  const httpServer = http.createServer(app)
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  })
-  await server.start()
-  server.applyMiddleware({ app })
-  await mongoose.connect("mongodb://localhost:27017/karimland", {
-    useNewUrlParser: true,
-  })
-  console.log("connected to DB...")
-  await new Promise(resolve => httpServer.listen({ port: 4000 }, resolve))
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+import { PORT, IN_PROD, DB, BASE_URL, SECRET } from "./config"
+import { resolvers, typeDefs } from "./graphql"
+import * as AppModels from "./models"
+import permissions from "./graphql/permissions"
+
+const startServer = async () => {
+  try {
+    const app = express()
+    app.use(express.static(join(__dirname, "./uploads")))
+    app.use(
+      expressJwt({
+        secret: SECRET,
+        algorithms: ["HS256"],
+        credentialsRequired: false,
+      })
+    )
+
+    await mongoose.connect(DB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    success({ badge: true, message: `🚀 DB Connected Successfully` })
+
+    const server = new ApolloServer({
+      schema: applyMiddleware(
+        makeExecutableSchema({ typeDefs, resolvers }),
+        permissions
+      ),
+      context: ({ req }) => {
+        const user = req.user || null
+        return { user, ...AppModels }
+      },
+      plugins: [
+        process.env.NODE_ENV === IN_PROD
+          ? ApolloServerPluginLandingPageDisabled()
+          : ApolloServerPluginLandingPageGraphQLPlayground(),
+      ],
+    })
+
+    await server.start()
+    server.applyMiddleware({ app })
+
+    app.listen(PORT, () =>
+      success({
+        badge: true,
+        message: `🚀 Server started on ${BASE_URL}${PORT}${server.graphqlPath}`,
+      })
+    )
+  } catch (err) {
+    error({ badge: true, message: err.message })
+  }
 }
 
-startApolloServer(typeDefs, resolvers)
+startServer()
