@@ -14,13 +14,10 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^1.2.8",
     "@contentful/rich-text-react-renderer": "^15.2.0",
     "@contentful/rich-text-types": "^15.1.0",
-    "@robinmetral/gatsby-source-s3": "^2.1.2",
     "@stripe/react-stripe-js": "^1.4.1",
     "@stripe/stripe-js": "^1.17.1",
-    "aws-amplify": "^4.2.2",
     "babel-plugin-styled-components": "^1.13.2",
     "extract-files": "^11.0.0",
     "gatsby": "^3.10.2",
@@ -33,7 +30,7 @@
     "gatsby-plugin-webfonts": "^2.1.1",
     "gatsby-source-contentful": "^5.12.0",
     "gatsby-source-filesystem": "^3.12.0",
-    "gatsby-source-graphql": "^3.11.0",
+    "gatsby-source-mongodb": "^4.0.0",
     "gatsby-transformer-sharp": "^3.12.0",
     "normalize.css": "^8.0.1",
     "react": "^17.0.1",

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, createContext } from "react"
-import { API, graphqlOperation } from "aws-amplify"
 import { createCart } from "../api/mutations"
 
 const SavedCartContext = createContext()

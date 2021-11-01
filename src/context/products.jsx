@@ -1,44 +1,45 @@
 import React, { useState, useEffect, createContext } from "react"
-import { API, graphqlOperation } from "aws-amplify"
 import { v4 as uuidv4 } from "uuid"
 import { processOrder } from "../api/mutations"
 import { graphql, useStaticQuery } from "gatsby"
 
 const ProductContext = createContext()
 
-const getData = graphql`
-  {
-    images: allS3Object {
-      nodes {
-        localFile {
-          base
-          childImageSharp {
-            gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)
-          }
-        }
-      }
-    }
-    product {
-      prods: listProducts(filter: { featured: { eq: true } }) {
-        items {
-          title
-          id
-          description
-          avgRating
-          image
-          ratings
-          quantity
-          prices
-          tags
-          oldPrice
-        }
-      }
-    }
-  }
-`
+// images: allS3Object {
+//   nodes {
+//     localFile {
+//       base
+//       childImageSharp {
+//         gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)
+//       }
+//     }
+//   }
+// }
+
+// const getData = graphql`
+//   {
+//     product {
+//       prods: listProducts(filter: { featured: { eq: true } }) {
+//         items {
+//           title
+//           id
+//           description
+//           avgRating
+//           image
+//           ratings
+//           quantity
+//           prices
+//           tags
+//           oldPrice
+//         }
+//       }
+//     }
+//   }
+// `
+const prodData = []
 
 const ProductProvider = ({ children }) => {
-  const prodData = useStaticQuery(getData)
+  // const prodData = useStaticQuery(getData)
   const [featured, setFeatured] = useState([])
   const [prodImages, setProdImages] = useState([])
 
@@ -79,7 +80,7 @@ const ProductProvider = ({ children }) => {
       ...orderDetails,
     }
     try {
-      await API.graphql(graphqlOperation(processOrder, { input: payload }))
+      // await API.graphql(graphqlOperation(processOrder, { input: payload }))
       console.log("Order is successful")
       return {
         statusCode: "SUCCESS",

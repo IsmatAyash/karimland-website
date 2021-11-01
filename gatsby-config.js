@@ -62,34 +62,16 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-source-graphql",
-      options: {
-        // Arbitrary name for the remote schema Query type
-        typeName: "Product",
-        // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
-        fieldName: "product",
-        // Url to query from
-        url: "https://hcn2ijtspbdfrhlz5u2pkeeezm.appsync-api.eu-west-2.amazonaws.com/graphql",
-        headers: {
-          "x-api-key": "da2-vn5yd7brtrhpfjra2ym7hlmw3u",
-        },
-      },
-    },
-    {
-      resolve: `@robinmetral/gatsby-source-s3`,
-      options: {
-        aws: {
-          accessKeyId: process.env.AWS_ACCESS_KEY,
-          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-          region: process.env.AWS_REGION,
-        },
-        buckets: ["karimlandwebsite523f9d2840804269b44400814cd464b200112-prod"],
-        expiration: 120,
-      },
-    },
-    {
       resolve: `gatsby-plugin-create-client-paths`,
       options: { prefixes: [`/logged/*`] },
+    },
+    {
+      resolve: "gatsby-source-mongodb",
+      options: {
+        // Name of the database and collection where are books reside
+        dbName: "karimland",
+        collection: ["products", "sellers", "users", "carts"],
+      },
     },
   ],
 }

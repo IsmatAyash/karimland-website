@@ -7,11 +7,11 @@ import ProductList from "../components/ProductList"
 import TagsList from "../components/TagsList"
 import { ProductContext } from "../context/products"
 
-const Fruits = ({ data }) => {
+const Fruits = () => {
   const { prodImages } = useContext(ProductContext)
   const [fruits, setFruits] = useState([])
 
-  const { items } = data.product.listProducts
+  const { items } = []
 
   useEffect(() => {
     if (prodImages && items) {
@@ -55,25 +55,25 @@ const Fruits = ({ data }) => {
   )
 }
 
-export const query = graphql`
-  {
-    product {
-      listProducts(filter: { prodType: { eq: "Fruit" } }) {
-        items {
-          title
-          id
-          description
-          avgRating
-          image
-          ratings
-          quantity
-          prices
-          tags
-          oldPrice
-        }
-      }
-    }
-  }
-`
+// export const query = graphql`
+//   {
+//     product {
+//       listProducts(filter: { prodType: { eq: "Fruit" } }) {
+//         items {
+//           title
+//           id
+//           description
+//           avgRating
+//           image
+//           ratings
+//           quantity
+//           prices
+//           tags
+//           oldPrice
+//         }
+//       }
+//     }
+//   }
+// `
 
 export default Fruits

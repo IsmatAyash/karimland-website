@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react"
-import { Hub, Auth } from "aws-amplify"
 import {
   FaShoppingCart,
   FaSignOutAlt,
@@ -22,18 +21,10 @@ const Header = () => {
   const { cart } = useContext(CartContext)
   const [showCart, setShowCart] = useState(false)
 
-  useEffect(() => {
-    async function setAuthListener() {
-      Hub.listen("auth", data => {
-        if (data.payload.event === "signOut") updateUser(null)
-      })
-    }
-    setAuthListener()
-    return () => Hub.remove("auth", setAuthListener)
-  })
+  // useEffect(() => {
+  // })
 
   const signOut = async () => {
-    await Auth.signOut()
     navigate("/")
   }
 

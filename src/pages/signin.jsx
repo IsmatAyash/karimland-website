@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react"
-import { Auth, Hub, API, graphqlOperation } from "aws-amplify"
 import { getCart } from "../api/queries"
 import Layout from "../components/Layout"
 import { UserContext } from "../context/users"
@@ -23,9 +22,9 @@ const SignIn = ({ location }) => {
   const { username, password, authCode, email } = authState
 
   useEffect(() => {
-    Hub.listen("auth", checkUser)
-    checkUser()
-    return () => Hub.remove("auth", checkUser)
+    // Hub.listen("auth", checkUser)
+    // checkUser()
+    // return () => Hub.remove("auth", checkUser)
   }, [])
 
   // useEffect(() => {
@@ -50,18 +49,18 @@ const SignIn = ({ location }) => {
 
   async function checkUser() {
     try {
-      const user = await Auth.currentAuthenticatedUser()
+      // const user = await Auth.currentAuthenticatedUser()
       // const oneTodo = await API.graphql(
       //   graphqlOperation(queries.getTodo, { id: "some id" })
       // )
       // const cart = await API.graphql(
       //   graphqlOperation(getCart, { user: user.username })
       // )
-      updateUser({
-        id: user.attributes.sub,
-        username: user.username,
-        email: user.attributes.email,
-      })
+      // updateUser({
+      //   id: user.attributes.sub,
+      //   username: user.username,
+      //   email: user.attributes.email,
+      // })
       setAuthState({ ...authState, formType: "signedIn" })
     } catch (err) {
       updateUser(null)
@@ -77,33 +76,33 @@ const SignIn = ({ location }) => {
     e.preventDefault()
     switch (formType) {
       case "signin":
-        try {
-          await Auth.signIn(username, password)
-          setAuthState({ ...authState, formType: "signedIn" })
-          location.state.fromCheckout ? navigate("/checkout") : navigate("/")
-        } catch (error) {
-          console.log("error signing in", error)
-        }
+        // try {
+        //   await Auth.signIn(username, password)
+        //   setAuthState({ ...authState, formType: "signedIn" })
+        //   location.state.fromCheckout ? navigate("/checkout") : navigate("/")
+        // } catch (error) {
+        //   console.log("error signing in", error)
+        // }
         break
       case "signup":
-        try {
-          await Auth.signUp({
-            username,
-            password,
-            attributes: { email },
-          })
-          setAuthState({ ...authState, formType: "confirmSignup" })
-        } catch (error) {
-          console.log("error sigining up", error)
-        }
+        // try {
+        //   await Auth.signUp({
+        //     username,
+        //     password,
+        //     attributes: { email },
+        //   })
+        //   setAuthState({ ...authState, formType: "confirmSignup" })
+        // } catch (error) {
+        //   console.log("error sigining up", error)
+        // }
         break
       case "confirmSignup":
-        try {
-          await Auth.confirmSignUp(username, authCode)
-          setAuthState({ ...authState, formType: "signin" })
-        } catch (error) {
-          console.log("error sigining up", error)
-        }
+        // try {
+        //   await Auth.confirmSignUp(username, authCode)
+        //   setAuthState({ ...authState, formType: "signin" })
+        // } catch (error) {
+        //   console.log("error sigining up", error)
+        // }
         break
       default:
         navigate("/vegetables")

@@ -1,13 +1,6 @@
 import React, { useState } from "react"
 import { v4 as uuidv4 } from "uuid"
-import { API, graphqlOperation, Storage } from "aws-amplify"
 import { createProduct } from "../../api/mutations"
-import config from "../../aws-exports"
-
-const {
-  aws_user_files_s3_bucket_region: region,
-  aws_user_files_s3_bucket: bucket,
-} = config
 
 const initialValues = {
   title: "",
@@ -28,35 +21,33 @@ const Products = () => {
   const [productDetails, setProductDetails] = useState(initialValues)
 
   const handleSubmit = async e => {
-    const { title, prices } = productDetails
-    e.preventDefault()
-    if (file) {
-      console.log("inside if file block", image)
-      const extension = file.name.split(".")[1]
-      const name = file.name.split(".")[0]
-      const key = `images/${uuidv4()}${name}.${extension}`
-      const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
-
-      try {
-        if (!title || !prices) return
-        // setProductDetails({ ...productDetails, image: url })
-        await Storage.put(key, file, { contentType: file.type })
-        await API.graphql(
-          graphqlOperation(createProduct, {
-            input: { ...productDetails, image: url },
-          })
-        )
-
-        // Retrieve the uploaded file to display
-        const image = await Storage.get(key, { level: "public" })
-        setImage(image)
-        setProductDetails(initialValues)
-        alert("Successfully added")
-      } catch (err) {
-        console.log("error creating product:", err)
-        alert("Error while posting", err)
-      }
-    }
+    // const { title, prices } = productDetails
+    // e.preventDefault()
+    // if (file) {
+    //   console.log("inside if file block", image)
+    //   const extension = file.name.split(".")[1]
+    //   const name = file.name.split(".")[0]
+    //   const key = `images/${uuidv4()}${name}.${extension}`
+    //   const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
+    //   try {
+    //     if (!title || !prices) return
+    // setProductDetails({ ...productDetails, image: url })
+    // await Storage.put(key, file, { contentType: file.type })
+    // await API.graphql(
+    //   graphqlOperation(createProduct, {
+    //     input: { ...productDetails, image: url },
+    //   })
+    // )
+    // Retrieve the uploaded file to display
+    // const image = await Storage.get(key, { level: "public" })
+    //     setImage(image)
+    //     setProductDetails(initialValues)
+    //     alert("Successfully added")
+    //   } catch (err) {
+    //     console.log("error creating product:", err)
+    //     alert("Error while posting", err)
+    //   }
+    // }
   }
 
   const handleChange = e => {

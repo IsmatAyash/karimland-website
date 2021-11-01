@@ -10,11 +10,11 @@ import { ProductContext } from "../context/products"
 
 // get vegetables data using graphql here
 
-const Vegetables = ({ data }) => {
+const Vegetables = () => {
   const { prodImages } = useContext(ProductContext)
   const [veges, setVeges] = useState([])
 
-  const { items } = data.product.listProducts
+  const { items } = []
 
   useEffect(() => {
     if (prodImages && items) {
@@ -58,25 +58,25 @@ const Vegetables = ({ data }) => {
   )
 }
 
-export const query = graphql`
-  {
-    product {
-      listProducts(filter: { prodType: { eq: "Veges" } }) {
-        items {
-          title
-          id
-          description
-          avgRating
-          image
-          ratings
-          quantity
-          prices
-          tags
-          oldPrice
-        }
-      }
-    }
-  }
-`
+// export const query = graphql`
+//   {
+//     product {
+//       listProducts(filter: { prodType: { eq: "Veges" } }) {
+//         items {
+//           title
+//           id
+//           description
+//           avgRating
+//           image
+//           ratings
+//           quantity
+//           prices
+//           tags
+//           oldPrice
+//         }
+//       }
+//     }
+//   }
+// `
 
 export default Vegetables

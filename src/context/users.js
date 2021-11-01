@@ -1,5 +1,4 @@
 import React, { useState, useEffect, createContext } from "react"
-import { Auth } from "aws-amplify"
 
 const UserContext = createContext()
 
@@ -7,18 +6,11 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    const forceSignout = async () => {
-      try {
-        const user = await Auth.currentAuthenticatedUser()
-        if (user) {
-          await Auth.signOut()
-          setUser(null)
-        }
-      } catch {
-        setUser(null)
-      }
-    }
-    forceSignout()
+    setUser({
+      email: "ismat.ayash@gmail.com",
+      name: "Ismat Ayash",
+      password: "$2b$12$Kup4dsmH3z.cMi8kMfiEY.0rNSUzuLKVjMvgA/EbZ1rPlWq1cjZpy",
+    })
   }, [])
 
   return (
