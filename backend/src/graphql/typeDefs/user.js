@@ -27,6 +27,7 @@ export default gql`
     avatar: String
     role: String
     permissions: [String!]
+    sellerProducts: [Product!]
   }
 
   input UserInput {

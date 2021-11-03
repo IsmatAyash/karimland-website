@@ -6,6 +6,15 @@ const productSchema = new Schema(
     unit: { type: String, required: true },
     price: { type: Number, required: true },
     image: { type: String, required: true },
+    category: { type: String, required: true },
+    inventory: { type: Number, default: 0 },
+    featured: { type: Boolean },
+    oldprice: { type: Number },
+    rating: { type: Number },
+    avgRating: { type: Number },
+    description: { type: Object },
+    tags: { type: Array },
+    seller: { type: Schema.Types.ObjectId, ref: "users" },
   },
   { timestamps: true }
 )

@@ -5,13 +5,13 @@ import { pick } from "lodash"
 export const issueToken = async user => {
   let token = await sign(
     {
-      "https://spaceapi.com/graphql": { ...user },
+      userInfo: { ...user },
     },
     SECRET,
     {
       algorithm: "HS256",
       subject: user.id.toString(),
-      expiresIn: "1d",
+      expiresIn: "1h",
     }
   )
   return `Bearer ${token}`

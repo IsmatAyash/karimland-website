@@ -18,6 +18,30 @@ export default gql`
     unit: String!
     price: Float
     image: String!
+    category: Category!
+    inventory: Int
+    featured: Boolean
+    oldprice: Float
+    rating: Int
+    avgRating: Float
+    description: ProdDesc
+    tags: [String!]
+    seller: User!
+  }
+
+  type ProdDesc {
+    title: String
+    detail: String
+  }
+
+  enum Category {
+    Veges
+    Fruit
+  }
+
+  input ProdDescInput {
+    title: String
+    detail: String
   }
 
   input ProductInput {
@@ -25,6 +49,13 @@ export default gql`
     unit: String!
     price: Float
     image: String!
+    category: String!
+    inventory: Int
+    featured: Boolean
+    oldprice: Float
+    description: ProdDescInput
+    tags: [String!]
+    sellerId: ID
   }
 
   type ProdNotification {

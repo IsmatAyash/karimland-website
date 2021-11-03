@@ -1,28 +1,93 @@
-query GET_PRODUCTS {
-  products {
-    _id
-    title
-    unit
-    price
-    image
+query AUTH_USER($email: String!, $password: String!) {
+  authenticateUser(email: $email, password: $password) {
+    user {
+      id
+      name
+      email
+      avatar
+      role
+      permissions
+    }
+    token
   }
 }
 
-query GET_PRODUCT($getProductId: ID!) {
-  getProduct(id: $getProductId) {
-    _id
+query GET_PRODUCTS {
+  products {
+    id
     title
     unit
     price
     image
+    seller {
+      name
+      email
+    }
+  }
+}
+
+query GET_PRODUCT($id: ID!) {
+  getProduct(id: $id) {
+    id
+    title
+    unit
+    price
+    image
+    seller {
+      id
+      name
+      country
+    }
   }
 }
 
 query GET_SELLERS {
   sellers {
-    _id
+    id
     name
+    userType
     country
-    address
+    billingAddress
+    shippingingAddress
+    sellerProducts {
+      id
+      title
+    }
+  }
+}
+
+query GET_USER($id: ID!) {
+  getUser(id: $id) {
+    id
+    name
+    userType
+    country
+    role
+    sellerProducts {
+      id
+      title
+    }
+  }
+}
+
+query GET_USERS {
+  users {
+    id
+    name
+    email
+    avatar
+    role
+    userType
+    billingAddress
+    shippingingAddress
+    country
+    permissions
+    sellerProducts {
+      id
+      title
+      unit
+      price
+      image
+    }
   }
 }

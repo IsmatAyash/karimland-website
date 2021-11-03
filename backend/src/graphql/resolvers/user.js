@@ -1,17 +1,18 @@
-import { ApolloError } from "apollo-server-errors"
+import { ApolloError, UserInputError } from "apollo-server-express"
 import { compare, hash } from "bcrypt"
 import { issueToken, serializeUser } from "../../functions"
-import { sign } from "jsonwebtoken"
 
 export default {
   Query: {
     authenticateUser: async (_, { email, password }, { User }) => {
       try {
         let user = await User.findOne({ email })
-        if (!user) throw new Error("Invalid credentials")
+        if (!user) throw new ApolloError("Invalid credentials")
+
         // check password
         const isMatch = await compare(password, user.password)
-        if (!isMatch) throw new Error("Invalid credentials")
+        if (!isMatch) throw new ApolloError("Invalid credentials")
+
         // issue token
         user = user.toObject()
         user.id = user._id
@@ -22,10 +23,18 @@ export default {
         throw new ApolloError(err.message)
       }
     },
-    users: async (parent, args, { User }) => await User.find(),
-    getUser: async (_, { id }, { User }) => await User.findById(id),
+    users: async (parent, args, { User }) => {
+      try {
+        return await User.find().populate("sellerProducts").exec()
+      } catch (err) {
+        console.log(err.message)
+        throw new ApolloError(err.message, 400)
+      }
+    },
+    getUser: async (_, { id }, { User }) =>
+      await User.findById(id).populate("sellerProducts").exec(),
     sellers: async (_, args, { User }) =>
-      await User.find({ userType: "Seller" }),
+      await User.find({ userType: "Seller" }).populate("sellerProducts").exec(),
   },
   Mutation: {
     registerUser: async (_, { newUser }, { User }) => {
@@ -33,8 +42,7 @@ export default {
         const { email, password } = newUser
         // check email uniqueness in the database
         let user = await User.findOne({ email })
-        if (user) throw Error("Email already exist")
-
+        if (user) throw new ApolloError("Email already exist")
         // Create new user
         user = new User(newUser)
         // hash the password
@@ -48,6 +56,7 @@ export default {
         const token = await issueToken(res)
         return { token, user: res }
       } catch (err) {
+        console.log(err.message)
         throw new ApolloError(err.message)
       }
     },

@@ -28,6 +28,7 @@ const startServer = async () => {
       })
     )
 
+    mongoose.set("debug", !IN_PROD)
     await mongoose.connect(DB, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -44,9 +45,9 @@ const startServer = async () => {
         return { user, ...AppModels }
       },
       plugins: [
-        process.env.NODE_ENV === IN_PROD
-          ? ApolloServerPluginLandingPageDisabled()
-          : ApolloServerPluginLandingPageGraphQLPlayground(),
+        IN_PROD
+          ? ApolloServerPluginLandingPageGraphQLPlayground()
+          : ApolloServerPluginLandingPageDisabled(),
       ],
     })
 

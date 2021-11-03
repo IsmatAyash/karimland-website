@@ -1,12 +1,19 @@
-mutation CREATE_PRODUCT($newProduct: ProductInput) {
+mutation CREATE_PRODUCT($newProduct: ProductInput ) {
   createProduct(newProduct: $newProduct) {
-    _id
+    id
     title
     unit
     price
     image
+    seller {
+      id
+      name
+      email
+      userType
+    }
   }
-  }
+}
+{
    "newProduct": {
     "title": "Organic Oranges",
     "unit": "kg",
@@ -14,68 +21,66 @@ mutation CREATE_PRODUCT($newProduct: ProductInput) {
     "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.ocado.com%2Fproducts%2Fwholegood-organic-oranges-91359011&psig=AOvVaw0Fj0KrX4UST_DoNs4YKSez&ust=1635499118901000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNDCvpXj7PMCFQAAAAAdAAAAABAJ"
 }
 
-mutation EditProductByIdMutation($id: ID!, $updatedProduct: ProductInput) {
-  editProductById(id: $id, updatedProduct: $updatedProduct) {
-    _id
+mutation UPDATE_PRODUCT($updatedProduct: ProductInput, $id: ID!){
+  editProductById(updatedProduct: $updatedProduct, id: $id){
     title
     unit
     price
     image
+    seller{
+      name
+      email
+    }
   }
 }
 
 {
   "updatedProduct": {
-    "title": "Organic Oranges Updated",
-    "unit": "kg",
-    "price": 9.5,
-    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.ocado.com%2Fproducts%2Fwholegood-organic-oranges-91359011&psig=AOvVaw0Fj0KrX4UST_DoNs4YKSez&ust=1635499118901000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNDCvpXj7PMCFQAAAAAdAAAAABAJ"
+    "title": "Boomali",
+    "unit": "piece",
+    "price": 8,
+    "image": "http updated",
+    "sellerId":"6180f837437242b185d3d5fd"
   },
-  "id": "617a6e2a8c3fc88a1ad8e77c"
+  "id": "6181054f10e066018b430dbb"
 }
 
-mutation DELETE_PRODUCT($id: ID!) {
-  delProductById(id: $id) {
+mutation DELETE_PRODUCT($id: ID!){
+  delProductById(id: $id){
     id
-    message
     success
+    message
   }
 }
-
 {
   "id": "617a6e2a8c3fc88a1ad8e77c"
 }
 
-mutation CREATE_SELLER($newSeller: SellerInput) {
-  createSeller(newSeller: $newSeller) {
-    _id
-    name
-    address
-    country
+mutation REGISTER_USER($newUser: UserInput) {
+  registerUser(newUser: $newUser) {
+    user{
+      id
+      email
+      name
+      role
+      permissions
+      avatar
+      shippingingAddress
+      billingAddress
+      country
+    },
+    token
   }
 }
 
-"newSeller": {
-    "name": "Ismat Ayash",
-    "country": "Lebanon",
-    "address": "Bawertly Hills"
-  }
-
-  mutation RegisterUserMutation($newUser: UserInput) {
-  registerUser(newUser: $newUser) {
-    token
-    user {
-      name
-      email
-      avatar
-    }
-  }
-
-  {
+{{
   "newUser": {
-    "email": "ismat.ayash@gmail.com",
-    "name": "Ismat Ayash",
+    "name": "Layale Bassil",
+    "email": "layale@gmail.com",
     "password": "oam007",
+    "role":"seller",
+    "userType": "Seller",
+    "country":"Lebanon"
     "avatar": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fismatayash%2F&psig=AOvVaw2V7bIlQw4m1vuexHebf9hV&ust=1635578262329000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCJjs_P2J7_MCFQAAAAAdAAAAABAD"
   }
 }

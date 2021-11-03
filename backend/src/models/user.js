@@ -25,6 +25,7 @@ const UserSchema = new Schema(
       default: "buyer",
     },
     permissions: { type: [String], default: ["read:own_user"] },
+    sellerProducts: [{ type: Schema.Types.ObjectId, ref: "products" }],
   },
   { timestamps: true }
 )
