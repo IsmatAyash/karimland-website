@@ -28,6 +28,7 @@ export default gql`
     role: String
     permissions: [String!]
     sellerProducts: [Product!]
+    cartProducts: [Product!]
   }
 
   input UserInput {

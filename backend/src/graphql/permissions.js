@@ -54,6 +54,8 @@ export default shield({
     users: or(isAdmin, isSeller, and(isReadingOwnUser, canReadOwnUser)),
     sellers: isAdmin,
     getUser: or(isAdmin, isSeller, and(isReadingOwnUser, canReadOwnUser)),
+    carts: isAdmin,
+    getCart: or(isAdmin, and(isReadingOwnUser, canReadOwnUser)),
   },
   Mutation: {
     editUserById: or(isAdmin, and(canReadOwnUser, isReadingOwnUser)),
@@ -63,5 +65,9 @@ export default shield({
       isAdmin,
       and(canReadOwnUser, isReadingOwnProduct, isSeller)
     ),
+    addCartItem: and(isReadingOwnUser, canReadOwnUser),
+    updCartItem: and(isReadingOwnUser, canReadOwnUser),
+    delCartItem: and(isReadingOwnUser, canReadOwnUser),
+    delCart: or(isAdmin, and(isReadingOwnUser, canReadOwnUser)),
   },
 })

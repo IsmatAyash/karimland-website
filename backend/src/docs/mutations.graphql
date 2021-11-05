@@ -84,3 +84,86 @@ mutation REGISTER_USER($newUser: UserInput) {
     "avatar": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fismatayash%2F&psig=AOvVaw2V7bIlQw4m1vuexHebf9hV&ust=1635578262329000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCJjs_P2J7_MCFQAAAAAdAAAAABAD"
   }
 }
+
+mutation ADD_CART_ITEM($newCart: CartInput) {
+  addCartItem(newCart: $newCart){
+    buyer {
+      id
+      name
+    }
+    items{
+      product{
+        id
+        title
+      }
+      quantity
+    }
+  }
+}
+
+{
+  "newCart": {
+    "quantity": 1,
+    "product": "61827d9fc257aeb988b70f1f"
+  }
+}
+
+mutation INCREASE_CARD_ITEM_QTY($updCartItem: CartInput, $id: ID! ){
+  updCartItem(updCartItem: $updCartItem, id: $id){
+    buyer{
+      name
+    }
+    items{
+      product{
+        id
+        title
+        unit
+        price
+      }
+      quantity
+    }
+  }
+}
+
+{
+  "updCartItem": {
+    "quantity": 1,
+    "product": "61827d9fc257aeb988b70f1f"
+  },
+  "id": "6183d121020566685c2adc9c"
+}
+
+mutation DECREASE_CARD_ITEM_QTY($updCartItem: CartInput, $id: ID! ){
+  updCartItem(updCartItem: $updCartItem, id: $id){
+    buyer{
+      name
+    }
+    items{
+      product{
+        id
+        title
+        unit
+        price
+      }
+      quantity
+    }
+  }
+}
+
+{
+  "updCartItem": {
+    "quantity": -1,
+    "product": "61827d9fc257aeb988b70f1f"
+  },
+  "id": "6183d121020566685c2adc9c"
+}
+
+# cart id
+mutation DEL_CART($id: ID!){
+  delCart(id: $id){
+    id
+    message
+    success
+  }
+}
+

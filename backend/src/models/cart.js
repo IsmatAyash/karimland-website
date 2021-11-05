@@ -1,17 +1,21 @@
 import { model, Schema } from "mongoose"
 
+const cartItem = new Schema(
+  {
+    product: { type: Schema.Types.ObjectId, ref: "products" },
+    quantity: { type: Number, default: 1 },
+  },
+  { _id: false }
+)
+
 const cartSchema = new Schema(
   {
     buyer: {
       type: Schema.Types.ObjectId,
       ref: "users",
+      index: { unique: true },
     },
-    items: [
-      {
-        productId: { type: Schema.Types.ObjectId, required: true },
-        quantity: { type: Number, required: true },
-      },
-    ],
+    items: [cartItem],
   },
   { timestamps: true }
 )

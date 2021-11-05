@@ -11,7 +11,7 @@ export const issueToken = async user => {
     {
       algorithm: "HS256",
       subject: user.id.toString(),
-      expiresIn: "1h",
+      expiresIn: "1d",
     }
   )
   return `Bearer ${token}`

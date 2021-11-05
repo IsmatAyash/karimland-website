@@ -26,6 +26,7 @@ const UserSchema = new Schema(
     },
     permissions: { type: [String], default: ["read:own_user"] },
     sellerProducts: [{ type: Schema.Types.ObjectId, ref: "products" }],
+    cartProducts: [{ type: Schema.Types.ObjectId, ref: "products" }],
   },
   { timestamps: true }
 )

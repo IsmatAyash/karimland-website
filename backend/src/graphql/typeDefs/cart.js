@@ -7,25 +7,25 @@ export default gql`
   }
 
   extend type Mutation {
-    delCartItem(userId: ID!, productId: ID!): CartNotification!
+    delCartItem(productId: ID!): Cart!
     addCartItem(newCart: CartInput): Cart!
-    updCartItem(updatedCartItem: CartInput, userId: ID!, productId: ID!): Cart!
+    updCartItem(updCartItem: CartInput): Cart!
     delCart(id: ID!): CartNotification!
   }
 
   type Cart {
     id: ID!
-    items: [CartItem!]!
     buyer: User!
+    items: [CartItem!]!
   }
 
   type CartItem {
-    productId: ID!
+    product: Product!
     quantity: Int
   }
 
   input CartInput {
-    productId: ID!
+    product: ID!
     quantity: Int
   }
 
