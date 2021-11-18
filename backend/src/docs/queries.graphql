@@ -26,6 +26,30 @@ query GET_PRODUCTS {
   }
 }
 
+query GET_PROD_PAGINATED {
+  productsByPage(page: 1, limit: 5) {
+    paginator {
+      pageCount
+      prev
+      perPage
+      productCount
+      currentPage
+      next
+      slNo
+      hasPrevPage
+      hasNextPage
+    }
+    products {
+      title
+      unit
+      price
+      seller {
+        name
+      }
+    }
+  }
+}
+
 query GET_PRODUCT($id: ID!) {
   getProduct(id: $id) {
     id

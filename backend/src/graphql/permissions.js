@@ -38,8 +38,9 @@ const canReadOwnUser = rule()((parent, args, { user }) => {
   return checkPermission(user, "read:own_user")
 })
 
-const isReadingOwnUser = rule()((parent, { id }, { user }) => {
-  return user && user.sub === id
+const isReadingOwnUser = rule()((parent, { userId }, { user }) => {
+  console.log("ISREADINGOWNUSR", user && user.sub === userId)
+  return user && user.sub === userId
 })
 
 const isReadingOwnProduct = rule()(
@@ -65,9 +66,9 @@ export default shield({
       isAdmin,
       and(canReadOwnUser, isReadingOwnProduct, isSeller)
     ),
-    addCartItem: and(isReadingOwnUser, canReadOwnUser),
-    updCartItem: and(isReadingOwnUser, canReadOwnUser),
-    delCartItem: and(isReadingOwnUser, canReadOwnUser),
-    delCart: or(isAdmin, and(isReadingOwnUser, canReadOwnUser)),
+    addCartItem: isAuthenticated,
+    updCartItem: isAuthenticated,
+    delCartItem: isAuthenticated,
+    delCart: isAuthenticated,
   },
 })

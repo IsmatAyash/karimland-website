@@ -1,4 +1,5 @@
-import { model, Schema } from "mongoose"
+import { model, plugin, Schema } from "mongoose"
+import paginator from "mongoose-paginate-v2"
 
 const productSchema = new Schema(
   {
@@ -19,16 +20,8 @@ const productSchema = new Schema(
   { timestamps: true }
 )
 
+productSchema.plugin(paginator)
+
 const Product = model("products", productSchema)
 
 export default Product
-
-// seller: { type: Schema.Types.ObjectId, ref: "Seller" },
-// inventory: { type: Number },
-// category: { type: String, required: true },
-// featured: { type: Boolean },
-// oldprice: { type: Number },
-// rating: { type: Number },
-// avgRating: { type: Number },
-// description: { type: Object },
-// tags: { type: Array },

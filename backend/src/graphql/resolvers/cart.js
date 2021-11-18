@@ -18,6 +18,12 @@ const IncDecCartItem = async (Cart, user, item) => {
   )
 }
 
+const prodNotDeleted = productId => ({
+  id: productId,
+  message: `Cart item wasn't found cannot delete!!`,
+  success: false,
+})
+
 export default {
   Query: {
     carts: async (parent, args, { Cart }) => {
@@ -49,10 +55,10 @@ export default {
             buyer: user.sub,
           })
         } else {
-          // update existing product in a carditem
+          // if product exist update update quantity in a carditem
           cartItem = await IncDecCartItem(Cart, user, newCart)
 
-          // add new product to the array of products in cartItem
+          // add new product to the array of products in cartItem setting quantity to 1
           if (!cartItem)
             cartItem = await Cart.findOneAndUpdate(
               {
@@ -68,7 +74,7 @@ export default {
         throw new ApolloError(err.message, 400)
       }
     },
-    updCartItem: async (_, { updCartItem }, { Cart, user }) => {
+    updCartItem: async (_, { updCartItem, userId }, { Cart, user }) => {
       try {
         let cartItem = await IncDecCartItem(Cart, user, updCartItem)
         return await populateCartItem(cartItem)
@@ -87,16 +93,23 @@ export default {
           { $pull: { items: { product: productId } } },
           { new: true }
         )
-        return await populateCartItem(cartItem)
+
+        if (!cartItem) return prodNotDeleted(productId)
+
+        return {
+          id: productId,
+          message: "Cart item was deleted successfuly.",
+          success: true,
+        }
       } catch (err) {
         console.log(err.message)
-        throw new ApolloError(err.message, 400)
+        return prodNotDeleted(productId)
       }
     },
     delCart: async (_, { id }, { Cart, user }) => {
       try {
         const cartItem = await Cart.findByIdAndRemove(id)
-        if (!cartItem) throw new ApolloError("Cart was'nt deleted!")
+        if (!cartItem) throw new ApolloError("Cart wasn't deleted!")
         return {
           id: cartItem.id,
           message: "Cart was deleted successfuly.",

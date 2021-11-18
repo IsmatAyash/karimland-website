@@ -158,6 +158,17 @@ mutation DECREASE_CARD_ITEM_QTY($updCartItem: CartInput, $id: ID! ){
   "id": "6183d121020566685c2adc9c"
 }
 
+# product id
+mutation DEL_CART_ITEM($productId: ID!) {
+  delCartItem(productId: $productId) {
+    id
+    message
+    success
+  }
+}
+
+
+
 # cart id
 mutation DEL_CART($id: ID!){
   delCart(id: $id){

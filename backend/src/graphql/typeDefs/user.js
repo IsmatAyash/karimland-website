@@ -4,9 +4,9 @@ export default gql`
   extend type Query {
     authUser: User!
     authenticateUser(email: String!, password: String!): AuthResp!
-    users: [User!]
+    users(page: Int, limit: Int): userPaginator!
     getUser(id: ID!): User!
-    sellers: [User!]
+    sellers(page: Int, limit: Int): userPaginator!
   }
 
   extend type Mutation {
@@ -29,6 +29,23 @@ export default gql`
     permissions: [String!]
     sellerProducts: [Product!]
     cartProducts: [Product!]
+  }
+
+  type userPaginator {
+    users: [User!]!
+    paginator: userLabels
+  }
+
+  type userLabels {
+    userCount: Int
+    perPage: Int!
+    pageCount: Int!
+    currentPage: Int!
+    slNo: Int!
+    hasPrevPage: Boolean
+    hasNextPage: Boolean
+    prev: Int
+    next: Int
   }
 
   input UserInput {

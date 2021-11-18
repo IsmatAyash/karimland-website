@@ -1,5 +1,17 @@
 import { ApolloError } from "apollo-server-express"
 
+const myCustomLabels = {
+  totalDocs: "productCount",
+  docs: "products",
+  limit: "perPage",
+  page: "currentPage",
+  nextPage: "next",
+  prevPage: "prev",
+  totalPages: "pageCount",
+  pagingCounter: "slNo",
+  meta: "paginator",
+}
+
 export default {
   Query: {
     products: async (parent, args, { Product }) => {
@@ -11,9 +23,27 @@ export default {
         throw new ApolloError(err.message, 400)
       }
     },
-    getProduct: async (_, { id }, { Product }) =>
-      await Product.findById(id).populate("seller"),
+    getProduct: async (_, { id }, { Product }) => {
+      return await Product.findById(id).populate("seller")
+    },
+    productsByPage: async (parent, { page, limit }, { Product }) => {
+      try {
+        const options = {
+          limit: limit || 10,
+          page: page || 1,
+          sort: { createdAt: 1 },
+          populate: "seller",
+          customLabels: myCustomLabels,
+        }
+        const products = await Product.paginate({}, options)
+        return products
+      } catch (error) {
+        console.log(error.message)
+        throw new ApolloError(error.message, 400)
+      }
+    },
   },
+
   Mutation: {
     createProduct: async (_, { newProduct }, { Product, User, user }) => {
       try {

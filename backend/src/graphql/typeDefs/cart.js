@@ -7,9 +7,9 @@ export default gql`
   }
 
   extend type Mutation {
-    delCartItem(productId: ID!): Cart!
+    delCartItem(productId: ID!): CartNotification!
     addCartItem(newCart: CartInput): Cart!
-    updCartItem(updCartItem: CartInput): Cart!
+    updCartItem(updCartItem: CartInput, userId: ID!): Cart!
     delCart(id: ID!): CartNotification!
   }
 

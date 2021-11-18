@@ -4,6 +4,7 @@ export default gql`
   extend type Query {
     products: [Product!]!
     getProduct(id: ID!): Product!
+    productsByPage(page: Int, limit: Int): ProductPaginator!
   }
 
   extend type Mutation {
@@ -42,6 +43,23 @@ export default gql`
   input ProdDescInput {
     title: String
     detail: String
+  }
+
+  type ProductPaginator {
+    products: [Product!]!
+    paginator: ProdLabels
+  }
+
+  type ProdLabels {
+    productCount: Int
+    perPage: Int!
+    pageCount: Int!
+    currentPage: Int!
+    slNo: Int!
+    hasPrevPage: Boolean
+    hasNextPage: Boolean
+    prev: Int
+    next: Int
   }
 
   input ProductInput {
