@@ -178,3 +178,80 @@ mutation DEL_CART($id: ID!){
   }
 }
 
+# orders
+mutation ADD_ORDER($newOrder: [OrderInput]) {
+  addOrder(newOrder: $newOrder) {
+    id
+    details {
+      productId
+      title
+      unit
+      price
+      quantity
+      image
+      sellerId
+      sellerName
+      toAddress
+      fromAddress
+      itemStatus
+      trackingNo
+      shippedAt
+    }
+    buyer {
+      name
+      email
+    }
+    orderStatus
+  }
+}
+
+{
+  "newOrder": [{
+    "productId":"619621d5fa36d2d13ef59a27",
+    "quantity": 2,
+    "unit": "kg",
+    "price": 10,
+    "image": "http",
+    "title": "Organic Salad",
+    "sellerId": "618776703dc2e3c7bc8386e1",
+    "sellerName": "Alexy Ayash"
+  },
+  {
+    "productId":"618847f07f3b726233f65f94",
+    "quantity": 2,
+    "unit": "kg",
+    "price": 10,
+    "image": "http",
+    "title": "Organic Oranges",
+    "sellerId": "6187769e3dc2e3c7bc8386e5",
+    "sellerName": "Ismat Ayash"
+  }]
+}
+
+mutation UPDATE_SHIPPMENT_INFO($id: ID!, $shipDet: ShipInput!) {
+  shipit(id: $id, shipDet: $shipDet) {
+    details {
+      toAddress
+      fromAddress
+      trackingNo
+      shippedAt
+      productId
+      sellerId
+      itemStatus
+    }
+    orderStatus
+  }
+}
+
+{
+  "shipDet": {
+    "productId": "619621d5fa36d2d13ef59a27",
+    "fromAddress": "Address from",
+    "toAddress": "Address to",
+    "trackingNo": "BEC123456",
+    "shippedAt": "11/11/2021",
+    "itemStatus": "Shipped",
+    "sellerId": "618776703dc2e3c7bc8386e1"
+  },
+  "id": "61976ecee0fd490789e5d80f"
+}

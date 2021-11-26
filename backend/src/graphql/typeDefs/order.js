@@ -2,8 +2,21 @@ import { gql } from "apollo-server-express"
 
 export default gql`
   extend type Query {
-    orders(page: Int, limit: Int): orderPaginator!
     getOrder(id: ID!): Order!
+    orders(page: Int, limit: Int): orderPaginator
+    ordersByStatus(page: Int, limit: Int, orderStat: String): orderPaginator
+    orderedProductsByStatus(
+      page: Int
+      limit: Int
+      itemStat: String
+    ): orderPaginator
+    orderedProductsBySeller(
+      page: Int
+      limit: Int
+      sellerId: ID
+      sellerName: String
+    ): orderPaginator
+    productsOrdered(page: Int, limit: Int, sellerId: ID!): orderPaginator
   }
 
   extend type Mutation {
@@ -12,23 +25,26 @@ export default gql`
   }
 
   type Order {
-    id: ID!
+    _id: ID!
     buyer: User!
     details: [OrderDetail!]!
-    orderStatus: String
-    shippedAt: String
-    fromAddress: String
-    toAddress: String
-    trackingNo: String
+    orderStatus: OrderStatus
   }
 
   type OrderDetail {
-    id: ID!
+    productId: ID!
     title: String!
     unit: String!
     price: Float!
     quantity: Int!
     image: String!
+    sellerId: ID!
+    sellerName: String!
+    itemStatus: ItemStatus
+    shippedAt: String
+    fromAddress: String
+    toAddress: String
+    trackingNo: String
   }
 
   type orderPaginator {
@@ -49,24 +65,36 @@ export default gql`
   }
 
   input OrderInput {
+    productId: ID!
     title: String!
     unit: String!
     price: Float!
     quantity: Int!
     image: String!
+    sellerId: ID!
+    sellerName: String!
   }
 
   input ShipInput {
+    productId: ID!
     fromAddress: String
     toAddress: String
     shippedAt: String
-    orderStatus: OrderStatus
+    itemStatus: ItemStatus
     trackingNo: String
+    sellerId: ID!
   }
 
-  enum OrderStatus {
+  enum ItemStatus {
     Pending
     Shipped
     Delivered
+    Canceled
+  }
+
+  enum OrderStatus {
+    InProcess
+    Completed
+    Reviewed
   }
 `

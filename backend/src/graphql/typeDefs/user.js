@@ -13,6 +13,7 @@ export default gql`
     registerUser(newUser: UserInput): AuthResp!
     editUserById(updatedUser: UserInput, id: ID!): User!
     delUserById(id: ID!): AuthResp
+    forgotPassword(id: ID!, email: String!): User
   }
 
   type User {

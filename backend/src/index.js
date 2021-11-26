@@ -16,9 +16,15 @@ import { resolvers, typeDefs } from "./graphql"
 import * as AppModels from "./models"
 import permissions from "./graphql/permissions"
 
+import Redis from "ioredis"
+
+// let RedisStore = connectRedis(session)
+const redis = new Redis()
+
 const startServer = async () => {
   try {
     const app = express()
+
     app.use(express.static(join(__dirname, "./uploads")))
     app.use(
       expressJwt({
@@ -27,6 +33,13 @@ const startServer = async () => {
         credentialsRequired: false,
       })
     )
+    // app.use(
+    //   session({
+    //     store: new RedisStore({ client: redis }),
+    //     secret: "oam007 redis",
+    //     resave: false,
+    //   })
+    // )
 
     mongoose.set("debug", !IN_PROD)
     await mongoose.connect(DB, {
@@ -42,7 +55,7 @@ const startServer = async () => {
       ),
       context: ({ req }) => {
         const user = req.user || null
-        return { user, ...AppModels }
+        return { user, redis, ...AppModels }
       },
       plugins: [
         IN_PROD

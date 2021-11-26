@@ -1,4 +1,4 @@
-import { not, and, or, rule, shield } from "graphql-shield"
+import { not, and, or, rule, shield, allow } from "graphql-shield"
 
 function checkPermission(user, permission) {
   if (user && user["userInfo"]) {
@@ -43,32 +43,46 @@ const isReadingOwnUser = rule()((parent, { userId }, { user }) => {
   return user && user.sub === userId
 })
 
-const isReadingOwnProduct = rule()(
-  (parent, { updatedProduct: { sellerId } }, { user }) => {
-    console.log("IS READING OWN PROD", user && user.sub === sellerId)
-    return user && user.sub === sellerId
+const isReadingOwnProduct = rule()((parent, args, { user }) => {
+  const { sellerId } = args.updatedProduct || args.shipDet
+  console.log("IS READING OWN PROD", user && user.sub === sellerId)
+  return user && user.sub === sellerId
+})
+
+export default shield(
+  {
+    Query: {
+      users: or(isAdmin, isSeller, and(isReadingOwnUser, canReadOwnUser)),
+      sellers: isAdmin,
+      getUser: or(isAdmin, isSeller, and(isReadingOwnUser, canReadOwnUser)),
+      carts: isAdmin,
+      getCart: or(isAdmin, and(isReadingOwnUser, canReadOwnUser)),
+      orders: or(isAdmin, and(isReadingOwnUser, canReadOwnUser)),
+      getOrder: or(isAdmin, and(isReadingOwnUser, canReadOwnUser)),
+      ordersByStatus: isAdmin,
+      orderedProductsByStatus: isAdmin,
+      orderedProductsBySeller: or(
+        isAdmin,
+        and(isReadingOwnUser, canReadOwnUser)
+      ),
+    },
+    Mutation: {
+      editUserById: or(isAdmin, and(canReadOwnUser, isReadingOwnUser)),
+      createProduct: or(isSeller, isAdmin),
+      delProductById: isAdmin,
+      editProductById: or(
+        isAdmin,
+        and(canReadOwnUser, isReadingOwnProduct, isSeller)
+      ),
+      addCartItem: isAuthenticated,
+      updCartItem: isAuthenticated,
+      delCartItem: isAuthenticated,
+      delCart: isAuthenticated,
+      addOrder: isAuthenticated,
+      shipit: or(isAdmin, and(canReadOwnUser, isReadingOwnProduct, isSeller)),
+    },
+  },
+  {
+    allowExternalErrors: true,
   }
 )
-
-export default shield({
-  Query: {
-    users: or(isAdmin, isSeller, and(isReadingOwnUser, canReadOwnUser)),
-    sellers: isAdmin,
-    getUser: or(isAdmin, isSeller, and(isReadingOwnUser, canReadOwnUser)),
-    carts: isAdmin,
-    getCart: or(isAdmin, and(isReadingOwnUser, canReadOwnUser)),
-  },
-  Mutation: {
-    editUserById: or(isAdmin, and(canReadOwnUser, isReadingOwnUser)),
-    createProduct: or(isSeller, isAdmin),
-    delProductById: isAdmin,
-    editProductById: or(
-      isAdmin,
-      and(canReadOwnUser, isReadingOwnProduct, isSeller)
-    ),
-    addCartItem: isAuthenticated,
-    updCartItem: isAuthenticated,
-    delCartItem: isAuthenticated,
-    delCart: isAuthenticated,
-  },
-})

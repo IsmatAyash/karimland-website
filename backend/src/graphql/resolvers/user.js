@@ -1,7 +1,9 @@
 import { ApolloError, UserInputError } from "apollo-server-express"
 import { compare, hash } from "bcrypt"
-import { ValidationError } from "yup"
-import { issueToken, serializeUser, formatYupError } from "../../functions"
+import { issueToken, serializeUser } from "../../functions"
+import { sendEmail } from "../../functions/sendEmail"
+import { v4 as uuid } from "uuid"
+import Redis from "ioredis"
 import {
   UserRegistrationRules,
   UserAuthenticationRules,
@@ -18,6 +20,8 @@ const myCustomLabels = {
   pagingCounter: "slNo",
   meta: "paginator",
 }
+
+const redis = new Redis()
 
 export default {
   Query: {
@@ -106,6 +110,28 @@ export default {
         // Issue the access token
         const token = await issueToken(res)
         return { token, user: res }
+      } catch (error) {
+        throw new ApolloError(error.message, 400)
+      }
+    },
+    forgotPassword: async (_, { id, email }, { User, redis }) => {
+      try {
+        const usr = await User.findById(id)
+        if (usr.email !== email)
+          throw new ApolloError("Entered email doesn't exist in our records")
+
+        // generate random 6 digits code
+        const token = uuid()
+        console.log("RANDOM CODE", passCode)
+        redis.set("forget-password:" + token)
+        // save generated code in the database
+        // send an email
+
+        await sendEmail(
+          email,
+          `To reset your password click this link <a href="http://localhost/3000/change-password/${token}></a>`
+        )
+        return usr
       } catch (error) {
         throw new ApolloError(error.message, 400)
       }
