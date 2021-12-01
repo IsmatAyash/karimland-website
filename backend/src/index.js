@@ -15,15 +15,21 @@ import { PORT, IN_PROD, DB, BASE_URL, SECRET } from "./config"
 import { resolvers, typeDefs } from "./graphql"
 import * as AppModels from "./models"
 import permissions from "./graphql/permissions"
+import cors from "cors"
 
 import Redis from "ioredis"
 
-// let RedisStore = connectRedis(session)
 const redis = new Redis()
 
 const startServer = async () => {
   try {
     const app = express()
+    app.use(
+      cors({
+        origin: "http://localhost:8000",
+        // credentials: true,
+      })
+    )
 
     app.use(express.static(join(__dirname, "./uploads")))
     app.use(
@@ -33,13 +39,6 @@ const startServer = async () => {
         credentialsRequired: false,
       })
     )
-    // app.use(
-    //   session({
-    //     store: new RedisStore({ client: redis }),
-    //     secret: "oam007 redis",
-    //     resave: false,
-    //   })
-    // )
 
     mongoose.set("debug", !IN_PROD)
     await mongoose.connect(DB, {

@@ -14,19 +14,19 @@ const myCustomLabels = {
 
 export default {
   Query: {
-    products: async (parent, args, { Product }) => {
-      try {
-        const prod = await Product.find().populate("seller").exec()
-        if (!prod) throw new ApolloError("Unable to query products.")
-        return prod
-      } catch (err) {
-        throw new ApolloError(err.message, 400)
-      }
-    },
+    // products: async (parent, args, { Product }) => {
+    //   try {
+    //     const prod = await Product.find().populate("seller").exec()
+    //     if (!prod) throw new ApolloError("Unable to query products.")
+    //     return prod
+    //   } catch (err) {
+    //     throw new ApolloError(err.message, 400)
+    //   }
+    // },
     getProduct: async (_, { id }, { Product }) => {
       return await Product.findById(id).populate("seller")
     },
-    productsByPage: async (parent, { page, limit }, { Product }) => {
+    products: async (parent, { cat, page, limit }, { Product }) => {
       try {
         const options = {
           limit: limit || 10,
@@ -35,8 +35,7 @@ export default {
           populate: "seller",
           customLabels: myCustomLabels,
         }
-        const products = await Product.paginate({}, options)
-        return products
+        return await Product.paginate({ category: cat }, options)
       } catch (error) {
         console.log(error.message)
         throw new ApolloError(error.message, 400)

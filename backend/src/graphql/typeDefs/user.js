@@ -14,6 +14,7 @@ export default gql`
     editUserById(updatedUser: UserInput, id: ID!): User!
     delUserById(id: ID!): AuthResp
     forgotPassword(id: ID!, email: String!): User
+    changePassword(token: String!, newPassword: String!): User
   }
 
   type User {

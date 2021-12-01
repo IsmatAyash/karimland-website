@@ -122,17 +122,41 @@ export default {
 
         // generate random 6 digits code
         const token = uuid()
-        console.log("RANDOM CODE", passCode)
-        redis.set("forget-password:" + token)
+        console.log("RANDOM CODE", token)
+        await redis.set(
+          "forget-password:" + token,
+          usr.id,
+          "ex",
+          1000 * 3600 * 24 * 3 // 3 days to expire
+        )
         // save generated code in the database
         // send an email
 
         await sendEmail(
           email,
-          `To reset your password click this link <a href="http://localhost/3000/change-password/${token}></a>`
+          `<a href="http://localhost/3000/change-password/${token}">reset password</a>`
         )
         return usr
       } catch (error) {
+        throw new ApolloError(error.message, 400)
+      }
+    },
+    changePassword: async (_, { token, newPassword }, { User, redis }) => {
+      try {
+        const userId = await redis.get("forget-password:" + token)
+        if (!userId) throw new ApolloError("token is incorrect or expired")
+
+        let user = await User.findById(userId)
+        if (!user) throw new ApolloError("user is no longer exist")
+
+        user.password = await hash(newPassword, 12)
+        let res = await user.save()
+        res = res.toObject()
+        res.id = res._id
+        res = serializeUser(res)
+        return res
+      } catch (error) {
+        console.log(error.message)
         throw new ApolloError(error.message, 400)
       }
     },

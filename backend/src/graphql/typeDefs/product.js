@@ -2,9 +2,8 @@ import { gql } from "apollo-server-express"
 
 export default gql`
   extend type Query {
-    products: [Product!]!
     getProduct(id: ID!): Product!
-    productsByPage(page: Int, limit: Int): ProductPaginator!
+    products(cat: String!, page: Int, limit: Int): ProductPaginator!
   }
 
   extend type Mutation {
@@ -22,7 +21,7 @@ export default gql`
     category: Category!
     inventory: Int
     featured: Boolean
-    oldprice: Float
+    oldPrice: Float
     rating: Int
     avgRating: Float
     description: ProdDesc

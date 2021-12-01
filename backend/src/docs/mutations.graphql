@@ -255,3 +255,21 @@ mutation UPDATE_SHIPPMENT_INFO($id: ID!, $shipDet: ShipInput!) {
   },
   "id": "61976ecee0fd490789e5d80f"
 }
+
+mutation FORGOT_PASSWORD($id: ID!, $email: String!){
+  forgotPassword(id: $id, email: $email){
+    name
+    email
+    password
+  }
+}
+
+mutation CHANGE_PASSWORD($token: String!, $newPassword: String!){
+  changePassword(token: $token, newPassword: $newPassword){
+    name
+    email
+    billingAddress
+    id
+    shippingingAddress
+  }
+}

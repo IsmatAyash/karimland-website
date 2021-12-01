@@ -10,7 +10,7 @@ const productSchema = new Schema(
     category: { type: String, required: true },
     inventory: { type: Number, default: 0 },
     featured: { type: Boolean },
-    oldprice: { type: Number },
+    oldPrice: { type: Number },
     rating: { type: Number },
     avgRating: { type: Number },
     description: { type: Object },
