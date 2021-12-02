@@ -5,6 +5,7 @@ import slugify from "slugify"
 
 const TagsList = ({ products = [] }) => {
   const newTags = setupTags(products)
+  if (!newTags.length) return null
   return (
     <div className="tag-container">
       <h4>Tags</h4>

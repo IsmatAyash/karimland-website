@@ -40,8 +40,8 @@ module.exports = {
       resolve: `gatsby-source-contentful`,
       options: {
         spaceId: `lqhquv9fy7fo`,
-        // Learn about environment variables: https://gatsby.dev/env-vars
-        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+        accessToken: `zpw0sPC0L7Y6yBghBxIVe75USXMugLt8b9SHsms7zE8`,
+        // accessToken: process.env.CCONTENTFUL_ACCESS_TOKEN,
       },
     },
     {
@@ -64,14 +64,6 @@ module.exports = {
     {
       resolve: `gatsby-plugin-create-client-paths`,
       options: { prefixes: [`/logged/*`] },
-    },
-    {
-      resolve: "gatsby-source-mongodb",
-      options: {
-        // Name of the database and collection where are books reside
-        dbName: "karimland",
-        collection: ["products", "sellers", "users", "carts"],
-      },
     },
   ],
 }

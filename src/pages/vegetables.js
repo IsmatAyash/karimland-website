@@ -1,33 +1,55 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import { StaticImage } from "gatsby-plugin-image"
-import { graphql } from "gatsby"
 
 import SEO from "../components/SEO"
 import Layout from "../components/Layout"
 import ProductList from "../components/ProductList"
 import TagsList from "../components/TagsList"
-import { ProductContext } from "../context/products"
-
-// get vegetables data using graphql here
+import { GET_PRODUCTS } from "../graphql/queries"
+import { useQuery } from "@apollo/client"
 
 const Vegetables = () => {
-  const { prodImages } = useContext(ProductContext)
+  const { data, loading, error, refetch } = useQuery(GET_PRODUCTS, {
+    variables: { cat: "Veges", page: 1, limit: 5 },
+    fetchPolicy: "network-only",
+    errorPolicy: "all",
+  })
   const [veges, setVeges] = useState([])
+  console.log({ error })
 
-  const { items } = []
+  // const { items } = []
 
+  console.log("PRODUCTS DATA", data)
   useEffect(() => {
-    if (prodImages && items) {
-      const prods = items.map(prod => {
-        const idx = prod.image.split("/").pop()
-        return {
-          ...prod,
-          image: prodImages.find(i => i.name === idx).image,
-        }
-      })
-      setVeges(prods || [])
+    setVeges(data?.products.products || [])
+  }, [data])
+  console.log("VEGES", veges)
+
+  let errorMessage = undefined
+  if (error) {
+    if (
+      error.networkError &&
+      typeof window !== "undefined" &&
+      !window.navigator.online
+    ) {
+      errorMessage = "No internet connection, please check your borwser?"
+    } else {
+      errorMessage = "An error occured."
     }
-  }, [prodImages, items])
+  }
+
+  // useEffect(() => {
+  // if (prodImages && items) {
+  //   const prods = items.map(prod => {
+  //     const idx = prod.image.split("/").pop()
+  //     return {
+  //       ...prod,
+  //       image: prodImages.find(i => i.name === idx).image,
+  //     }
+  //   })
+  // setVeges(data || [])
+  // }
+  // }, [data])
 
   return (
     <Layout>
@@ -49,34 +71,23 @@ const Vegetables = () => {
           </div>
         </header>
         <section className="products-container">
-          <TagsList products={veges} />
-          {veges.length === 0 && <h3>No vegetables products available</h3>}
-          <ProductList prods={veges} />
+          {loading ? (
+            <p>Loading...</p>
+          ) : errorMessage ? (
+            <h3>{errorMessage}</h3>
+          ) : null}
+          {data ? (
+            <>
+              <TagsList products={veges} />
+              <ProductList prods={veges} />
+            </>
+          ) : (
+            <h3>No Vegtable products available.</h3>
+          )}
         </section>
       </main>
     </Layout>
   )
 }
-
-// export const query = graphql`
-//   {
-//     product {
-//       listProducts(filter: { prodType: { eq: "Veges" } }) {
-//         items {
-//           title
-//           id
-//           description
-//           avgRating
-//           image
-//           ratings
-//           quantity
-//           prices
-//           tags
-//           oldPrice
-//         }
-//       }
-//     }
-//   }
-// `
 
 export default Vegetables

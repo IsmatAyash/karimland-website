@@ -6,6 +6,7 @@ import { GiFruitBowl, GiTomato, GiPhone } from "react-icons/gi"
 import { FiAlignJustify } from "react-icons/fi"
 import styled from "styled-components"
 import MenuLink from "./MenuLink"
+// import logo from "../../assets/images/logo.jpg"
 
 const links = [
   { name: "home", icon: <FaHome style={{ marginRight: 3 }} /> },
@@ -32,7 +33,7 @@ const Navbar = () => {
           <StaticImage
             width={width}
             height={height}
-            src="../assets/images/logo.jpg"
+            src="../../assets/images/logo.jpg"
             alt="karimland logo"
           />
         </LinkImage>
