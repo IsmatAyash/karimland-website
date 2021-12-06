@@ -1,4 +1,4 @@
-import { model, plugin, Schema } from "mongoose"
+import { model, Schema } from "mongoose"
 import paginator from "mongoose-paginate-v2"
 
 const productSchema = new Schema(
@@ -13,7 +13,7 @@ const productSchema = new Schema(
     oldPrice: { type: Number },
     rating: { type: Number },
     avgRating: { type: Number },
-    description: { type: Object },
+    description: [{ type: Object }],
     tags: { type: Array },
     seller: { type: Schema.Types.ObjectId, ref: "users" },
   },

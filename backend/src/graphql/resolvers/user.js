@@ -25,7 +25,7 @@ const redis = new Redis()
 
 export default {
   Query: {
-    authenticateUser: async (_, { email, password }, { User }) => {
+    login: async (_, { email, password }, { User }) => {
       await UserAuthenticationRules.validate(
         { email, password },
         { abortEarly: false }
@@ -80,20 +80,20 @@ export default {
         }
         const sellers = await User.paginate({ userType: "Seller" }, options)
         return sellers
-      } catch (error) {
+      } catch (err) {
         console.log(err.message)
         throw new ApolloError(err.message, 400)
       }
     },
   },
   Mutation: {
-    registerUser: async (_, { newUser }, { User }) => {
+    register: async (_, { newUser }, { User }) => {
       await UserRegistrationRules.validate(newUser, { abortEarly: false })
       try {
         const { email, password } = newUser
         // check email uniqueness in the database
         let user = await User.findOne({ email })
-        if (user) throw new ApolloError("Email already registered", "403")
+        if (user) throw new ApolloError("Email already registered", 403)
 
         // Create new user
         user = new User(newUser)
@@ -111,7 +111,8 @@ export default {
         const token = await issueToken(res)
         return { token, user: res }
       } catch (error) {
-        throw new ApolloError(error.message, 400)
+        console.log(error)
+        throw new UserInputError(error.message, 400)
       }
     },
     forgotPassword: async (_, { id, email }, { User, redis }) => {
@@ -122,7 +123,6 @@ export default {
 
         // generate random 6 digits code
         const token = uuid()
-        console.log("RANDOM CODE", token)
         await redis.set(
           "forget-password:" + token,
           usr.id,
@@ -159,6 +159,14 @@ export default {
         console.log(error.message)
         throw new ApolloError(error.message, 400)
       }
+    },
+    confrimEmail: async (_, { email }) => {
+      const code = Math.floor(1000 + Math.random() * 9000).toString()
+      await sendEmail(
+        email,
+        `Please use this code ${code} to confirm your email and register`
+      )
+      return { code }
     },
     editUserById: async (_, { updatedUser, id }, { User }) => {
       return await User.findByIdAndUpdate(id, { ...updatedUser }, { new: true })

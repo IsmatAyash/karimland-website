@@ -15,6 +15,7 @@
     "@graphql-tools/utils": "^8.5.1",
     "apollo-server-core": "^3.4.0",
     "apollo-server-express": "^3.4.0",
+    "aws-sdk": "^2.1042.0",
     "bcrypt": "^5.0.1",
     "consola": "^2.15.3",
     "cors": "^2.8.5",

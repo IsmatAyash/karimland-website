@@ -10,7 +10,10 @@ export default gql`
     delProductById(id: ID!): ProdNotification!
     createProduct(newProduct: ProductInput): Product!
     editProductById(updatedProduct: ProductInput, id: ID!): Product!
+    imageUpload(file: Upload!): S3Object
   }
+
+  scalar Upload
 
   type Product {
     id: ID!
@@ -79,5 +82,12 @@ export default gql`
     id: ID!
     message: String!
     success: Boolean
+  }
+
+  type S3Object {
+    ETag: String
+    Location: String!
+    Key: String!
+    Bucket: String!
   }
 `

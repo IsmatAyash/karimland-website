@@ -1,4 +1,7 @@
 import { ApolloError } from "apollo-server-express"
+import { GraphQLUpload } from "graphql-upload"
+import { S3BUCKET } from "../../config"
+import handleFileUpload from "../../functions/fileUpload"
 
 const myCustomLabels = {
   totalDocs: "productCount",
@@ -13,6 +16,7 @@ const myCustomLabels = {
 }
 
 export default {
+  Upload: GraphQLUpload,
   Query: {
     // products: async (parent, args, { Product }) => {
     //   try {
@@ -75,6 +79,11 @@ export default {
         throw new ApolloError(err.message, 400)
       }
     },
+    imageUpload: async (_, { file }) => {
+      const response = await handleFileUpload(file)
+
+      return { key: params.Key, url: result.Location }
+    },
     delProductById: async (_, { id }, { Product }) => {
       try {
         const deletedProd = await Product.findOneAndDelete(id)
@@ -90,4 +99,30 @@ export default {
       }
     },
   },
+  // imageUpload: async (_, { file }) => {
+  // const params = {
+  //   Bucket: S3BUCKET,
+  //   Key: "",
+  //   Body: "",
+  //   ACL: "public-read",
+  // }
+  // let { createReadStream, filename } = await file
+  // let fileStream = createReadStream()
+  // fileStream.on("error", error => console.error(error))
+  // params.Body = fileStream
+  // let timestamp = new Date().getTime()
+  // let file_extension = extname(filename)
+  // params.Key = `images/${timestamp}${file_extension}`
+  // let upload = promisify(this.s3.upload.bind(this.s3))
+  // let result = await upload(params).catch(console.log)
+  // let object = {
+  //   key: params.Key,
+  //   url: result.Location,
+  // }
+  //   let s3Payload = {
+  //     key: "",
+  //     url: "",
+  //   }
+  //   return ""
+  // },
 }

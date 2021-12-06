@@ -2,15 +2,15 @@ import { gql } from "apollo-server-express"
 
 export default gql`
   extend type Query {
-    authUser: User!
-    authenticateUser(email: String!, password: String!): AuthResp!
+    login(email: String!, password: String!): AuthResp!
     users(page: Int, limit: Int): userPaginator!
     getUser(id: ID!): User!
     sellers(page: Int, limit: Int): userPaginator!
   }
 
   extend type Mutation {
-    registerUser(newUser: UserInput): AuthResp!
+    register(newUser: UserInput): AuthResp!
+    confrimEmail(email: String!): AuthCode
     editUserById(updatedUser: UserInput, id: ID!): User!
     delUserById(id: ID!): AuthResp
     forgotPassword(id: ID!, email: String!): User
@@ -77,5 +77,9 @@ export default gql`
     buyer
     seller
     admin
+  }
+
+  type AuthCode {
+    code: String!
   }
 `
