@@ -28,11 +28,15 @@ export const UserRegistrationRules = yup.object().shape({
   email,
   name,
   password,
-  userType,
-  role,
   country,
 })
+
 export const UserAuthenticationRules = yup.object().shape({
   email,
   password,
+})
+
+export const UserRoleRules = yup.object().shape({
+  role,
+  userType,
 })

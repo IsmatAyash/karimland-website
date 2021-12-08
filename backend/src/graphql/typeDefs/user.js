@@ -9,8 +9,8 @@ export default gql`
   }
 
   extend type Mutation {
+    passCode(newUser: UserInput): String!
     register(newUser: UserInput): AuthResp!
-    confrimEmail(email: String!): AuthCode
     editUserById(updatedUser: UserInput, id: ID!): User!
     delUserById(id: ID!): AuthResp
     forgotPassword(id: ID!, email: String!): User
@@ -77,9 +77,5 @@ export default gql`
     buyer
     seller
     admin
-  }
-
-  type AuthCode {
-    code: String!
   }
 `

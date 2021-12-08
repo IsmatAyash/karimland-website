@@ -85,18 +85,47 @@ export default {
         throw new ApolloError(err.message, 400)
       }
     },
+    // passCode: async (_, { newUser }) => {
+    //   await UserRegistrationRules.validate(newUser, { abortEarly: false })
+    //   try {
+    //     const passCode = Math.floor(1000 + Math.random() * 9000).toString()
+    //     await sendEmail(
+    //       newUser.email,
+    //       `Please use this code ${passCode} to confirm your email and register`
+    //     )
+    //     return passCode
+    //   } catch (err) {
+    //     console.log(err)
+    //     throw new UserInputError(err.message, 400)
+    //   }
+    // },
   },
   Mutation: {
-    register: async (_, { newUser }, { User }) => {
+    passCode: async (_, { newUser }, { User }) => {
       await UserRegistrationRules.validate(newUser, { abortEarly: false })
       try {
-        const { email, password } = newUser
+        const { email } = newUser
         // check email uniqueness in the database
         let user = await User.findOne({ email })
-        if (user) throw new ApolloError("Email already registered", 403)
+        if (user) throw new ApolloError("Email is already registered", 403)
+
+        const passCode = Math.floor(1000 + Math.random() * 9000).toString()
+        await sendEmail(
+          newUser.email,
+          `Please use this code ${passCode} to confirm your email and register`
+        )
+        return passCode
+      } catch (err) {
+        // console.log(err)
+        throw new UserInputError(err.message, 400)
+      }
+    },
+    register: async (_, { newUser }, { User }) => {
+      try {
+        const { password } = newUser
 
         // Create new user
-        user = new User(newUser)
+        let user = new User(newUser)
 
         // hash the password
         user.password = await hash(password, 12)
@@ -112,7 +141,7 @@ export default {
         return { token, user: res }
       } catch (error) {
         console.log(error)
-        throw new UserInputError(error.message, 400)
+        throw new ApolloError(error.message, 400)
       }
     },
     forgotPassword: async (_, { id, email }, { User, redis }) => {
@@ -159,14 +188,6 @@ export default {
         console.log(error.message)
         throw new ApolloError(error.message, 400)
       }
-    },
-    confrimEmail: async (_, { email }) => {
-      const code = Math.floor(1000 + Math.random() * 9000).toString()
-      await sendEmail(
-        email,
-        `Please use this code ${code} to confirm your email and register`
-      )
-      return { code }
     },
     editUserById: async (_, { updatedUser, id }, { User }) => {
       return await User.findByIdAndUpdate(id, { ...updatedUser }, { new: true })
