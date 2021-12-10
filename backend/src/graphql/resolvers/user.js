@@ -45,8 +45,8 @@ export default {
         const token = await issueToken(user)
         return { token, user }
       } catch (error) {
-        throw new ApolloError(error.message, 400)
-        // console.log(error)
+        // console.log("ERROR", error)
+        throw new ApolloError(error, 400)
         // console.log(formatYupError(error))
         // throw new Error(formatYupError(error))
       }
@@ -140,7 +140,6 @@ export default {
         const token = await issueToken(res)
         return { token, user: res }
       } catch (error) {
-        console.log(error)
         throw new ApolloError(error.message, 400)
       }
     },

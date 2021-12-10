@@ -1,7 +1,8 @@
-import { ApolloError } from "apollo-server-express"
+import { ApolloError, UserInputError } from "apollo-server-express"
 import { GraphQLUpload } from "graphql-upload"
 import { S3BUCKET } from "../../config"
 import handleFileUpload from "../../functions/fileUpload"
+import { ProductRules } from "../../validators/product"
 
 const myCustomLabels = {
   totalDocs: "productCount",
@@ -50,6 +51,7 @@ export default {
   Mutation: {
     createProduct: async (_, { newProduct }, { Product, User, user }) => {
       try {
+        await ProductRules.validate(newProduct, { abortEarly: false })
         let result = await Product.create({ ...newProduct, seller: user.sub })
         if (!result) {
           throw new ApolloError("Unable to create product")
@@ -62,7 +64,7 @@ export default {
         }
       } catch (err) {
         console.log(err.message)
-        throw new ApolloError(err.message, 400)
+        throw new UserInputError(err.message, 400)
       }
     },
     editProductById: async (_, { updatedProduct, id }, { Product, user }) => {
@@ -80,9 +82,8 @@ export default {
       }
     },
     imageUpload: async (_, { file }) => {
-      const response = await handleFileUpload(file)
-
-      return { key: params.Key, url: result.Location }
+      // const response = await handleFileUpload(file)
+      // return { key: params.Key, url: result.Location }
     },
     delProductById: async (_, { id }, { Product }) => {
       try {

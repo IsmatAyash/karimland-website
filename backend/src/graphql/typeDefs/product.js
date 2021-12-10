@@ -27,7 +27,7 @@ export default gql`
     oldPrice: Float
     rating: Int
     avgRating: Float
-    description: ProdDesc
+    description: [ProdDesc]
     tags: [String!]
     seller: User!
   }
@@ -72,8 +72,8 @@ export default gql`
     category: String!
     inventory: Int
     featured: Boolean
-    oldprice: Float
-    description: ProdDescInput
+    oldPrice: Float
+    description: [ProdDescInput]
     tags: [String!]
     sellerId: ID
   }
