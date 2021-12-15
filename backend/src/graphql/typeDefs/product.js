@@ -1,19 +1,31 @@
 import { gql } from "apollo-server-express"
 
 export default gql`
+  scalar Upload
   extend type Query {
     getProduct(id: ID!): Product!
     products(cat: String!, page: Int, limit: Int): ProductPaginator!
+    tags: [Tags]
+    productsTag(tag: String!): [Product]
   }
 
   extend type Mutation {
     delProductById(id: ID!): ProdNotification!
     createProduct(newProduct: ProductInput): Product!
     editProductById(updatedProduct: ProductInput, id: ID!): Product!
-    imageUpload(file: Upload!): S3Object
+    imageUpload(file: Upload!): File
   }
 
-  scalar Upload
+  type Tags {
+    id: ID!
+    tags: [String]
+  }
+
+  type File {
+    filename: String!
+    mimetype: String!
+    url: String!
+  }
 
   type Product {
     id: ID!
@@ -82,12 +94,5 @@ export default gql`
     id: ID!
     message: String!
     success: Boolean
-  }
-
-  type S3Object {
-    ETag: String
-    Location: String!
-    Key: String!
-    Bucket: String!
   }
 `

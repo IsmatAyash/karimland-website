@@ -1,6 +1,7 @@
 import { error, success } from "consola"
 import express from "express"
 import { ApolloServer } from "apollo-server-express"
+import { graphqlUploadExpress } from "graphql-upload"
 import {
   ApolloServerPluginLandingPageGraphQLPlayground,
   ApolloServerPluginLandingPageDisabled,
@@ -27,7 +28,7 @@ const startServer = async () => {
     app.use(
       cors({
         origin: "http://localhost:8000",
-        // credentials: true,
+        credentials: true,
       })
     )
 
@@ -62,7 +63,7 @@ const startServer = async () => {
           : ApolloServerPluginLandingPageDisabled(),
       ],
     })
-
+    app.use(graphqlUploadExpress())
     await server.start()
     server.applyMiddleware({ app })
 

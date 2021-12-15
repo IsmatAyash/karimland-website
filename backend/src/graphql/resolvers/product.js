@@ -1,8 +1,16 @@
 import { ApolloError, UserInputError } from "apollo-server-express"
 import { GraphQLUpload } from "graphql-upload"
-import { S3BUCKET } from "../../config"
-import handleFileUpload from "../../functions/fileUpload"
+import aws from "aws-sdk"
+import {
+  SECRET_ACCESS_KEY,
+  ACCESS_KEY_ID,
+  REGION,
+  S3BUCKET,
+} from "../../config"
+import uuidv4 from "uuid"
+
 import { ProductRules } from "../../validators/product"
+import { parse } from "path"
 
 const myCustomLabels = {
   totalDocs: "productCount",
@@ -46,9 +54,47 @@ export default {
         throw new ApolloError(error.message, 400)
       }
     },
+    tags: async (_, args, { Product }) => {
+      return await Product.find()
+    },
+    productsTag: async (_, { tag }, { Product }) => {
+      return await Product.find({ tags: { $elemMatch: { $eq: tag } } })
+    },
   },
-
   Mutation: {
+    imageUpload: async (_, { file }) => {
+      let { createReadStream, filename, mimetype } = await file
+      let { ext, name } = parse(filename)
+
+      aws.config.update({
+        accessKeyId: ACCESS_KEY_ID,
+        secretAccessKey: SECRET_ACCESS_KEY,
+        region: REGION,
+        signatureVersion: "v4",
+      })
+
+      name = name.replace(/([^a-z0-9 ]+)/gi, "-").replace(" ", "_")
+      const key = uuidv4()
+
+      console.log("KEY", `images/${key}~${filename}`)
+
+      const params = {
+        Bucket: S3BUCKET,
+        Key: `images/${key}~${name}${ext}`,
+        Body: createReadStream(),
+        ContentType: mimetype,
+      }
+      const s3 = new aws.S3()
+      try {
+        const data = await s3.upload(params).promise()
+        return { filename, mimetype, url: data.Location }
+      } catch (error) {
+        console.log(error)
+        throw new ApolloError(error.message, 400)
+      }
+      // const uploadUrl = await s3.getSignedUrlPromise("putObject", params)
+      // return { mimetype, filename, url: uploadUrl }
+    },
     createProduct: async (_, { newProduct }, { Product, User, user }) => {
       try {
         await ProductRules.validate(newProduct, { abortEarly: false })
@@ -81,10 +127,6 @@ export default {
         throw new ApolloError(err.message, 400)
       }
     },
-    imageUpload: async (_, { file }) => {
-      // const response = await handleFileUpload(file)
-      // return { key: params.Key, url: result.Location }
-    },
     delProductById: async (_, { id }, { Product }) => {
       try {
         const deletedProd = await Product.findOneAndDelete(id)
@@ -100,30 +142,4 @@ export default {
       }
     },
   },
-  // imageUpload: async (_, { file }) => {
-  // const params = {
-  //   Bucket: S3BUCKET,
-  //   Key: "",
-  //   Body: "",
-  //   ACL: "public-read",
-  // }
-  // let { createReadStream, filename } = await file
-  // let fileStream = createReadStream()
-  // fileStream.on("error", error => console.error(error))
-  // params.Body = fileStream
-  // let timestamp = new Date().getTime()
-  // let file_extension = extname(filename)
-  // params.Key = `images/${timestamp}${file_extension}`
-  // let upload = promisify(this.s3.upload.bind(this.s3))
-  // let result = await upload(params).catch(console.log)
-  // let object = {
-  //   key: params.Key,
-  //   url: result.Location,
-  // }
-  //   let s3Payload = {
-  //     key: "",
-  //     url: "",
-  //   }
-  //   return ""
-  // },
 }
