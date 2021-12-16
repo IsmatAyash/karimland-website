@@ -11,7 +11,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     return null
   }
 
-  if (user.username !== "admin") {
+  if (user.user.role !== "admin") {
     navigate("/")
     return null
   }

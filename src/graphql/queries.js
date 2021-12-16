@@ -1,9 +1,10 @@
 import { gql } from "@apollo/client"
 import QuantitySelector from "../components/ProductInfo/QuantitySelector"
+import { Rating } from "react-simple-star-rating"
 
 export const AUTH_USER = gql`
   query AUTH_USER($email: String!, $password: String!) {
-    authenticateUser(email: $email, password: $password) {
+    login(email: $email, password: $password) {
       user {
         id
         name
@@ -11,6 +12,8 @@ export const AUTH_USER = gql`
         avatar
         role
         permissions
+        userType
+        country
       }
       token
     }
@@ -48,20 +51,49 @@ export const GET_PRODUCTS = gql`
   }
 `
 
-// query GET_PRODUCT($id: ID!) {
-//   getProduct(id: $id) {
-//     id
-//     title
-//     unit
-//     price
-//     image
-//     seller {
-//       id
-//       name
-//       country
-//     }
-//   }
-// }
+export const GET_TAGS = gql`
+  query GET_TAGS {
+    tags {
+      id
+      tags
+    }
+  }
+`
+
+export const GET_PRODUCTS_TAG = gql`
+  query GET_PRODUCTS_TAG($tag: String!) {
+    productsTag(tag: $tag) {
+      id
+      title
+      inventory
+      image
+      price
+      unit
+      oldPrice
+    }
+  }
+`
+export const GET_PRODUCT = gql`
+  query GET_PRODUCT($id: ID!) {
+    getProduct(id: $id) {
+      id
+      title
+      unit
+      price
+      oldPrice
+      rating
+      avgRating
+      image
+      inventory
+      description
+      seller {
+        id
+        name
+        country
+      }
+    }
+  }
+`
 
 // query GET_SELLERS {
 //   sellers {

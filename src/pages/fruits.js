@@ -1,30 +1,32 @@
-import React, { useState, useEffect, useContext } from "react"
-import { StaticImage } from "gatsby-plugin-image"
+import React, { useState } from "react"
 import { graphql } from "gatsby"
-import Layout from "../components/Layout"
+import { useQuery } from "@apollo/client"
+import { StaticImage } from "gatsby-plugin-image"
+
 import SEO from "../components/SEO"
-import ProductList from "../components/ProductList"
+import Layout from "../components/Layout"
 import TagsList from "../components/TagsList"
-import { ProductContext } from "../context/products"
+import { GET_PRODUCTS } from "../graphql/queries"
+import ProductList from "../components/ProductList"
 
-const Fruits = () => {
-  const { prodImages } = useContext(ProductContext)
-  const [fruits, setFruits] = useState([])
+const Fruits = ({ data }) => {
+  const { nodes: images } = data.allS3Object
+  const [veges, setVeges] = useState([])
+  const [errorMessage, setErrorMessage] = useState(undefined)
 
-  const { items } = []
-
-  useEffect(() => {
-    if (prodImages && items) {
-      const prods = items.map(prod => {
+  const { loading } = useQuery(GET_PRODUCTS, {
+    variables: { cat: "Fruit", page: 1, limit: 10 },
+    onCompleted: prodData => {
+      const prods = prodData.products.products.map(prod => {
         const idx = prod.image.split("/").pop()
-        return {
-          ...prod,
-          image: prodImages.find(i => i.name === idx).image,
-        }
+        const imageObj = images.find(i => i.localFile?.base === idx)?.localFile
+          .childImageSharp
+        return { ...prod, image: imageObj }
       })
-      setFruits(prods || [])
-    }
-  }, [prodImages, items])
+      setVeges(prods)
+    },
+    onError: error => setErrorMessage(error.message),
+  })
 
   return (
     <Layout>
@@ -46,34 +48,38 @@ const Fruits = () => {
           </div>
         </header>
         <section className="products-container">
-          <TagsList products={fruits} />
-          {fruits.length === 0 && <h3>No fruits products available</h3>}
-          <ProductList prods={fruits} />
+          {loading ? (
+            <p>Loading...</p>
+          ) : errorMessage ? (
+            <h3>{errorMessage}</h3>
+          ) : null}
+          {veges ? (
+            <>
+              <TagsList products={veges} />
+              <ProductList prods={veges} />
+            </>
+          ) : (
+            <h3>No Fruits products available.</h3>
+          )}
         </section>
       </main>
     </Layout>
   )
 }
 
-// export const query = graphql`
-//   {
-//     product {
-//       listProducts(filter: { prodType: { eq: "Fruit" } }) {
-//         items {
-//           title
-//           id
-//           description
-//           avgRating
-//           image
-//           ratings
-//           quantity
-//           prices
-//           tags
-//           oldPrice
-//         }
-//       }
-//     }
-//   }
-// `
+export const query = graphql`
+  {
+    allS3Object {
+      nodes {
+        localFile {
+          base
+          childImageSharp {
+            gatsbyImageData(placeholder: TRACED_SVG, layout: CONSTRAINED)
+          }
+        }
+      }
+    }
+  }
+`
 
 export default Fruits

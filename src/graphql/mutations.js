@@ -1,564 +1,293 @@
-/* eslint-disable */
-// this is an auto generated file. This will be overwritten
+import { gql } from "@apollo/client"
 
-export const createProduct = /* GraphQL */ `
-  mutation CreateProduct(
-    $input: CreateProductInput!
-    $condition: ModelProductConditionInput
-  ) {
-    createProduct(input: $input, condition: $condition) {
+export const CREATE_PRODUCT = gql`
+  mutation CREATE_PRODUCT($newProduct: ProductInput) {
+    createProduct(newProduct: $newProduct) {
       id
-      seller_id
       title
-      image
-      inventory
-      price
       unit
-      oldPrice
-      avgRating
-      ratings
-      category
-      featured
-      description
+      price
+      image
+      description {
+        title
+        detail
+      }
       tags
-      baseType
-      orders {
-        nextToken
-      }
-      carts {
-        nextToken
-      }
-      createdAt
-      updatedAt
       seller {
         id
         name
-        address
-        country
-        createdAt
-        updatedAt
+        email
+        userType
       }
     }
   }
-`;
-export const updateProduct = /* GraphQL */ `
-  mutation UpdateProduct(
-    $input: UpdateProductInput!
-    $condition: ModelProductConditionInput
-  ) {
-    updateProduct(input: $input, condition: $condition) {
-      id
-      seller_id
-      title
-      image
-      inventory
-      price
-      unit
-      oldPrice
-      avgRating
-      ratings
-      category
-      featured
-      description
-      tags
-      baseType
-      orders {
-        nextToken
-      }
-      carts {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      seller {
+`
+
+export const IMAGE_UPLOAD = gql`
+  mutation ($file: Upload!) {
+    imageUpload(file: $file) {
+      filename
+      mimetype
+      url
+    }
+  }
+`
+
+export const REGISTER_USER = gql`
+  mutation REGISTER_USER($newUser: UserInput) {
+    register(newUser: $newUser) {
+      user {
         id
+        email
         name
-        address
+        role
+        permissions
+        avatar
+        shippingingAddress
+        billingAddress
         country
-        createdAt
-        updatedAt
       }
+      token
     }
   }
-`;
-export const deleteProduct = /* GraphQL */ `
-  mutation DeleteProduct(
-    $input: DeleteProductInput!
-    $condition: ModelProductConditionInput
-  ) {
-    deleteProduct(input: $input, condition: $condition) {
-      id
-      seller_id
-      title
-      image
-      inventory
-      price
-      unit
-      oldPrice
-      avgRating
-      ratings
-      category
-      featured
-      description
-      tags
-      baseType
-      orders {
-        nextToken
-      }
-      carts {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      seller {
-        id
-        name
-        address
-        country
-        createdAt
-        updatedAt
-      }
-    }
+`
+
+export const CONFIRM_EMAIL = gql`
+  mutation CONFIRM_EMAIL($newUser: UserInput!) {
+    passCode(newUser: $newUser)
   }
-`;
-export const createSeller = /* GraphQL */ `
-  mutation CreateSeller(
-    $input: CreateSellerInput!
-    $condition: ModelSellerConditionInput
-  ) {
-    createSeller(input: $input, condition: $condition) {
-      id
-      name
-      address
-      country
-      createdAt
-      updatedAt
-      products {
-        nextToken
-      }
-    }
-  }
-`;
-export const updateSeller = /* GraphQL */ `
-  mutation UpdateSeller(
-    $input: UpdateSellerInput!
-    $condition: ModelSellerConditionInput
-  ) {
-    updateSeller(input: $input, condition: $condition) {
-      id
-      name
-      address
-      country
-      createdAt
-      updatedAt
-      products {
-        nextToken
-      }
-    }
-  }
-`;
-export const deleteSeller = /* GraphQL */ `
-  mutation DeleteSeller(
-    $input: DeleteSellerInput!
-    $condition: ModelSellerConditionInput
-  ) {
-    deleteSeller(input: $input, condition: $condition) {
-      id
-      name
-      address
-      country
-      createdAt
-      updatedAt
-      products {
-        nextToken
-      }
-    }
-  }
-`;
-export const createProductOrder = /* GraphQL */ `
-  mutation CreateProductOrder(
-    $input: CreateProductOrderInput!
-    $condition: ModelProductOrderConditionInput
-  ) {
-    createProductOrder(input: $input, condition: $condition) {
-      id
-      product_id
-      order_id
-      order {
-        id
-        user
-        date
-        total
-        status
-        shippedto
-        shippedfrom
-        trackingNo
-        shippedAt
-        createdAt
-        updatedAt
-        customer
-      }
-      createdAt
-      updatedAt
-      product {
-        id
-        seller_id
-        title
-        image
-        inventory
-        price
-        unit
-        oldPrice
-        avgRating
-        ratings
-        category
-        featured
-        description
-        tags
-        baseType
-        createdAt
-        updatedAt
-      }
-      customer
-    }
-  }
-`;
-export const updateProductOrder = /* GraphQL */ `
-  mutation UpdateProductOrder(
-    $input: UpdateProductOrderInput!
-    $condition: ModelProductOrderConditionInput
-  ) {
-    updateProductOrder(input: $input, condition: $condition) {
-      id
-      product_id
-      order_id
-      order {
-        id
-        user
-        date
-        total
-        status
-        shippedto
-        shippedfrom
-        trackingNo
-        shippedAt
-        createdAt
-        updatedAt
-        customer
-      }
-      createdAt
-      updatedAt
-      product {
-        id
-        seller_id
-        title
-        image
-        inventory
-        price
-        unit
-        oldPrice
-        avgRating
-        ratings
-        category
-        featured
-        description
-        tags
-        baseType
-        createdAt
-        updatedAt
-      }
-      customer
-    }
-  }
-`;
-export const deleteProductOrder = /* GraphQL */ `
-  mutation DeleteProductOrder(
-    $input: DeleteProductOrderInput!
-    $condition: ModelProductOrderConditionInput
-  ) {
-    deleteProductOrder(input: $input, condition: $condition) {
-      id
-      product_id
-      order_id
-      order {
-        id
-        user
-        date
-        total
-        status
-        shippedto
-        shippedfrom
-        trackingNo
-        shippedAt
-        createdAt
-        updatedAt
-        customer
-      }
-      createdAt
-      updatedAt
-      product {
-        id
-        seller_id
-        title
-        image
-        inventory
-        price
-        unit
-        oldPrice
-        avgRating
-        ratings
-        category
-        featured
-        description
-        tags
-        baseType
-        createdAt
-        updatedAt
-      }
-      customer
-    }
-  }
-`;
-export const createOrder = /* GraphQL */ `
-  mutation CreateOrder(
-    $input: CreateOrderInput!
-    $condition: ModelOrderConditionInput
-  ) {
-    createOrder(input: $input, condition: $condition) {
-      id
-      user
-      date
-      total
-      status
-      shippedto
-      shippedfrom
-      trackingNo
-      shippedAt
-      products {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      customer
-    }
-  }
-`;
-export const updateOrder = /* GraphQL */ `
-  mutation UpdateOrder(
-    $input: UpdateOrderInput!
-    $condition: ModelOrderConditionInput
-  ) {
-    updateOrder(input: $input, condition: $condition) {
-      id
-      user
-      date
-      total
-      status
-      shippedto
-      shippedfrom
-      trackingNo
-      shippedAt
-      products {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      customer
-    }
-  }
-`;
-export const deleteOrder = /* GraphQL */ `
-  mutation DeleteOrder(
-    $input: DeleteOrderInput!
-    $condition: ModelOrderConditionInput
-  ) {
-    deleteOrder(input: $input, condition: $condition) {
-      id
-      user
-      date
-      total
-      status
-      shippedto
-      shippedfrom
-      trackingNo
-      shippedAt
-      products {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      customer
-    }
-  }
-`;
-export const createProductCart = /* GraphQL */ `
-  mutation CreateProductCart(
-    $input: CreateProductCartInput!
-    $condition: ModelProductCartConditionInput
-  ) {
-    createProductCart(input: $input, condition: $condition) {
-      id
-      product_id
-      user_id
-      quantity
-      cart {
-        id
-        createdAt
-        updatedAt
-        customer
-      }
-      createdAt
-      updatedAt
-      product {
-        id
-        seller_id
-        title
-        image
-        inventory
-        price
-        unit
-        oldPrice
-        avgRating
-        ratings
-        category
-        featured
-        description
-        tags
-        baseType
-        createdAt
-        updatedAt
-      }
-      customer
-    }
-  }
-`;
-export const updateProductCart = /* GraphQL */ `
-  mutation UpdateProductCart(
-    $input: UpdateProductCartInput!
-    $condition: ModelProductCartConditionInput
-  ) {
-    updateProductCart(input: $input, condition: $condition) {
-      id
-      product_id
-      user_id
-      quantity
-      cart {
-        id
-        createdAt
-        updatedAt
-        customer
-      }
-      createdAt
-      updatedAt
-      product {
-        id
-        seller_id
-        title
-        image
-        inventory
-        price
-        unit
-        oldPrice
-        avgRating
-        ratings
-        category
-        featured
-        description
-        tags
-        baseType
-        createdAt
-        updatedAt
-      }
-      customer
-    }
-  }
-`;
-export const deleteProductCart = /* GraphQL */ `
-  mutation DeleteProductCart(
-    $input: DeleteProductCartInput!
-    $condition: ModelProductCartConditionInput
-  ) {
-    deleteProductCart(input: $input, condition: $condition) {
-      id
-      product_id
-      user_id
-      quantity
-      cart {
-        id
-        createdAt
-        updatedAt
-        customer
-      }
-      createdAt
-      updatedAt
-      product {
-        id
-        seller_id
-        title
-        image
-        inventory
-        price
-        unit
-        oldPrice
-        avgRating
-        ratings
-        category
-        featured
-        description
-        tags
-        baseType
-        createdAt
-        updatedAt
-      }
-      customer
-    }
-  }
-`;
-export const createCart = /* GraphQL */ `
-  mutation CreateCart(
-    $input: CreateCartInput!
-    $condition: ModelCartConditionInput
-  ) {
-    createCart(input: $input, condition: $condition) {
-      id
-      products {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      customer
-    }
-  }
-`;
-export const updateCart = /* GraphQL */ `
-  mutation UpdateCart(
-    $input: UpdateCartInput!
-    $condition: ModelCartConditionInput
-  ) {
-    updateCart(input: $input, condition: $condition) {
-      id
-      products {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      customer
-    }
-  }
-`;
-export const deleteCart = /* GraphQL */ `
-  mutation DeleteCart(
-    $input: DeleteCartInput!
-    $condition: ModelCartConditionInput
-  ) {
-    deleteCart(input: $input, condition: $condition) {
-      id
-      products {
-        nextToken
-      }
-      createdAt
-      updatedAt
-      customer
-    }
-  }
-`;
+`
+
+// {{
+//   "newUser": {
+//     "name": "Layale Bassil",
+//     "email": "layale@gmail.com",
+//     "password": "oam007",
+//     "role":"seller",
+//     "userType": "Seller",
+//     "country":"Lebanon"
+//     "avatar": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fismatayash%2F&psig=AOvVaw2V7bIlQw4m1vuexHebf9hV&ust=1635578262329000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCJjs_P2J7_MCFQAAAAAdAAAAABAD"
+//   }
+// }
+
+// mutation UPDATE_PRODUCT($updatedProduct: ProductInput, $id: ID!){
+//   editProductById(updatedProduct: $updatedProduct, id: $id){
+//     title
+//     unit
+//     price
+//     image
+//     seller{
+//       name
+//       email
+//     }
+//   }
+// }
+
+// {
+//   "updatedProduct": {
+//     "title": "Boomali",
+//     "unit": "piece",
+//     "price": 8,
+//     "image": "http updated",
+//     "sellerId":"6180f837437242b185d3d5fd"
+//   },
+//   "id": "6181054f10e066018b430dbb"
+// }
+
+// mutation DELETE_PRODUCT($id: ID!){
+//   delProductById(id: $id){
+//     id
+//     success
+//     message
+//   }
+// }
+// {
+//   "id": "617a6e2a8c3fc88a1ad8e77c"
+// }
+
+// mutation ADD_CART_ITEM($newCart: CartInput) {
+//   addCartItem(newCart: $newCart){
+//     buyer {
+//       id
+//       name
+//     }
+//     items{
+//       product{
+//         id
+//         title
+//       }
+//       quantity
+//     }
+//   }
+// }
+
+// {
+//   "newCart": {
+//     "quantity": 1,
+//     "product": "61827d9fc257aeb988b70f1f"
+//   }
+// }
+
+// mutation INCREASE_CARD_ITEM_QTY($updCartItem: CartInput, $id: ID! ){
+//   updCartItem(updCartItem: $updCartItem, id: $id){
+//     buyer{
+//       name
+//     }
+//     items{
+//       product{
+//         id
+//         title
+//         unit
+//         price
+//       }
+//       quantity
+//     }
+//   }
+// }
+
+// {
+//   "updCartItem": {
+//     "quantity": 1,
+//     "product": "61827d9fc257aeb988b70f1f"
+//   },
+//   "id": "6183d121020566685c2adc9c"
+// }
+
+// mutation DECREASE_CARD_ITEM_QTY($updCartItem: CartInput, $id: ID! ){
+//   updCartItem(updCartItem: $updCartItem, id: $id){
+//     buyer{
+//       name
+//     }
+//     items{
+//       product{
+//         id
+//         title
+//         unit
+//         price
+//       }
+//       quantity
+//     }
+//   }
+// }
+
+// {
+//   "updCartItem": {
+//     "quantity": -1,
+//     "product": "61827d9fc257aeb988b70f1f"
+//   },
+//   "id": "6183d121020566685c2adc9c"
+// }
+
+// # product id
+// mutation DEL_CART_ITEM($productId: ID!) {
+//   delCartItem(productId: $productId) {
+//     id
+//     message
+//     success
+//   }
+// }
+
+// # cart id
+// mutation DEL_CART($id: ID!){
+//   delCart(id: $id){
+//     id
+//     message
+//     success
+//   }
+// }
+
+// # orders
+// mutation ADD_ORDER($newOrder: [OrderInput]) {
+//   addOrder(newOrder: $newOrder) {
+//     id
+//     details {
+//       productId
+//       title
+//       unit
+//       price
+//       quantity
+//       image
+//       sellerId
+//       sellerName
+//       toAddress
+//       fromAddress
+//       itemStatus
+//       trackingNo
+//       shippedAt
+//     }
+//     buyer {
+//       name
+//       email
+//     }
+//     orderStatus
+//   }
+// }
+
+// {
+//   "newOrder": [{
+//     "productId":"619621d5fa36d2d13ef59a27",
+//     "quantity": 2,
+//     "unit": "kg",
+//     "price": 10,
+//     "image": "http",
+//     "title": "Organic Salad",
+//     "sellerId": "618776703dc2e3c7bc8386e1",
+//     "sellerName": "Alexy Ayash"
+//   },
+//   {
+//     "productId":"618847f07f3b726233f65f94",
+//     "quantity": 2,
+//     "unit": "kg",
+//     "price": 10,
+//     "image": "http",
+//     "title": "Organic Oranges",
+//     "sellerId": "6187769e3dc2e3c7bc8386e5",
+//     "sellerName": "Ismat Ayash"
+//   }]
+// }
+
+// mutation UPDATE_SHIPPMENT_INFO($id: ID!, $shipDet: ShipInput!) {
+//   shipit(id: $id, shipDet: $shipDet) {
+//     details {
+//       toAddress
+//       fromAddress
+//       trackingNo
+//       shippedAt
+//       productId
+//       sellerId
+//       itemStatus
+//     }
+//     orderStatus
+//   }
+// }
+
+// {
+//   "shipDet": {
+//     "productId": "619621d5fa36d2d13ef59a27",
+//     "fromAddress": "Address from",
+//     "toAddress": "Address to",
+//     "trackingNo": "BEC123456",
+//     "shippedAt": "11/11/2021",
+//     "itemStatus": "Shipped",
+//     "sellerId": "618776703dc2e3c7bc8386e1"
+//   },
+//   "id": "61976ecee0fd490789e5d80f"
+// }
+
+// mutation FORGOT_PASSWORD($id: ID!, $email: String!){
+//   forgotPassword(id: $id, email: $email){
+//     name
+//     email
+//     password
+//   }
+// }
+
+// mutation CHANGE_PASSWORD($token: String!, $newPassword: String!){
+//   changePassword(token: $token, newPassword: $newPassword){
+//     name
+//     email
+//     billingAddress
+//     id
+//     shippingingAddress
+//   }
+// }

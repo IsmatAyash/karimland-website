@@ -1,226 +1,304 @@
 import React, { useState } from "react"
-import { v4 as uuidv4 } from "uuid"
-import { createProduct } from "../../api/mutations"
+import { CREATE_PRODUCT, IMAGE_UPLOAD } from "../../graphql/mutations"
+import { useMutation } from "@apollo/client"
+import styled from "styled-components"
+import { Multiselect } from "multiselect-react-dropdown"
 
 const initialValues = {
   title: "",
+  unit: "kg",
+  price: 0.0,
   image: "",
-  quantity: 0,
-  oldPrice: 0.0,
-  avgRating: 0.0,
-  ratings: 0,
-  prodType: "Veges",
+  category: "",
+  inventory: 0,
   featured: false,
-  prices: [],
-  description: [],
+  oldPrice: 0.0,
+  description: [{}],
   tags: [],
 }
+
 const Products = () => {
   const [image, setImage] = useState("")
-  const [file, setFile] = useState(null)
   const [productDetails, setProductDetails] = useState(initialValues)
+  const [descrip, setDescrip] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [errorDescrip, setErrorDescrip] = useState("")
+  const [validationErrs, setValidationErrs] = useState([])
+
+  const tagsData = [
+    { Tag: "Jam", id: 1 },
+    { Tag: "Juice", id: 2 },
+    { Tag: "Pickles", id: 3 },
+    { Tag: "Compot", id: 4 },
+  ]
+  const [options] = useState(tagsData)
+
+  const [createProduct] = useMutation(CREATE_PRODUCT)
+  const [uploadImage] = useMutation(IMAGE_UPLOAD, {
+    onCompleted: data => {
+      setImage(data?.imageUpload.url)
+      setProductDetails({ ...productDetails, image: data?.imageUpload.url })
+    },
+  })
 
   const handleSubmit = async e => {
-    // const { title, prices } = productDetails
-    // e.preventDefault()
-    // if (file) {
-    //   console.log("inside if file block", image)
-    //   const extension = file.name.split(".")[1]
-    //   const name = file.name.split(".")[0]
-    //   const key = `images/${uuidv4()}${name}.${extension}`
-    //   const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
-    //   try {
-    //     if (!title || !prices) return
-    // setProductDetails({ ...productDetails, image: url })
-    // await Storage.put(key, file, { contentType: file.type })
-    // await API.graphql(
-    //   graphqlOperation(createProduct, {
-    //     input: { ...productDetails, image: url },
-    //   })
-    // )
-    // Retrieve the uploaded file to display
-    // const image = await Storage.get(key, { level: "public" })
-    //     setImage(image)
-    //     setProductDetails(initialValues)
-    //     alert("Successfully added")
-    //   } catch (err) {
-    //     console.log("error creating product:", err)
-    //     alert("Error while posting", err)
-    //   }
-    // }
+    const { title, price, image } = productDetails
+    e.preventDefault()
+    try {
+      if (!title || !image || price === 0) return
+      const { data, error } = await createProduct({
+        variables: {
+          newProduct: productDetails,
+        },
+      })
+      if (error) alert("Count not create product, check data entered?")
+      if (data) {
+        setImage("")
+        setProductDetails(initialValues)
+        setDescrip("")
+        alert("Successfully added")
+      }
+    } catch (err) {
+      setErrorMessage(err.message)
+    }
   }
 
   const handleChange = e => {
     const { name, value } = e.target
-    if (name === "prices" || name === "description" || name === "tags") {
-      const jsonArray = value.split("-")
-      setProductDetails({ ...productDetails, [name]: jsonArray })
-    } else if (name === "featured")
-      setProductDetails({
-        ...productDetails,
-        featured: !productDetails.featured,
-      })
-    else setProductDetails({ ...productDetails, [name]: value })
+    switch (name) {
+      case "inventory":
+        setProductDetails({
+          ...productDetails,
+          [name]: parseInt(value),
+        })
+        break
+      case "price":
+      case "oldPrice":
+        setProductDetails({
+          ...productDetails,
+          [name]: parseFloat(value),
+        })
+        break
+      case "featured":
+        setProductDetails({
+          ...productDetails,
+          featured: !productDetails.featured,
+        })
+        break
+      case "descrip":
+        setDescrip(value)
+        break
+      default:
+        setProductDetails({ ...productDetails, [name]: value })
+        break
+    }
   }
 
-  // function handleFileUpload(event) {
-  //   const {
-  //     target: { value, files },
-  //   } = event
-  //   const fileForUpload = files[0]
-  //   setFile(fileForUpload || value)
-  // }
+  const handleFileUpload = async ({
+    target: {
+      validity,
+      files: [file],
+    },
+  }) => validity.valid && (await uploadImage({ variables: { file } }))
+
+  const handleTags = (selectedList, selectedItem) => {
+    setProductDetails({
+      ...productDetails,
+      tags: selectedList.map(item => item.Tag),
+    })
+  }
+
+  const handleDescription = e => {
+    setErrorDescrip("")
+    try {
+      setProductDetails({
+        ...productDetails,
+        description:
+          e.target.value.split("\n").map(item => JSON.parse(item)) || {},
+      })
+    } catch (error) {
+      setErrorDescrip(
+        `Input Error: should be in the form "title":"...","detial":"...",  ${error.message}`
+      )
+    }
+  }
 
   return (
-    <>
-      <main className="page">
-        <section className="admin-page">
-          <header className="form-header">
-            <h4>Add New Product</h4>
-          </header>
-          <form className="form contact-form" onSubmit={handleSubmit}>
-            <div className="form-image">
-              <div>Product image</div>
-              {image ? (
-                <img
-                  level="public"
-                  className="image-preview"
-                  src={image}
-                  alt="admin preview"
-                />
-              ) : (
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={e => setFile(e.target.files[0] || e.target.value)}
-                />
-              )}
-            </div>
-            <div className="form-row">
-              <div className="form-field form-field-flex2">
-                <label htmlFor="title">Title</label>
-                <input
-                  type="text"
-                  name="title"
-                  id="title"
-                  value={productDetails.title}
-                  onChange={e => handleChange(e)}
-                  required
-                />
-              </div>
-              <div className="form-field form-field-flex1">
-                <label htmlFor="quantity">Quantity</label>
-                <input
-                  type="text"
-                  name="quantity"
-                  id="quantity"
-                  value={productDetails.quantity}
-                  onChange={e => handleChange(e)}
-                ></input>
-              </div>
-              <div className="form-field form-field-flex1">
-                <label htmlFor="prodType">Product Type</label>
-                <div className="form-radio">
+    <main className="page">
+      <section className="admin-page">
+        <header className="form-header">
+          <h4>Add New Product</h4>
+        </header>
+        <form className="form contact-form" onSubmit={handleSubmit}>
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+          <div className="form-image">
+            <div>Product image</div>
+            {image ? (
+              <img
+                level="public"
+                className="image-preview"
+                src={image}
+                alt="admin preview"
+              />
+            ) : (
+              <input type="file" accept="image/*" onChange={handleFileUpload} />
+            )}
+          </div>
+          {image && (
+            <>
+              <div className="form-row">
+                <div className="form-field form-field-flex2">
+                  <label htmlFor="title">Title</label>
                   <input
-                    className="radio-input"
-                    type="radio"
-                    value={productDetails.prodType}
-                    name="prodType"
-                    id="radio1"
-                    checked={productDetails.prodType === "Veges"}
+                    type="text"
+                    name="title"
+                    id="title"
+                    value={productDetails.title}
                     onChange={e => handleChange(e)}
+                    required
                   />
-                  <label className="radio-label" htmlFor="radio1">
-                    Veges
-                  </label>
+                </div>
+                <div className="form-field form-field-flex1">
+                  <label htmlFor="inventory">Inventory</label>
                   <input
-                    className="radio-input"
-                    type="radio"
-                    value={productDetails.prodType}
-                    name="prodType"
-                    id="radio2"
-                    checked={productDetails.prodType === "Fruit"}
+                    type="number"
+                    name="inventory"
+                    id="inventory"
+                    value={productDetails.inventory}
                     onChange={e => handleChange(e)}
-                  />
-                  <label className="radio-label" htmlFor="radio2">
-                    Fruit
+                  ></input>
+                </div>
+                <div className="form-field form-field-flex1">
+                  <label htmlFor="category">Product Category</label>
+                  <div className="form-radio">
+                    <input
+                      className="radio-input"
+                      type="radio"
+                      value="Veges"
+                      name="category"
+                      id="radio1"
+                      checked={productDetails.category === "Veges"}
+                      onChange={e => handleChange(e)}
+                    />
+                    <label className="radio-label" htmlFor="radio1">
+                      Veges
+                    </label>
+                    <input
+                      className="radio-input"
+                      type="radio"
+                      value="Fruit"
+                      name="category"
+                      id="radio2"
+                      checked={productDetails.category === "Fruit"}
+                      onChange={e => handleChange(e)}
+                    />
+                    <label className="radio-label" htmlFor="radio2">
+                      Fruit
+                    </label>
+                  </div>
+                </div>
+                <div className="form-field-flex1">
+                  <label htmlFor="featured" className="form-checkbox">
+                    <input
+                      className="checkbox-input"
+                      type="checkbox"
+                      name="featured"
+                      id="featured"
+                      value={productDetails.featured}
+                      checked={productDetails.featured}
+                      onChange={e => handleChange(e)}
+                    />
+                    <div className="checkbox-box"></div>
+                    Featured Product
                   </label>
                 </div>
-                {/* <label for="prodType">Product Type</label>
-                  <select name="prodType" id="prodType">
-                    <option value="veges">Veges</option>
-                    <option value="fruit">Fruit</option>
-                  </select> */}
               </div>
-              <div className="form-field-flex1">
-                <label htmlFor="featured" className="form-checkbox">
+              <div className="form-row">
+                <div className="form-field form-field-flex1">
+                  {validationErrs.price && (
+                    <InputError>{validationErrs.price}</InputError>
+                  )}
+                  <label htmlFor="price">Price</label>
                   <input
-                    className="checkbox-input"
-                    type="checkbox"
-                    name="featured"
-                    id="featured"
-                    value={productDetails.featured}
-                    checked={productDetails.featured}
+                    type="number"
+                    name="price"
+                    placeholder="of the form  seperated by -"
+                    id="price"
+                    value={productDetails.price}
                     onChange={e => handleChange(e)}
+                    required
                   />
-                  <div className="checkbox-box"></div>
-                  Featured Product
-                </label>
+                </div>
+                <div className="form-field form-field-flex1">
+                  <label htmlFor="unit">Unit</label>
+                  <select
+                    className="select"
+                    name="unit"
+                    value={productDetails.unit}
+                    selected={productDetails.unit}
+                    onChange={e => handleChange(e)}
+                  >
+                    <option value="gr">gr</option>
+                    <option value="kg">kg</option>
+                    <option value="box">box</option>
+                    <option value="piece">piece</option>
+                    <option value="dozen">dozen</option>
+                  </select>
+                </div>
+                <div className="form-field form-field-flex1">
+                  <label htmlFor="oldPrice">Old Price</label>
+                  <input
+                    type="number"
+                    name="oldPrice"
+                    id="oldPrice"
+                    value={productDetails.oldPrice}
+                    onChange={e => handleChange(e)}
+                  ></input>
+                </div>
               </div>
-            </div>
-            <div className="form-field">
-              <label htmlFor="prices">Prices</label>
-              <input
-                name="prices"
-                placeholder="of the form  seperated by -"
-                id="prices"
-                value={productDetails.prices}
-                onChange={e => handleChange(e)}
-                required
-              />
-            </div>
-            <div className="form-row">
-              <div className="form-field form-field-flex2">
-                <label htmlFor="oldPrice">Old Price</label>
-                <input
-                  type="text"
-                  name="oldPrice"
-                  id="oldPrice"
-                  value={productDetails.oldPrice}
+              <div className="form-field">
+                {errorDescrip && <InputError>{errorDescrip}</InputError>}
+                <label htmlFor="descrip">Description</label>
+                <Descrip
+                  errorDescrip={errorDescrip}
+                  name="descrip"
+                  placeholder='{"title":"...", "detail":"..."} each in a new line'
+                  id="descrip"
+                  value={descrip}
                   onChange={e => handleChange(e)}
-                ></input>
+                  onBlur={handleDescription}
+                />
               </div>
-            </div>
-            <div className="form-field">
-              <label htmlFor="description">Description</label>
-              <input
-                type="text"
-                name="description"
-                placeholder="of the form {header:..., detail:...} seperated by -"
-                id="description"
-                value={productDetails.description}
-                onChange={e => handleChange(e)}
-              ></input>
-            </div>
-            <div className="form-field">
-              <label htmlFor="tags">Tags</label>
-              <input
-                type="text"
-                name="tags"
-                placeholder="of the form (tag1-tag2-tag3) seperated by -"
-                id="tags"
-                value={productDetails.tags}
-                onChange={e => handleChange(e)}
-              ></input>
-            </div>
-            <button type="submit" className="btn block btn-bgfg-colors">
-              Submit
-            </button>
-          </form>
-        </section>
-      </main>
-    </>
+              <div className="form-field">
+                <label htmlFor="tags">Tags</label>
+                <Multiselect
+                  onSelect={handleTags}
+                  onRemove={handleTags}
+                  options={options}
+                  displayValue="Tag"
+                  style={{
+                    chips: { background: "var(--green-dark)" },
+                  }}
+                />
+              </div>
+              <button type="submit" className="btn block btn-bgfg-colors">
+                Submit
+              </button>
+            </>
+          )}
+        </form>
+      </section>
+    </main>
   )
 }
+
+const InputError = styled.p`
+  color: red;
+`
+
+const Descrip = styled.textarea`
+  border-color: ${({ errorDescrip }) =>
+    errorDescrip !== "" ? "red" : "var(--grey-300)"};
+`
 
 export default Products

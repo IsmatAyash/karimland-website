@@ -40,8 +40,7 @@ module.exports = {
       resolve: `gatsby-source-contentful`,
       options: {
         spaceId: `lqhquv9fy7fo`,
-        accessToken: `zpw0sPC0L7Y6yBghBxIVe75USXMugLt8b9SHsms7zE8`,
-        // accessToken: process.env.CCONTENTFUL_ACCESS_TOKEN,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
       },
     },
     {
@@ -62,8 +61,41 @@ module.exports = {
       },
     },
     {
+      resolve: `@robinmetral/gatsby-source-s3`,
+      options: {
+        aws: {
+          accessKeyId: process.env.AWS_ACCESS_KEY,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+          region: process.env.AWS_REGION,
+        },
+        buckets: ["karimland"],
+        expiration: 120,
+      },
+    },
+    {
       resolve: `gatsby-plugin-create-client-paths`,
       options: { prefixes: [`/logged/*`] },
+    },
+    {
+      resolve: `gatsby-source-mongodb`,
+      options: {
+        dbName: `karimland`,
+        collection: `products`,
+        server: {
+          address: `cinch-shard-00-01.64m4p.mongodb.net`,
+          port: 27017,
+        },
+        auth: {
+          user: `oam007`,
+          password: `tamso007`,
+        },
+        extraParams: {
+          replicaSet: `atlas-w6gho4-shard-0`,
+          ssl: true,
+          authSource: `admin`,
+          retryWrites: true,
+        },
+      },
     },
   ],
 }

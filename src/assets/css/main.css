@@ -839,6 +839,30 @@ textarea {
   width: 15rem;
 }
 
+/* form select dropdown */
+.select {
+  /* width: 100%; */
+  padding: 0.3rem 2rem;
+  background-color: var(--grey-0);
+  border: 1px solid var(--grey-200);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.select:focus,
+.select:hover {
+  border: 1px solid var(--grey-300);
+  background-color: var(--grey-100);
+}
+
+/* Multi select */
+.searchBox {
+  max-width: 5rem;
+}
+
+.chips {
+  background: red !important;
+}
 /* Tabs styles */
 .tabs {
   display: flex;

@@ -1,55 +1,32 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { StaticImage } from "gatsby-plugin-image"
+import { graphql } from "gatsby"
+import { useQuery } from "@apollo/client"
 
 import SEO from "../components/SEO"
 import Layout from "../components/Layout"
-import ProductList from "../components/ProductList"
 import TagsList from "../components/TagsList"
 import { GET_PRODUCTS } from "../graphql/queries"
-import { useQuery } from "@apollo/client"
+import ProductList from "../components/ProductList"
 
-const Vegetables = () => {
-  const { data, loading, error, refetch } = useQuery(GET_PRODUCTS, {
-    variables: { cat: "Veges", page: 1, limit: 5 },
-    fetchPolicy: "network-only",
-    errorPolicy: "all",
-  })
+const Vegetables = ({ data }) => {
+  const { nodes: images } = data.allS3Object
   const [veges, setVeges] = useState([])
-  console.log({ error })
+  const [errorMessage, setErrorMessage] = useState(undefined)
 
-  // const { items } = []
-
-  console.log("PRODUCTS DATA", data)
-  useEffect(() => {
-    setVeges(data?.products.products || [])
-  }, [data])
-  console.log("VEGES", veges)
-
-  let errorMessage = undefined
-  if (error) {
-    if (
-      error.networkError &&
-      typeof window !== "undefined" &&
-      !window.navigator.online
-    ) {
-      errorMessage = "No internet connection, please check your borwser?"
-    } else {
-      errorMessage = "An error occured."
-    }
-  }
-
-  // useEffect(() => {
-  // if (prodImages && items) {
-  //   const prods = items.map(prod => {
-  //     const idx = prod.image.split("/").pop()
-  //     return {
-  //       ...prod,
-  //       image: prodImages.find(i => i.name === idx).image,
-  //     }
-  //   })
-  // setVeges(data || [])
-  // }
-  // }, [data])
+  const { loading } = useQuery(GET_PRODUCTS, {
+    variables: { cat: "Veges", page: 1, limit: 10 },
+    onCompleted: prodData => {
+      const prods = prodData.products.products.map(prod => {
+        const idx = prod.image.split("/").pop()
+        const imageObj = images.find(i => i.localFile?.base === idx)?.localFile
+          .childImageSharp
+        return { ...prod, image: imageObj }
+      })
+      setVeges(prods)
+    },
+    onError: error => setErrorMessage(error.message),
+  })
 
   return (
     <Layout>
@@ -76,7 +53,7 @@ const Vegetables = () => {
           ) : errorMessage ? (
             <h3>{errorMessage}</h3>
           ) : null}
-          {data ? (
+          {veges ? (
             <>
               <TagsList products={veges} />
               <ProductList prods={veges} />
@@ -89,5 +66,20 @@ const Vegetables = () => {
     </Layout>
   )
 }
+
+export const query = graphql`
+  {
+    allS3Object {
+      nodes {
+        localFile {
+          base
+          childImageSharp {
+            gatsbyImageData(placeholder: TRACED_SVG, layout: CONSTRAINED)
+          }
+        }
+      }
+    }
+  }
+`
 
 export default Vegetables

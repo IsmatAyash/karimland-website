@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
-import { API } from "aws-amplify"
-import { getProduct } from "../api/queries"
+import { useQuery } from "@apollo/client"
+import { GET_PRODUCT } from "../graphql/queries"
 
 import Layout from "../components/Layout"
 import ProductInfo from "../components/ProductInfo"
@@ -11,30 +11,35 @@ const ProductTemplate = ({ pageContext }) => {
   const [qty, setQty] = useState(0)
   const [unitPrice, setUnitPrice] = useState(0)
   const [prod, setProd] = useState({})
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
+  const { loading } = useQuery(GET_PRODUCT, {
+    variables: { id: pageContext.id },
+    onCompleted: data => {
+      setProd(data.getProduct)
+    },
+  })
 
-  useEffect(() => {
-    const fetchProds = async () => {
-      try {
-        const { data } = await API.graphql({
-          query: getProduct,
-          authMode: "API_KEY",
-          variables: { id: pageContext.id },
-        })
-        setProd(data)
-        setLoading(false)
-      } catch (error) {
-        console.log("Error while reading products in product template", error)
-        setLoading(false)
-      }
-    }
-    fetchProds()
-  }, [loading, pageContext.id])
+  // useEffect(() => {
+  //   const fetchProds = async () => {
+  //     try {
+  //       const { data } = await API.graphql({
+  //         query: getProduct,
+  //         authMode: "API_KEY",
+  //         variables: { id: pageContext.id },
+  //       })
+  //       setProd(data)
+  //       setLoading(false)
+  //     } catch (error) {
+  //       console.log("Error while reading products in product template", error)
+  //       setLoading(false)
+  //     }
+  //   }
+  //   fetchProds()
+  // }, [loading, pageContext.id])
 
-  const { title, description, image, prices } = prod.getProduct || {}
-  if (!unitPrice && prod.getProduct) {
-    setUnitPrice(JSON.parse(prices[0]).price)
-  }
+  const { title, description, image, unit, price } = prod.getProduct || {}
+
+  if (loading) return <p>Loading...</p>
 
   return (
     <Layout>

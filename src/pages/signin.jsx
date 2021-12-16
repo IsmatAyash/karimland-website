@@ -1,136 +1,155 @@
 import React, { useState, useEffect, useContext } from "react"
-import { getCart } from "../api/queries"
 import Layout from "../components/Layout"
 import { UserContext } from "../context/users"
-import { SavedCartContext } from "../context/cart"
 import { navigate } from "gatsby"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
+import { REGISTER_USER, CONFIRM_EMAIL } from "../graphql/mutations"
+import { AUTH_USER } from "../graphql/queries"
+import { useMutation, useLazyQuery, isApolloError } from "@apollo/client"
+import { inputErrHandler } from "../utils/errorHandlers"
+import Svg from "../components/common/Svg"
 
 const initialState = {
-  username: "",
-  password: "",
+  name: "",
   email: "",
-  authCode: "",
-  formType: "signin",
+  password: "",
+  role: "buyer",
+  userType: "Buyer",
+  country: "",
+  avatar: "",
 }
 
-const SignIn = ({ location }) => {
-  const { updateUser } = useContext(UserContext)
-  const { updateCart } = useContext(SavedCartContext)
-  const [authState, setAuthState] = useState(initialState)
+const Signin = props => {
+  const { user, updateUser } = useContext(UserContext)
+  const [formType, setFormType] = useState("signIn")
+  const [userState, setUserState] = useState(initialState)
+  const [enteredPassCode, setEnteredPassCode] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [validationErrs, setValidationErrs] = useState([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const { username, password, authCode, email } = authState
+  const [authUser] = useLazyQuery(AUTH_USER)
 
-  useEffect(() => {
-    // Hub.listen("auth", checkUser)
-    // checkUser()
-    // return () => Hub.remove("auth", checkUser)
-  }, [])
+  const [regUser] = useMutation(REGISTER_USER, {
+    fetchPolicy: "network-only",
+    onCompleted: data => {
+      setFormType("signedIn")
+      setIsSubmitting(false)
+      updateUser({
+        user: data.register?.user,
+        token: data.register?.token,
+      })
+      navigate("/")
+      localStorage.setItem("token", data.register?.token)
+    },
+  })
 
-  // useEffect(() => {
-  //   const updUser = async () => {
-  //     try {
-  //       const user = await Auth.currentAuthenticatedUser()
-  //       setUser({
-  //         id: user.attributes.sub,
-  //         username: user.username,
-  //         email: user.attributes.email,
-  //       })
-  //     } catch {
-  //       setUser(null)
-  //     }
-  //   }
-  //   Hub.listen("auth", updUser) // listen for login/signup events
+  const [genPassCode] = useMutation(CONFIRM_EMAIL, {
+    onCompleted: data => {
+      updateUser({ ...user, passCode: data.passCode })
+      setFormType("confirmSignup")
+      setIsSubmitting(false)
+    },
+  })
 
-  //   // we are not using async to wait for updateUser, so there will be a flash of page where the user is assumed not to be logged in. If we use a flag
-  //   updUser() // check manually the first time because we won't get a Hub event
-  //   return () => Hub.remove("auth", updUser) // cleanup
-  // }, [])
+  const { name, password, email, country, avatar } = userState
 
-  async function checkUser() {
-    try {
-      // const user = await Auth.currentAuthenticatedUser()
-      // const oneTodo = await API.graphql(
-      //   graphqlOperation(queries.getTodo, { id: "some id" })
-      // )
-      // const cart = await API.graphql(
-      //   graphqlOperation(getCart, { user: user.username })
-      // )
-      // updateUser({
-      //   id: user.attributes.sub,
-      //   username: user.username,
-      //   email: user.attributes.email,
-      // })
-      setAuthState({ ...authState, formType: "signedIn" })
-    } catch (err) {
-      updateUser(null)
-    }
-  }
+  useEffect(() => {}, [formType, user, errorMessage])
 
   const handleChange = e => {
     e.persist()
-    setAuthState({ ...authState, [e.target.name]: e.target.value })
+    if (e.target.name === "enteredPassCode") setEnteredPassCode(e.target.value)
+    else setUserState({ ...userState, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
     switch (formType) {
-      case "signin":
-        // try {
-        //   await Auth.signIn(username, password)
-        //   setAuthState({ ...authState, formType: "signedIn" })
-        //   location.state.fromCheckout ? navigate("/checkout") : navigate("/")
-        // } catch (error) {
-        //   console.log("error signing in", error)
-        // }
+      case "signIn":
+        setIsSubmitting(true)
+        const { error, data } = await authUser({
+          variables: { email, password },
+        })
+
+        if (error) {
+          setIsSubmitting(false)
+          setFormType("signIn")
+          setErrorMessage(error.message)
+        }
+
+        if (data) {
+          setIsSubmitting(false)
+          updateUser({
+            user: data?.login.user,
+            token: data?.login.token,
+          })
+          setFormType("signedIn")
+          navigate("/")
+          localStorage.setItem("token", data?.login.token)
+        }
+        // location.state.fromCheckout ? navigate("/checkout") : navigate("/")
         break
-      case "signup":
-        // try {
-        //   await Auth.signUp({
-        //     username,
-        //     password,
-        //     attributes: { email },
-        //   })
-        //   setAuthState({ ...authState, formType: "confirmSignup" })
-        // } catch (error) {
-        //   console.log("error sigining up", error)
-        // }
+      case "signUp":
+        try {
+          setIsSubmitting(true)
+          setValidationErrs([])
+          const { error } = await genPassCode({
+            variables: { newUser: userState },
+          })
+          if (error) {
+            setErrorMessage("Could not generate a pass code, please retry")
+          }
+        } catch (err) {
+          setIsSubmitting(false)
+          const { errMsg, valErr } = inputErrHandler(err)
+          setErrorMessage(errMsg)
+          setValidationErrs(valErr)
+        }
         break
       case "confirmSignup":
-        // try {
-        //   await Auth.confirmSignUp(username, authCode)
-        //   setAuthState({ ...authState, formType: "signin" })
-        // } catch (error) {
-        //   console.log("error sigining up", error)
-        // }
+        try {
+          setIsSubmitting(true)
+          if (enteredPassCode !== user.passCode)
+            setErrorMessage("Invalid code entered!")
+          else {
+            const { error } = await regUser({
+              variables: { newUser: userState },
+            })
+            if (error)
+              setErrorMessage(`Could not register user ${error.message}`)
+          }
+        } catch (err) {
+          setIsSubmitting(false)
+          const { errMsg } = inputErrHandler(err)
+          setErrorMessage(errMsg || err.message)
+        }
         break
       default:
-        navigate("/vegetables")
+        // navigate("/")
         break
     }
   }
 
   const handleButtonOption = () => {
-    setAuthState({
-      ...authState,
-      formType: formType === "signup" ? "signin" : "signup",
-    })
+    setFormType(formType === "signUp" ? "signIn" : "signUp")
   }
-
-  const { formType } = authState
 
   return (
     <Layout>
       <Container>
         <Form className="form contact-form" onSubmit={e => handleSubmit(e)}>
-          <FormTitle>Sign in to your account</FormTitle>
+          <FormTitle>
+            {formType === "signUp"
+              ? "Create an account and sign in"
+              : "Sign in to your account"}
+          </FormTitle>
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <div className="form-field">
-            <label htmlFor="username">User Name</label>
+            <label htmlFor="email">Email</label>
             <input
-              disabled={formType === "confirmSignup"}
-              type="text"
-              name="username"
-              value={username}
+              type="email"
+              name="email"
+              value={email}
               onChange={e => handleChange(e)}
             />
           </div>
@@ -144,45 +163,80 @@ const SignIn = ({ location }) => {
               onChange={e => handleChange(e)}
             />
           </div>
-          {formType === "signup" && (
-            <div className="form-field">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={e => handleChange(e)}
-              />
-            </div>
+          {formType === "signUp" && (
+            <>
+              <div className="form-field">
+                <label htmlFor="name">User Name</label>
+                <input
+                  disabled={formType === "confirmSignup"}
+                  type="text"
+                  name="name"
+                  value={name}
+                  onChange={e => handleChange(e)}
+                />
+              </div>
+              {validationErrs.name && (
+                <InputError>{validationErrs.name}</InputError>
+              )}
+              <div className="form-field">
+                <label htmlFor="country">Country</label>
+                <input
+                  type="text"
+                  name="country"
+                  value={country}
+                  onChange={e => handleChange(e)}
+                />
+              </div>
+              {validationErrs.country && (
+                <InputError>{validationErrs.country}</InputError>
+              )}
+              <div className="form-field">
+                <label htmlFor="avatar">Avatar</label>
+                <input
+                  type="text"
+                  name="avatar"
+                  value={avatar}
+                  onChange={e => handleChange(e)}
+                />
+              </div>
+            </>
           )}
           {formType === "confirmSignup" && (
             <div className="form-field">
-              <label htmlFor="authCode">Confirmation Code</label>
+              <label htmlFor="enteredPassCode">Confirmation Code</label>
               <input
                 type="text"
-                name="authCode"
-                value={authCode}
+                name="enteredPassCode"
+                value={enteredPassCode}
                 onChange={e => handleChange(e)}
               />
             </div>
           )}
-          <button type="submit" className="btn block btn-bgfg-colors">
-            {formType === "signin"
-              ? "Sign In"
-              : formType === "confirmSignup"
-              ? "Confirm Sign Up"
-              : "Sign Up"}
-          </button>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="btn block btn-bgfg-colors"
+          >
+            {isSubmitting ? (
+              <Svg name="logo" />
+            ) : formType === "signUp" ? (
+              "Sign Up"
+            ) : formType === "confirmSignup" ? (
+              "Confirm Sign Up"
+            ) : (
+              "Sign In"
+            )}
+          </Button>
           <TextCtr>
             <Text>
-              {formType === "signin"
+              {formType === "signIn"
                 ? "Don't have an account?"
                 : "Have an account?"}
-              <TextLink onClick={handleButtonOption}>
-                {formType === "signin" ? " Sign Up" : " Sign in"}
+              <TextLink type="button" onClick={handleButtonOption}>
+                {formType === "signIn" ? " Sign Up" : " Sign In"}
               </TextLink>
             </Text>
-            <TextLink>Forgot password?</TextLink>
+            <TextLink type="button">Forgot password?</TextLink>
           </TextCtr>
         </Form>
       </Container>
@@ -218,7 +272,7 @@ const TextCtr = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.85rem;
 `
 
 const Text = styled.p`
@@ -231,16 +285,40 @@ const Text = styled.p`
 
 const TextLink = styled.button`
   background-color: transparent;
-  color: var(--primary-700);
+  color: var(--primary-1100);
   font-size: 0.8rem;
   font-style: italic;
-  padding: 0;
+  padding: 0.2rem;
   margin: 0;
+  border: none;
 
   &:hover {
-    background-color: transparent;
-    color: var(--primary-1100);
+    color: var(--primary-100);
+    font-style: bold;
   }
 `
 
-export default SignIn
+const InputError = styled.p`
+  color: red;
+`
+const spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`
+const Button = styled.button`
+  &:disabled {
+    background-color: var(--grey-600);
+  }
+  svg {
+    justify-self: center;
+    width: 18px;
+    height: 18px;
+    animation: ${spin} 1s linear infinite;
+  }
+`
+
+export default Signin

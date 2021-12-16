@@ -11,8 +11,17 @@ import { navigate } from "gatsby"
 
 const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
   const [showCart, setShowCart] = useState(false)
-  const { id, title, image, avgRating, ratings, quantity, prices, oldPrice } =
-    prod
+  const {
+    id,
+    title,
+    image,
+    avgRating,
+    ratings,
+    inventory,
+    unit,
+    price,
+    oldPrice,
+  } = prod
   const { addToCart } = useContext(CartContext)
   const { user } = useContext(UserContext)
 
@@ -30,15 +39,15 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
       <h2>{title}</h2>
       <RatingStars avgRating={avgRating} ratings={ratings} />
       <div>Seller: Karim Land</div>
-      <div>Availability: {quantity !== 0 ? "In Stock" : "Out of stock"}</div>
+      <div>Availability: {inventory !== 0 ? "In Stock" : "Out of stock"}</div>
       <PriceCtr>
         Unit Price: KD {unitPrice} <OldPrice>KD {oldPrice}</OldPrice>
       </PriceCtr>
-      <WeightSelector prices={prices} setUnitPrice={setUnitPrice} />
+      <WeightSelector prices={price} setUnitPrice={setUnitPrice} />
       <QuantitySelector
         qty={qty}
         setQty={setQty}
-        qtyInStock={quantity}
+        qtyInStock={inventory}
         unitPrice={unitPrice}
       />
       <button

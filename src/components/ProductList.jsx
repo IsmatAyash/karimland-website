@@ -14,18 +14,21 @@ const ProductList = ({ prods = [] }) => {
 
         return (
           <Link key={id} to={`/${slug}`} className="product">
-            {/* <GatsbyImage
-              image={pathToImage}
-              alt={title}
-              className="product-img"
-            /> */}
-            <StaticImage
-              src="../assets/images/image-placeholder.png"
-              alt="image placeholder"
-              layout="fullWidth"
-              className="product-img"
-              placeholder="tracedSVG"
-            />
+            {pathToImage ? (
+              <GatsbyImage
+                image={pathToImage}
+                alt={title}
+                className="product-img"
+              />
+            ) : (
+              <StaticImage
+                src="../assets/images/image-placeholder.png"
+                alt="image placeholder"
+                layout="fullWidth"
+                className="product-img"
+                placeholder="tracedSVG"
+              />
+            )}
             <h5>{title}</h5>
             {inventory === 0 ? (
               <p>Out of stock</p>

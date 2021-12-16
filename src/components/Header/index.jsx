@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useContext } from "react"
 import {
   FaShoppingCart,
   FaSignOutAlt,
@@ -21,11 +21,10 @@ const Header = () => {
   const { cart } = useContext(CartContext)
   const [showCart, setShowCart] = useState(false)
 
-  // useEffect(() => {
-  // })
-
   const signOut = async () => {
+    updateUser(null)
     navigate("/")
+    localStorage.removeItem("token")
   }
 
   return (
@@ -41,13 +40,13 @@ const Header = () => {
             <NavItemLink path="/" text="Arabic" />
           </NavSubList>
         </NavListItem>
-        {user ? (
+        {user?.user ? (
           <NavListItem>
             <FaUserCircle />
-            {user.username}
+            {user.user?.name}
             <MdArrowDropDown />
             <NavSubList>
-              {user.username === "admin" && (
+              {user.user?.role === "admin" && (
                 <NavItemLink
                   path="/logged/products"
                   text="Products"
