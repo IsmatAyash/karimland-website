@@ -3,11 +3,11 @@ import { ApolloError } from "apollo-server-express"
 const populateCartItem = async cartItem => {
   return await cartItem.populate([
     "buyer",
-    { path: "items.product", select: "title unit price" },
+    { path: "items.product", select: "id title unit price image" },
   ])
 }
 
-const IncDecCartItem = async (Cart, user, item) => {
+const UpdCartItemQty = async (Cart, user, item) => {
   return await Cart.findOneAndUpdate(
     {
       buyer: user.sub,
@@ -31,7 +31,7 @@ export default {
         const carts = await Cart.find()
           .populate([
             "buyer",
-            { path: "items.product", select: "title unit price" },
+            { path: "items.product", select: "id title unit price" },
           ])
           .exec()
         if (!carts) throw new ApolloError("Unable to query carts.")
@@ -41,11 +41,20 @@ export default {
         throw new ApolloError(err.message, 400)
       }
     },
-    getCart: async (_, { buyer }, { Cart }) =>
-      await Cart.findOne({ buyer }).populate("buyer"),
+    getCart: async (_, { buyer }, { Cart }) => {
+      try {
+        return await Cart.findOne({ buyer }).populate([
+          "buyer",
+          { path: "items.product", select: "id title unit price image" },
+        ])
+      } catch (error) {
+        console.log(error)
+        throw new ApolloError(error.message, 400)
+      }
+    },
   },
   Mutation: {
-    addCartItem: async (_, { newCart, id }, { Cart, user }) => {
+    addCartItem: async (_, { newCart }, { Cart, user }) => {
       try {
         // add new cart item
         let cartItem = await Cart.findOne({ buyer: user.sub })
@@ -56,7 +65,7 @@ export default {
           })
         } else {
           // if product exist update update quantity in a carditem
-          cartItem = await IncDecCartItem(Cart, user, newCart)
+          cartItem = await UpdCartItemQty(Cart, user, newCart)
 
           // add new product to the array of products in cartItem setting quantity to 1
           if (!cartItem)
@@ -74,9 +83,9 @@ export default {
         throw new ApolloError(err.message, 400)
       }
     },
-    updCartItem: async (_, { updCartItem, userId }, { Cart, user }) => {
+    updCartItem: async (_, { updatedCartItem }, { Cart, user }) => {
       try {
-        let cartItem = await IncDecCartItem(Cart, user, updCartItem)
+        let cartItem = await UpdCartItemQty(Cart, user, updatedCartItem)
         return await populateCartItem(cartItem)
       } catch (err) {
         console.log(err.message)

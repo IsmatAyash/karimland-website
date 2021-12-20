@@ -3,13 +3,13 @@ import { gql } from "apollo-server-express"
 export default gql`
   extend type Query {
     carts: [Cart!]!
-    getCart(id: ID!): Cart!
+    getCart(buyer: ID!): Cart!
   }
 
   extend type Mutation {
     delCartItem(productId: ID!): CartNotification!
     addCartItem(newCart: CartInput): Cart!
-    updCartItem(updCartItem: CartInput, userId: ID!): Cart!
+    updCartItem(updatedCartItem: CartInput): Cart!
     delCart(id: ID!): CartNotification!
   }
 
