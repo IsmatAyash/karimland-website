@@ -1,13 +1,13 @@
 import React from "react"
 import styled from "styled-components"
 
-const Badge = ({ icon, amount, onShow }) => {
+const Badge = ({ icon, count, onShow, token }) => {
   return (
-    <BadgeButton type="button" disabled={amount === 0} onClick={onShow}>
+    <BadgeButton type="button" disabled={count === 0} onClick={onShow}>
       {icon}
-      {amount !== 0 && (
+      {count !== 0 && token && (
         <BadgeData>
-          <CartQty>{amount}</CartQty>
+          <CartQty>{count}</CartQty>
         </BadgeData>
       )}
     </BadgeButton>

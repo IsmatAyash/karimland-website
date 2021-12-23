@@ -9,7 +9,7 @@ import RatingStars from "../Reviews/RatingStars"
 import Cart from "./Cart"
 import { navigate } from "gatsby"
 
-const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
+const ProductInfo = ({ prod, qty, setQty }) => {
   const [showCart, setShowCart] = useState(false)
   const {
     id,
@@ -21,6 +21,7 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
     unit,
     price,
     oldPrice,
+    seller,
   } = prod
   const { addToCart } = useContext(CartContext)
   const { user } = useContext(UserContext)
@@ -28,7 +29,7 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
   const onAddCart = () => {
     if (!user) navigate("/signin")
     else {
-      addToCart({ id, title, image, price: unitPrice, amount: qty })
+      addToCart({ product: id, quantity: qty })
       setShowCart(true)
     }
   }
@@ -38,17 +39,18 @@ const ProductInfo = ({ prod, setUnitPrice, unitPrice, qty, setQty }) => {
       {showCart && <Cart closeCart={setShowCart} />}
       <h2>{title}</h2>
       <RatingStars avgRating={avgRating} ratings={ratings} />
-      <div>Seller: Karim Land</div>
+      <div>Seller: {seller.name}</div>
       <div>Availability: {inventory !== 0 ? "In Stock" : "Out of stock"}</div>
       <PriceCtr>
-        Unit Price: KD {unitPrice} <OldPrice>KD {oldPrice}</OldPrice>
+        <div>Unit: {unit}</div>
+        Unit Price: KD {price} <OldPrice>KD {oldPrice}</OldPrice>
       </PriceCtr>
-      <WeightSelector prices={price} setUnitPrice={setUnitPrice} />
+      {/* <WeightSelector unit={unit} price={price} setUnitPrice={setUnitPrice} /> */}
       <QuantitySelector
         qty={qty}
         setQty={setQty}
         qtyInStock={inventory}
-        unitPrice={unitPrice}
+        unitPrice={price}
       />
       <button
         className="btn btn-bgfg-colors"
@@ -65,6 +67,7 @@ const PriceCtr = styled.div`
   font-size: 16px;
   font-weight: bolder;
   margin-top: 10px;
+  margin-bottom: 10px;
 `
 
 const OldPrice = styled.span`

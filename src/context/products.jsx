@@ -1,68 +1,73 @@
 import React, { useState, useEffect, createContext } from "react"
 import { v4 as uuidv4 } from "uuid"
-import { processOrder } from "../api/mutations"
 import { graphql, useStaticQuery } from "gatsby"
+import { useMutation } from "@apollo/client"
+import { ADD_ORDER } from "../graphql/mutations"
 
 const ProductContext = createContext()
 
-// images: allS3Object {
-//   nodes {
-//     localFile {
-//       base
-//       childImageSharp {
-//         gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)
-//       }
-//     }
-//   }
-// }
-
-// const getData = graphql`
-//   {
-//     product {
-//       prods: listProducts(filter: { featured: { eq: true } }) {
-//         items {
-//           title
-//           id
-//           description
-//           avgRating
-//           image
-//           ratings
-//           quantity
-//           prices
-//           tags
-//           oldPrice
-//         }
-//       }
-//     }
-//   }
-// `
-const prodData = []
+const getData = graphql`
+  {
+    prods: allMongodbKarimlandProducts(filter: { featured: { eq: true } }) {
+      nodes {
+        id
+        title
+        tags
+        image
+        inventory
+        price
+        oldPrice
+        unit
+        description {
+          title
+          detail
+        }
+        category
+      }
+    }
+    images: allS3Object {
+      nodes {
+        id
+        localFile {
+          base
+          childImageSharp {
+            gatsbyImageData(layout: CONSTRAINED, placeholder: TRACED_SVG)
+          }
+        }
+      }
+    }
+  }
+`
 
 const ProductProvider = ({ children }) => {
-  // const prodData = useStaticQuery(getData)
+  const prodData = useStaticQuery(getData)
   const [featured, setFeatured] = useState([])
   const [prodImages, setProdImages] = useState([])
+  const [addNewOrder] = useMutation(ADD_ORDER)
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { items } = prodData.product.prods
-      const { nodes } = prodData.images
+      const { nodes: items } = prodData.prods
+      const { nodes: images } = prodData.images
 
       try {
         // get gatsby images and append to products array
-        if (nodes) {
+        if (images.length && items.length) {
           setProdImages(
-            nodes.map(node => ({
-              name: node.localFile.base,
-              image: node.localFile.childImageSharp.gatsbyImageData,
-            }))
+            images
+              .filter(i => i.localFile)
+              .map(node => ({
+                name: node.localFile.base,
+                image: node.localFile.childImageSharp.gatsbyImageData,
+              }))
           )
           setFeatured(
             items.map(prod => {
               const idx = prod.image.split("/").pop()
+              const obj = images.find(i => i.localFile?.base === idx)
               return {
                 ...prod,
-                image: prodImages.find(i => i.name === idx).image || null,
+                image: obj.localFile.childImageSharp.gatsbyImageData || null,
               }
             })
           )
@@ -81,6 +86,7 @@ const ProductProvider = ({ children }) => {
     }
     try {
       // await API.graphql(graphqlOperation(processOrder, { input: payload }))
+      await addNewOrder({ variables: { newOrder: payload } })
       console.log("Order is successful")
       return {
         statusCode: "SUCCESS",

@@ -8,8 +8,7 @@ import { UserContext } from "../../context/users"
 const Cart = ({ closeCart }) => {
   const { user } = useContext(UserContext)
   const [reverse, setReverse] = useState(false)
-  const { cart, total, increaseAmount, decreaseAmount, delFromCart } =
-    useContext(CartContext)
+  const { cart, total, updCartItem, delCartItem } = useContext(CartContext)
 
   const onClose = () => {
     setReverse(true)
@@ -23,58 +22,75 @@ const Cart = ({ closeCart }) => {
     <Backdrop className={"backdrop " + (reverse ? "reverse" : "")}>
       <ModalContent className={"modal " + (reverse ? "reverse" : "")}>
         <div className="modal-header">
-          <span className="close">My Cart ({cart.length || 0})</span>
+          <span className="close">My Cart ({cart.items.length || 0})</span>
           <MdClose className="close" onClick={onClose} />
         </div>
         <div className="modal-body">
           <div className="cart-wrapper">
-            {cart.map(({ id, title, price, image, amount }) => (
-              <article key={id} className="cart-item">
-                <div className="image">
-                  <img src={image} alt="cart item" />
-                </div>
-                <div className="details">
-                  <DetailLine>
-                    {title}
-                    <MdDeleteForever
-                      style={{
-                        float: "right",
-                        color: "var(--grey-700)",
-                        fontSize: "1.7rem",
-                        cursor: "pointer",
-                      }}
-                      onClick={() =>
-                        window.confirm("Sure to delete cart item?") &&
-                        delFromCart(id)
-                      }
-                    />
-                  </DetailLine>
-                  <DetailLine>$ {price}</DetailLine>
-                  <div className="amount">
-                    <div className="cart-qty">
-                      <button onClick={() => decreaseAmount(id, amount)}>
-                        <MdRemove />
-                      </button>
-                      <DetailLine
-                        style={{
-                          minWidth: "2rem",
-                          textAlign: "center",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {amount}
-                      </DetailLine>
-                      <button onClick={() => increaseAmount(id)}>
-                        <MdAdd />
-                      </button>
-                    </div>
-                    <DetailLine style={{ fontWeight: "bold" }}>
-                      Total: KD {(price * amount).toFixed(2)}
-                    </DetailLine>
+            {cart.items.map(
+              ({ product: { id, image, title, price }, quantity }) => (
+                <article key={id} className="cart-item">
+                  <div className="image">
+                    <img src={image} alt="cart item" />
                   </div>
-                </div>
-              </article>
-            ))}
+                  <div className="details">
+                    <DetailLine>
+                      {title}
+                      <MdDeleteForever
+                        style={{
+                          float: "right",
+                          color: "var(--grey-700)",
+                          fontSize: "1.7rem",
+                          cursor: "pointer",
+                        }}
+                        onClick={() =>
+                          window.confirm("Sure to delete cart item?") &&
+                          delCartItem(id, user.user.id)
+                        }
+                      />
+                    </DetailLine>
+                    <DetailLine>$ {price}</DetailLine>
+                    <div className="amount">
+                      <div className="cart-qty">
+                        <button
+                          onClick={() =>
+                            updCartItem(
+                              { quantity: -1, product: id },
+                              user.user.id
+                            )
+                          }
+                        >
+                          <MdRemove />
+                        </button>
+                        <DetailLine
+                          style={{
+                            minWidth: "2rem",
+                            textAlign: "center",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {quantity}
+                        </DetailLine>
+                        {/* <button onClick={() => decreaseAmount(id, quantity)}> */}
+                        <button
+                          onClick={() =>
+                            updCartItem(
+                              { quantity: 1, product: id },
+                              user.user.id
+                            )
+                          }
+                        >
+                          <MdAdd />
+                        </button>
+                      </div>
+                      <DetailLine style={{ fontWeight: "bold" }}>
+                        Total: KD {(price * quantity).toFixed(2)}
+                      </DetailLine>
+                    </div>
+                  </div>
+                </article>
+              )
+            )}
           </div>
         </div>
         <div className="modal-footer">

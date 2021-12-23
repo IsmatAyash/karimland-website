@@ -42,6 +42,7 @@ export const GET_PRODUCTS = gql`
         oldPrice
         inventory
         image
+        tags
         seller {
           name
           email
@@ -70,6 +71,7 @@ export const GET_PRODUCTS_TAG = gql`
       price
       unit
       oldPrice
+      rating
     }
   }
 `
@@ -85,11 +87,36 @@ export const GET_PRODUCT = gql`
       avgRating
       image
       inventory
-      description
+      description {
+        title
+        detail
+      }
       seller {
         id
         name
         country
+      }
+    }
+  }
+`
+export const GET_CART = gql`
+  query GET_CART($buyer: ID!) {
+    getCart(buyer: $buyer) {
+      id
+      buyer {
+        id
+        name
+        email
+      }
+      items {
+        product {
+          id
+          title
+          unit
+          price
+          image
+        }
+        quantity
       }
     }
   }

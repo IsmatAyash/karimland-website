@@ -21,10 +21,10 @@ const MyTabs = ({ description }) => {
         <h4>Product details</h4>
         <DescriptionCtr>
           {description.map((item, idx) => {
-            const { header, detail } = JSON.parse(item)
+            const { title, detail } = item
             return (
               <DescriptionLine key={idx}>
-                <DescriptionHeader>{header}:</DescriptionHeader>
+                <DescriptionHeader>{title}:</DescriptionHeader>
                 {detail}
               </DescriptionLine>
             )

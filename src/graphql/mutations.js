@@ -58,6 +58,137 @@ export const CONFIRM_EMAIL = gql`
   }
 `
 
+export const ADD_CART_ITEM = gql`
+  mutation ADD_CART_ITEM($newCart: CartInput) {
+    addCartItem(newCart: $newCart) {
+      id
+      buyer {
+        id
+        name
+        email
+      }
+      items {
+        product {
+          id
+          title
+          unit
+          price
+          image
+        }
+        quantity
+      }
+    }
+  }
+`
+
+export const UPDATE_CART_ITEM = gql`
+  mutation UPDATE_CART_ITEM($updatedCartItem: CartInput) {
+    updCartItem(updatedCartItem: $updatedCartItem) {
+      id
+      buyer {
+        id
+        name
+      }
+      items {
+        product {
+          id
+          title
+          unit
+          price
+          image
+        }
+        quantity
+      }
+    }
+  }
+`
+
+// # product id
+export const DEL_CART_ITEM = gql`
+  mutation DEL_CART_ITEM($productId: ID!) {
+    delCartItem(productId: $productId) {
+      id
+      message
+      success
+    }
+  }
+`
+
+// orders
+export const ADD_ORDER = gql`
+  mutation ADD_ORDER($newOrder: [OrderInput]) {
+    addOrder(newOrder: $newOrder) {
+      id
+      details {
+        productId
+        title
+        unit
+        price
+        quantity
+        image
+        sellerId
+        sellerName
+        toAddress
+        fromAddress
+        itemStatus
+        trackingNo
+        shippedAt
+      }
+      buyer {
+        name
+        email
+      }
+      orderStatus
+    }
+  }
+`
+
+// {
+//   "newOrder": [{
+//     "productId":"619621d5fa36d2d13ef59a27",
+//     "quantity": 2,
+//     "unit": "kg",
+//     "price": 10,
+//     "image": "http",
+//     "title": "Organic Salad",
+//     "sellerId": "618776703dc2e3c7bc8386e1",
+//     "sellerName": "Alexy Ayash"
+//   },
+//   {
+//     "productId":"618847f07f3b726233f65f94",
+//     "quantity": 2,
+//     "unit": "kg",
+//     "price": 10,
+//     "image": "http",
+//     "title": "Organic Oranges",
+//     "sellerId": "6187769e3dc2e3c7bc8386e5",
+//     "sellerName": "Ismat Ayash"
+//   }]
+// }
+
+// {
+//   "updCartItem": {
+//     "quantity": 1,
+//     "product": "61827d9fc257aeb988b70f1f"
+//   },
+//   "id": "6183d121020566685c2adc9c"
+// }
+
+// {
+//   "updCartItem": {
+//     "quantity": -1,
+//     "product": "61827d9fc257aeb988b70f1f"
+//   },
+//   "id": "6183d121020566685c2adc9c"
+// }
+
+// {
+//   "newCart": {
+//     "quantity": 1,
+//     "product": "61827d9fc257aeb988b70f1f"
+//   }
+// }
+
 // {{
 //   "newUser": {
 //     "name": "Layale Bassil",
@@ -105,79 +236,6 @@ export const CONFIRM_EMAIL = gql`
 //   "id": "617a6e2a8c3fc88a1ad8e77c"
 // }
 
-// mutation ADD_CART_ITEM($newCart: CartInput) {
-//   addCartItem(newCart: $newCart){
-//     buyer {
-//       id
-//       name
-//     }
-//     items{
-//       product{
-//         id
-//         title
-//       }
-//       quantity
-//     }
-//   }
-// }
-
-// {
-//   "newCart": {
-//     "quantity": 1,
-//     "product": "61827d9fc257aeb988b70f1f"
-//   }
-// }
-
-// mutation INCREASE_CARD_ITEM_QTY($updCartItem: CartInput, $id: ID! ){
-//   updCartItem(updCartItem: $updCartItem, id: $id){
-//     buyer{
-//       name
-//     }
-//     items{
-//       product{
-//         id
-//         title
-//         unit
-//         price
-//       }
-//       quantity
-//     }
-//   }
-// }
-
-// {
-//   "updCartItem": {
-//     "quantity": 1,
-//     "product": "61827d9fc257aeb988b70f1f"
-//   },
-//   "id": "6183d121020566685c2adc9c"
-// }
-
-// mutation DECREASE_CARD_ITEM_QTY($updCartItem: CartInput, $id: ID! ){
-//   updCartItem(updCartItem: $updCartItem, id: $id){
-//     buyer{
-//       name
-//     }
-//     items{
-//       product{
-//         id
-//         title
-//         unit
-//         price
-//       }
-//       quantity
-//     }
-//   }
-// }
-
-// {
-//   "updCartItem": {
-//     "quantity": -1,
-//     "product": "61827d9fc257aeb988b70f1f"
-//   },
-//   "id": "6183d121020566685c2adc9c"
-// }
-
 // # product id
 // mutation DEL_CART_ITEM($productId: ID!) {
 //   delCartItem(productId: $productId) {
@@ -194,56 +252,6 @@ export const CONFIRM_EMAIL = gql`
 //     message
 //     success
 //   }
-// }
-
-// # orders
-// mutation ADD_ORDER($newOrder: [OrderInput]) {
-//   addOrder(newOrder: $newOrder) {
-//     id
-//     details {
-//       productId
-//       title
-//       unit
-//       price
-//       quantity
-//       image
-//       sellerId
-//       sellerName
-//       toAddress
-//       fromAddress
-//       itemStatus
-//       trackingNo
-//       shippedAt
-//     }
-//     buyer {
-//       name
-//       email
-//     }
-//     orderStatus
-//   }
-// }
-
-// {
-//   "newOrder": [{
-//     "productId":"619621d5fa36d2d13ef59a27",
-//     "quantity": 2,
-//     "unit": "kg",
-//     "price": 10,
-//     "image": "http",
-//     "title": "Organic Salad",
-//     "sellerId": "618776703dc2e3c7bc8386e1",
-//     "sellerName": "Alexy Ayash"
-//   },
-//   {
-//     "productId":"618847f07f3b726233f65f94",
-//     "quantity": 2,
-//     "unit": "kg",
-//     "price": 10,
-//     "image": "http",
-//     "title": "Organic Oranges",
-//     "sellerId": "6187769e3dc2e3c7bc8386e5",
-//     "sellerName": "Ismat Ayash"
-//   }]
 // }
 
 // mutation UPDATE_SHIPPMENT_INFO($id: ID!, $shipDet: ShipInput!) {

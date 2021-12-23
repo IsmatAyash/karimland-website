@@ -4,7 +4,7 @@ import { CartContext } from "../context/carts"
 const Cart = () => {
   const { cart } = useContext(CartContext)
 
-  if (!cart.length) return <h3>Empty Cart</h3>
+  if (!cart.items.length) return <h3>Empty Cart</h3>
   return (
     <main className="page">
       <section className="cart-section"></section>

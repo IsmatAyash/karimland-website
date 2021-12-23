@@ -3,11 +3,12 @@ import { Link } from "gatsby"
 import styled from "styled-components"
 import { IconContext } from "react-icons"
 
-const MenuLink = ({ icon, name, onShow }) => {
+const MenuLink = ({ icon, sku, name, path, onShow }) => {
   return (
     <IconContext.Provider value={{ color: "var(--grey-1000)" }}>
       <NavbtnLink
-        to={name === "home" ? "/" : `/${name}`}
+        to={name === "home" ? "/" : `${path}`}
+        state={{ sku: sku }}
         onClick={onShow}
         activeStyle={{ color: "var(--primary-700)" }}
       >

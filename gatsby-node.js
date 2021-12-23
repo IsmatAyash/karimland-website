@@ -5,11 +5,12 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
   const { data } = await graphql(`
-    {
+    query getProds {
       prods: allMongodbKarimlandProducts {
         nodes {
           title
           tags
+          mongodb_id
           id
         }
       }
@@ -21,7 +22,7 @@ exports.createPages = async ({ graphql, actions }) => {
     createPage({
       path: `/${prodSlug}`,
       component: path.resolve(`src/templates/product-template.js`),
-      context: { id: prod.id },
+      context: { id: prod.mongodb_id },
     })
 
     prod.tags.forEach(tag => {
