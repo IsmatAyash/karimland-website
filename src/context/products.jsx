@@ -79,14 +79,11 @@ const ProductProvider = ({ children }) => {
     fetchProducts()
   }, [prodData])
 
-  const checkout = async orderDetails => {
-    const payload = {
-      id: uuidv4(),
-      ...orderDetails,
-    }
+  const checkout = async ({ details }) => {
+    console.log("ORDERDETAILS TO WRITE in checkout ctx", details)
     try {
       // await API.graphql(graphqlOperation(processOrder, { input: payload }))
-      await addNewOrder({ variables: { newOrder: payload } })
+      await addNewOrder({ variables: { newOrder: details } })
       console.log("Order is successful")
       return {
         statusCode: "SUCCESS",

@@ -1,3 +1,5 @@
+import { flatten } from "../../utils/flattenObj"
+
 export const CARDCOMPLETE = "CARDCOMPLETE"
 export const PROCESSING = "PROCESSING"
 export const SUCCESS = "SUCCESS"
@@ -13,7 +15,7 @@ export const initialState = {
   success: { res: false, text: null },
   orderDetails: {
     total: 0,
-    cart: [],
+    details: [],
     name: "",
     phone: "",
     address: "",
@@ -42,7 +44,19 @@ export default function reducer(state, { type, payload }) {
           ...state.orderDetails,
           token: payload.token,
           total: payload.total,
-          cart: payload.cart,
+          details: payload.cart.items.map(item => {
+            const { id, title, unit, price, image, seller } = item.product
+            return {
+              productId: id,
+              quantity: item.quantity,
+              unit,
+              title,
+              price,
+              image,
+              sellerId: seller.id,
+              sellerName: seller.name,
+            }
+          }),
         },
       }
     case RESET:
@@ -53,3 +67,14 @@ export default function reducer(state, { type, payload }) {
       return state
   }
 }
+
+//   "newOrder": [{
+//     "productId":"619621d5fa36d2d13ef59a27",
+//     "quantity": 2,
+//     "unit": "kg",
+//     "price": 10,
+//     "image": "http",
+//     "title": "Organic Salad",
+//     "sellerId": "618776703dc2e3c7bc8386e1",
+//     "sellerName": "Alexy Ayash"
+//   },

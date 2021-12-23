@@ -115,6 +115,10 @@ export const GET_CART = gql`
           unit
           price
           image
+          seller {
+            id
+            name
+          }
         }
         quantity
       }

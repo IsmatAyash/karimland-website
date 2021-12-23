@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client"
+import { IPageDataWithQueryResult } from "../../.cache/page-ssr/index.d"
 
 export const CREATE_PRODUCT = gql`
   mutation CREATE_PRODUCT($newProduct: ProductInput) {
@@ -74,6 +75,10 @@ export const ADD_CART_ITEM = gql`
           unit
           price
           image
+          seller {
+            id
+            name
+          }
         }
         quantity
       }
@@ -96,6 +101,10 @@ export const UPDATE_CART_ITEM = gql`
           unit
           price
           image
+          seller {
+            id
+            name
+          }
         }
         quantity
       }

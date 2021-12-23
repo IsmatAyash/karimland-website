@@ -77,7 +77,7 @@ const CheckoutForm = () => {
       clearCart()
     }
     checkOut()
-  }, [state.orderDetails])
+  }, [state.orderDetails.details])
 
   const handleSubmit = async event => {
     event.preventDefault()
@@ -111,7 +111,6 @@ const CheckoutForm = () => {
 
   const handleChange = e => {
     const { id, value } = e.target
-    console.log("handlechange", id, value)
     dispatch({ type: BILLDETAILS, payload: { id, value } })
   }
 
