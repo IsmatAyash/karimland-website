@@ -1,9 +1,9 @@
 import React, { useReducer, useEffect, useContext } from "react"
-// import { navigate } from "gatsby"
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
+
 import { ProductContext } from "../../context/products"
 import { CartContext } from "../../context/carts"
-// import { UserContext } from "../../context/users"
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
+import { UserContext } from "../../context/users"
 import reducer, {
   CARDCOMPLETE,
   PROCESSING,
@@ -43,11 +43,16 @@ const CARD_OPTIONS = {
 }
 
 const CheckoutForm = () => {
-  const [state, dispatch] = useReducer(reducer, initialState)
-
+  const { user } = useContext(UserContext)
   const { checkout } = useContext(ProductContext)
   const { cart, total, clearCart } = useContext(CartContext)
-  // const { user } = useContext(UserContext)
+
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    phone: user.user.phone,
+    name: user.user.name,
+    address: user.user.shippingAddress,
+  })
 
   const stripe = useStripe()
   const elements = useElements()
@@ -102,7 +107,7 @@ const CheckoutForm = () => {
         type: ORDERDETAILS,
         payload: {
           token: result.token.id,
-          total,
+          total: parseFloat(total),
           cart,
         },
       })
@@ -121,30 +126,29 @@ const CheckoutForm = () => {
           label="Name"
           id="name"
           type="text"
-          placeholder="Jane Doe"
+          disabled={true}
           required
           autoComplete="name"
-          value={state.orderDetails.name}
-          onChange={e => handleChange(e)}
+          value={user.user.name}
+          // onChange={e => handleChange(e)}
         />
         <FormField
           label="Phone"
           id="phone"
           type="tel"
-          placeholder="(941) 5555 55555"
+          disabled={true}
           required
-          autoComplete="tel"
-          value={state.orderDetails.phone}
-          onChange={e => handleChange(e)}
+          // autoComplete="tel"
+          value={user.user.phone}
+          // onChange={e => handleChange(e)}
         />
         <FormField
           label="Address"
           id="address"
           type="text"
-          placeholder="shipping address"
           required
-          autoComplete="address"
-          value={state.orderDetails.address}
+          // autoComplete="address"
+          value={user.user.shippingAddress}
           onChange={e => handleChange(e)}
         />
       </Fieldset>

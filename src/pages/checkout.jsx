@@ -11,10 +11,8 @@ import { CartContext } from "../context/carts"
 const Checkout = () => {
   const { user } = useContext(UserContext)
   const { cart, total, tax, shipping } = useContext(CartContext)
-  const stripePromise = loadStripe(
-    "pk_test_51HRNBKE41CMIaPCOspVA8HNH9z6mLgmSIh60NeR6WIdz3Zt3GR3HyMNOY6KJG8TdEYDX9Rz8EKb2MyydfRzHCQoH00geFUH06W"
-  )
-  console.log("CART", cart)
+  const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY)
+
   return (
     <Layout>
       <main className="page">

@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { graphql, useStaticQuery } from "gatsby"
 import { useMutation } from "@apollo/client"
-import { ADD_ORDER } from "../graphql/mutations"
+import { ADD_ORDER, PROCESS_PAYMENT } from "../graphql/mutations"
 
 const ProductContext = createContext()
 
@@ -44,6 +44,7 @@ const ProductProvider = ({ children }) => {
   const [featured, setFeatured] = useState([])
   const [prodImages, setProdImages] = useState([])
   const [addNewOrder] = useMutation(ADD_ORDER)
+  const [stripePayment] = useMutation(PROCESS_PAYMENT)
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -79,16 +80,24 @@ const ProductProvider = ({ children }) => {
     fetchProducts()
   }, [prodData])
 
-  const checkout = async ({ details }) => {
+  const checkout = async ({ details, token, total }) => {
     console.log("ORDERDETAILS TO WRITE in checkout ctx", details)
+    console.log("TOKEN in checkout ctx", token)
+    console.log("TOTAL in checkout ctx", total)
     try {
-      // await API.graphql(graphqlOperation(processOrder, { input: payload }))
-      await addNewOrder({ variables: { newOrder: details } })
-      console.log("Order is successful")
-      return {
-        statusCode: "SUCCESS",
-        msg: "Payment processed and order created successfully",
-      }
+      const result = await stripePayment({ variables: { token, total } })
+      if (result === "Succeeded") {
+        await addNewOrder({ variables: { newOrder: details } })
+        console.log("Order is successful")
+        return {
+          statusCode: "SUCCESS",
+          msg: "Payment processed and order created successfully",
+        }
+      } else
+        return {
+          statusCode: "ERROR",
+          msg: `Check your payment method. It did not pass!`,
+        }
     } catch (err) {
       console.log(err)
       return {

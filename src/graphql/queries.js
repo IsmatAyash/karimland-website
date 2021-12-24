@@ -14,6 +14,8 @@ export const AUTH_USER = gql`
         permissions
         userType
         country
+        shippingingAddress
+        phone
       }
       token
     }

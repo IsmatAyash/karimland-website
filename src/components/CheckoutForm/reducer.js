@@ -1,5 +1,3 @@
-import { flatten } from "../../utils/flattenObj"
-
 export const CARDCOMPLETE = "CARDCOMPLETE"
 export const PROCESSING = "PROCESSING"
 export const SUCCESS = "SUCCESS"

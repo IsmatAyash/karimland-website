@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client"
-import { IPageDataWithQueryResult } from "../../.cache/page-ssr/index.d"
 
 export const CREATE_PRODUCT = gql`
   mutation CREATE_PRODUCT($newProduct: ProductInput) {
@@ -45,6 +44,7 @@ export const REGISTER_USER = gql`
         permissions
         avatar
         shippingingAddress
+        phone
         billingAddress
         country
       }
@@ -149,6 +149,12 @@ export const ADD_ORDER = gql`
       }
       orderStatus
     }
+  }
+`
+
+export const PROCESS_PAYMENT = gql`
+  mutation ProcessPayment($token: String!, $total: Float) {
+    processPayment(token: $token, total: $total)
   }
 `
 
