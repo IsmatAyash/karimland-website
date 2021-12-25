@@ -8,32 +8,34 @@ import Layout from "../components/Layout"
 import { UserContext } from "../context/users"
 import { CartContext } from "../context/carts"
 
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY)
+
 const Checkout = () => {
   const { user } = useContext(UserContext)
   const { cart, total, tax, shipping } = useContext(CartContext)
-  const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY)
 
   return (
     <Layout>
       <main className="page">
         <section className="contact-page">
           <div className="cart-wrapper">
-            {cart?.items.map(({ product, quantity }) => (
-              <article key={product.id} className="cart-item">
-                <div className="image">
-                  <img src={product.image} alt="cart item" />
-                </div>
-                <div className="details">
-                  <span>{product.title}</span>
-                  <span>
-                    Price X Qty: KD{product.price} X {quantity}
-                  </span>
-                  <span style={{ fontWeight: "bold" }}>
-                    Total: KD {(product.price * quantity).toFixed(2)}
-                  </span>
-                </div>
-              </article>
-            ))}
+            {cart &&
+              cart.items.map(({ product, quantity }) => (
+                <article key={product.id} className="cart-item">
+                  <div className="image">
+                    <img src={product.image} alt="cart item" />
+                  </div>
+                  <div className="details">
+                    <span>{product.title}</span>
+                    <span>
+                      Price X Qty: KD{product.price} X {quantity}
+                    </span>
+                    <span style={{ fontWeight: "bold" }}>
+                      Total: KD {(product.price * quantity).toFixed(2)}
+                    </span>
+                  </div>
+                </article>
+              ))}
             <SubTotal>SubTotal : KD{total}</SubTotal>
             <SubTotal>Taxes : KD{tax}</SubTotal>
             <SubTotal>Shipping : KD{shipping}</SubTotal>

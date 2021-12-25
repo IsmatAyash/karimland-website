@@ -6,8 +6,6 @@ import { ProductProvider } from "../context/products"
 import { client } from "./client"
 
 export const wrapRootElement = ({ element }) => {
-  const token = localStorage.getItem("token")
-  if (token) localStorage.removeItem("token")
   return (
     <ApolloProvider client={client}>
       <UserProvider>

@@ -1,10 +1,11 @@
-import React, { useState, useEffect, createContext } from "react"
+import React, { useState, createContext } from "react"
 import { useMutation, useLazyQuery } from "@apollo/client"
 
 import {
   ADD_CART_ITEM,
   UPDATE_CART_ITEM,
   DEL_CART_ITEM,
+  DEL_CART,
 } from "../graphql/mutations"
 import { GET_CART } from "../graphql/queries"
 
@@ -20,14 +21,20 @@ const CartProvider = ({ children }) => {
   const [addNewCart] = useMutation(ADD_CART_ITEM)
   const [updCartItemQty] = useMutation(UPDATE_CART_ITEM)
   const [delCartItemProd] = useMutation(DEL_CART_ITEM)
+  const [delUserCart] = useMutation(DEL_CART, {
+    onCompleted: () => setCart(null),
+  })
+
   const [getUserCart] = useLazyQuery(GET_CART, {
     fetchPolicy: "cache-and-network",
     onCompleted: cart => {
-      setCart(cart.getCart)
-      const total = cart.getCart.items.reduce((total, item) => {
-        return (total += item.quantity * item.product.price)
-      }, 0)
-      setTotal(parseFloat(total).toFixed(2))
+      if (cart.getCart) {
+        setCart(cart.getCart)
+        const total = cart.getCart.items.reduce((total, item) => {
+          return (total += item.quantity * item.product.price)
+        }, 0)
+        setTotal(parseFloat(total).toFixed(2))
+      }
     },
   })
 
@@ -97,7 +104,7 @@ const CartProvider = ({ children }) => {
   // const delCartItem = id => setCart([...cart].filter(c => c.id !== id))
   // const updCart = cart => setCart(cart)
 
-  const clearCart = () => setCart(null)
+  const clearCart = async id => await delUserCart({ variables: { id } })
 
   return (
     <CartContext.Provider

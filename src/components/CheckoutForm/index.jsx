@@ -49,9 +49,9 @@ const CheckoutForm = () => {
 
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
-    phone: user.user.phone,
-    name: user.user.name,
-    address: user.user.shippingAddress,
+    phone: user?.user?.phone,
+    name: user?.user?.name,
+    address: user?.user?.shippingAddress,
   })
 
   const stripe = useStripe()
@@ -59,30 +59,41 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     const checkOut = async () => {
-      if (!state.orderDetails.token) return
+      try {
+        if (!state.orderDetails.token) return
 
-      const res = await checkout(state.orderDetails)
-      dispatch({ type: PROCESSING, payload: false })
-      if (res.statusCode === "SUCCESS")
-        dispatch({
-          type: SUCCESS,
-          payload: {
-            res: true,
-            text: "Successful payment - Your Order has been created",
-          },
-        })
-      else
-        dispatch({
-          type: SUCCESS,
-          payload: {
-            res: false,
-            text: "Error while creating order, please check your billing details",
-          },
-        })
-      clearCart()
+        const res = await checkout(state.orderDetails)
+        dispatch({ type: PROCESSING, payload: false })
+        if (res === "SUCCESS")
+          dispatch({
+            type: SUCCESS,
+            payload: {
+              res: true,
+              text: "Successful payment - Your Order has been created",
+            },
+          })
+
+        if (res === "ERROR")
+          dispatch({
+            type: SUCCESS,
+            payload: {
+              res: false,
+              text: "Error while creating order, please check your billing details",
+            },
+          })
+
+        if (res === "PROCESS PAYMENT ERROR")
+          dispatch({
+            type: ERROR,
+            payload: "Error processing the payment check details",
+          })
+        clearCart(cart.id)
+      } catch (err) {
+        console.log(err.message)
+      }
     }
-    checkOut()
-  }, [state.orderDetails.details])
+    if (cart) checkOut()
+  }, [state.orderDetails.token])
 
   const handleSubmit = async event => {
     event.preventDefault()
@@ -121,60 +132,64 @@ const CheckoutForm = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Fieldset>
-        <FormField
-          label="Name"
-          id="name"
-          type="text"
-          disabled={true}
-          required
-          autoComplete="name"
-          value={user.user.name}
-          // onChange={e => handleChange(e)}
-        />
-        <FormField
-          label="Phone"
-          id="phone"
-          type="tel"
-          disabled={true}
-          required
-          // autoComplete="tel"
-          value={user.user.phone}
-          // onChange={e => handleChange(e)}
-        />
-        <FormField
-          label="Address"
-          id="address"
-          type="text"
-          required
-          // autoComplete="address"
-          value={user.user.shippingAddress}
-          onChange={e => handleChange(e)}
-        />
-      </Fieldset>
-      <Fieldset>
-        <FormRow>
-          <StripeElement
-            options={CARD_OPTIONS}
-            onChange={e =>
-              dispatch({
-                type: CARDCOMPLETE,
-                payload: { err: e.error, complete: e.complete },
-              })
-            }
-          />
-        </FormRow>
-      </Fieldset>
-      {state.error && <ErrorMessage>{state.error.message}</ErrorMessage>}
-      {state.success && <ErrorMessage>{state.success.text}</ErrorMessage>}
-      <SubmitButton
-        processing={state.processing}
-        error={state.error}
-        disabled={!stripe}
-        success={state.success.res}
-      >
-        Pay KD{total}
-      </SubmitButton>
+      {user && (
+        <>
+          <Fieldset>
+            <FormField
+              label="Name"
+              id="name"
+              type="text"
+              disabled={true}
+              // required
+              autoComplete="name"
+              value={user.user.name}
+              onChange={e => handleChange(e)}
+            />
+            <FormField
+              label="Phone"
+              id="phone"
+              type="tel"
+              disabled={true}
+              // required
+              // autoComplete="tel"
+              value={user.user.phone}
+              onChange={e => handleChange(e)}
+            />
+            <FormField
+              label="Address"
+              id="address"
+              type="text"
+              required
+              // autoComplete="address"
+              value={user.user.shippingAddress}
+              onChange={e => handleChange(e)}
+            />
+          </Fieldset>
+          <Fieldset>
+            <FormRow>
+              <StripeElement
+                options={CARD_OPTIONS}
+                onChange={e =>
+                  dispatch({
+                    type: CARDCOMPLETE,
+                    payload: { err: e.error, complete: e.complete },
+                  })
+                }
+              />
+            </FormRow>
+          </Fieldset>
+          {state.error && <ErrorMessage>{state.error.message}</ErrorMessage>}
+          {state.success && <ErrorMessage>{state.success.text}</ErrorMessage>}
+          <SubmitButton
+            processing={state.processing}
+            error={state.error}
+            disabled={!stripe}
+            success={state.success.res}
+          >
+            Pay KD{total}
+          </SubmitButton>
+        </>
+      )}
     </Form>
   )
 }

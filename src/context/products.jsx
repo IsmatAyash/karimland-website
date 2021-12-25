@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { graphql, useStaticQuery } from "gatsby"
-import { useMutation } from "@apollo/client"
+import { ApolloError, useMutation } from "@apollo/client"
 import { ADD_ORDER, PROCESS_PAYMENT } from "../graphql/mutations"
 
 const ProductContext = createContext()
@@ -81,29 +81,21 @@ const ProductProvider = ({ children }) => {
   }, [prodData])
 
   const checkout = async ({ details, token, total }) => {
-    console.log("ORDERDETAILS TO WRITE in checkout ctx", details)
-    console.log("TOKEN in checkout ctx", token)
-    console.log("TOTAL in checkout ctx", total)
     try {
-      const result = await stripePayment({ variables: { token, total } })
-      if (result === "Succeeded") {
-        await addNewOrder({ variables: { newOrder: details } })
-        console.log("Order is successful")
-        return {
-          statusCode: "SUCCESS",
-          msg: "Payment processed and order created successfully",
-        }
-      } else
-        return {
-          statusCode: "ERROR",
-          msg: `Check your payment method. It did not pass!`,
-        }
+      const { data, error: err } = await stripePayment({
+        variables: { token, total },
+      })
+      if (err) return "PROCESS PAYMENT ERROR"
+      if (data.processPayment) {
+        const { data, error } = await addNewOrder({
+          variables: { newOrder: details },
+        })
+        if (error) return "ERROR"
+        if (data) return "SUCCESS"
+      }
     } catch (err) {
       console.log(err)
-      return {
-        statusCode: "ERROR",
-        msg: `something went wrong please check your card info and retry`,
-      }
+      throw new ApolloError(err.message)
     }
   }
 

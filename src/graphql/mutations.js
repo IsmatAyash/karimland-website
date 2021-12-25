@@ -123,6 +123,17 @@ export const DEL_CART_ITEM = gql`
   }
 `
 
+//  cart id
+export const DEL_CART = gql`
+  mutation DEL_CART($id: ID!) {
+    delCart(id: $id) {
+      id
+      message
+      success
+    }
+  }
+`
+
 // orders
 export const ADD_ORDER = gql`
   mutation ADD_ORDER($newOrder: [OrderInput]) {
@@ -153,8 +164,16 @@ export const ADD_ORDER = gql`
 `
 
 export const PROCESS_PAYMENT = gql`
-  mutation ProcessPayment($token: String!, $total: Float) {
+  mutation PROCESS_PAYMENT($token: String!, $total: Float) {
     processPayment(token: $token, total: $total)
+  }
+`
+
+export const CLIENT_SECRET = gql`
+  mutation CLIENT_SECRET($total: Float) {
+    createClientSecret(total: $total) {
+      clientSecret
+    }
   }
 `
 
@@ -254,15 +273,6 @@ export const PROCESS_PAYMENT = gql`
 // # product id
 // mutation DEL_CART_ITEM($productId: ID!) {
 //   delCartItem(productId: $productId) {
-//     id
-//     message
-//     success
-//   }
-// }
-
-// # cart id
-// mutation DEL_CART($id: ID!){
-//   delCart(id: $id){
 //     id
 //     message
 //     success
