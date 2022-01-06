@@ -1,5 +1,4 @@
 import React, { useState, useEffect, createContext } from "react"
-import { v4 as uuidv4 } from "uuid"
 import { graphql, useStaticQuery } from "gatsby"
 import { ApolloError, useMutation } from "@apollo/client"
 import { ADD_ORDER, PROCESS_PAYMENT } from "../graphql/mutations"

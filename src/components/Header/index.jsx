@@ -18,7 +18,7 @@ import { navigate } from "gatsby"
 
 const Header = () => {
   const { user, updateUser } = useContext(UserContext)
-  const { cart, clearCart, getCart } = useContext(CartContext)
+  const { cart, getCart } = useContext(CartContext)
   const [showCart, setShowCart] = useState(false)
   const [token, setToken] = useState(null)
 
@@ -27,11 +27,10 @@ const Header = () => {
       getCart(user.user.id)
       setToken(localStorage.getItem("token"))
     }
-  }, [cart])
+  }, [cart, user, getCart])
 
   const signOut = async () => {
     updateUser(null)
-    // clearCart()
     navigate("/")
     localStorage.removeItem("token")
     setToken(null)

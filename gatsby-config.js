@@ -64,9 +64,9 @@ module.exports = {
       resolve: `@robinmetral/gatsby-source-s3`,
       options: {
         aws: {
-          accessKeyId: process.env.AWS_ACCESS_KEY,
-          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-          region: process.env.AWS_REGION,
+          accessKeyId: process.env.S3_ACCESS_KEY,
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+          region: process.env.S3_REGION,
         },
         buckets: ["karimland"],
         expiration: 120,

@@ -5,7 +5,7 @@ import { onError } from "@apollo/client/link/error"
 import { setContext } from "@apollo/client/link/context"
 
 const httpLink = new createUploadLink({
-  uri: process.env.GRAPHQL_ENDPOINT,
+  uri: `${process.env.GRAPHQL_ENDPOINT}/graphql`,
   fetch,
 })
 

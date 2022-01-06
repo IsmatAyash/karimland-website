@@ -1,6 +1,4 @@
 import { gql } from "@apollo/client"
-import QuantitySelector from "../components/ProductInfo/QuantitySelector"
-import { Rating } from "react-simple-star-rating"
 
 export const AUTH_USER = gql`
   query AUTH_USER($email: String!, $password: String!) {

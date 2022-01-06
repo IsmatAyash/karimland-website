@@ -55,12 +55,11 @@ const CartProvider = ({ children }) => {
   }
 
   const updCartItem = async (updatedCartItem, buyer) => {
-    const { data } = await updCartItemQty({
+    await updCartItemQty({
       variables: { updatedCartItem },
       refetchQueries: [{ query: GET_CART, variables: { buyer } }],
       awaitRefetchQueries: true,
     })
-    // setCart(data.updCartItem)
   }
 
   // const increaseAmount = id => {

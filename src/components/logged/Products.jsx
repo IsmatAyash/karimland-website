@@ -23,7 +23,6 @@ const Products = () => {
   const [descrip, setDescrip] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [errorDescrip, setErrorDescrip] = useState("")
-  const [validationErrs, setValidationErrs] = useState([])
 
   const tagsData = [
     { Tag: "Jam", id: 1 },
@@ -215,9 +214,6 @@ const Products = () => {
               </div>
               <div className="form-row">
                 <div className="form-field form-field-flex1">
-                  {validationErrs.price && (
-                    <InputError>{validationErrs.price}</InputError>
-                  )}
                   <label htmlFor="price">Price</label>
                   <input
                     type="number"

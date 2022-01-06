@@ -3,7 +3,6 @@ import styled from "styled-components"
 
 import { CartContext } from "../../context/carts"
 import { UserContext } from "../../context/users"
-import WeightSelector from "./WeightSelector"
 import QuantitySelector from "./QuantitySelector"
 import RatingStars from "../Reviews/RatingStars"
 import Cart from "./Cart"
@@ -14,7 +13,6 @@ const ProductInfo = ({ prod, qty, setQty }) => {
   const {
     id,
     title,
-    image,
     avgRating,
     ratings,
     inventory,
@@ -45,7 +43,6 @@ const ProductInfo = ({ prod, qty, setQty }) => {
         <div>Unit: {unit}</div>
         Unit Price: KD {price} <OldPrice>KD {oldPrice}</OldPrice>
       </PriceCtr>
-      {/* <WeightSelector unit={unit} price={price} setUnitPrice={setUnitPrice} /> */}
       <QuantitySelector
         qty={qty}
         setQty={setQty}
