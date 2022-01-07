@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import {
   FaShoppingCart,
   FaSignOutAlt,
@@ -8,13 +8,14 @@ import {
 } from "react-icons/fa"
 import { MdLanguage, MdArrowDropDown, MdList } from "react-icons/md"
 import styled from "styled-components"
+import { navigate } from "gatsby"
+
 import { UserContext } from "../../context/users"
 import { CartContext } from "../../context/carts"
 import Cart from "../ProductInfo/Cart"
 import NavItemLink from "./NavItemLink"
 import NavItemButton from "./NavItemButton"
 import Badge from "./Badge"
-import { navigate } from "gatsby"
 
 const Header = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -25,9 +26,9 @@ const Header = () => {
   useEffect(() => {
     if (user) {
       getCart(user.user.id)
-      setToken(localStorage.getItem("token"))
+      setToken(user.token)
     }
-  }, [cart, user, getCart])
+  }, [user, cart])
 
   const signOut = async () => {
     updateUser(null)

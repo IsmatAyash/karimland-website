@@ -19,6 +19,7 @@ const query = graphql`
 const SEO = ({ title, description }) => {
   const { site } = useStaticQuery(query)
   const metaDescription = description || site.siteMetadata.description
+
   return (
     <Helmet
       title={`${title} | ${site.siteMetadata.title}`}
@@ -38,4 +39,11 @@ SEO.propTypes = {
   description: PropTypes.string,
   solgan: PropTypes.string,
   author: PropTypes.string,
+}
+
+SEO.defaultProps = {
+  title: null,
+  description: null,
+  slogan: null,
+  author: null,
 }

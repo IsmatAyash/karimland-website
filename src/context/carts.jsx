@@ -93,15 +93,12 @@ const CartProvider = ({ children }) => {
   // }
 
   const delCartItem = async (productId, buyer) => {
-    const { data } = await delCartItemProd({
+    await delCartItemProd({
       variables: { productId },
       refetchQueries: [{ query: GET_CART, variables: { buyer } }],
       awaitRefetchQueries: true,
     })
-    // setCart(data.delCartItem)
   }
-  // const delCartItem = id => setCart([...cart].filter(c => c.id !== id))
-  // const updCart = cart => setCart(cart)
 
   const clearCart = async id => await delUserCart({ variables: { id } })
 

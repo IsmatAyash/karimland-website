@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useContext } from "react"
+import React, { useReducer, useEffect, useContext, useCallback } from "react"
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
 import { ProductContext } from "../../context/products"
@@ -57,43 +57,45 @@ const CheckoutForm = () => {
   const stripe = useStripe()
   const elements = useElements()
 
-  useEffect(() => {
-    const checkOut = async () => {
-      try {
-        if (!state.orderDetails.token) return
+  const checkOut = useCallback(async () => {
+    try {
+      const res = await checkout(state.orderDetails)
+      dispatch({ type: PROCESSING, payload: false })
+      if (res === "SUCCESS")
+        dispatch({
+          type: SUCCESS,
+          payload: {
+            res: true,
+            text: "Successful payment - Your Order has been created",
+          },
+        })
 
-        const res = await checkout(state.orderDetails)
-        dispatch({ type: PROCESSING, payload: false })
-        if (res === "SUCCESS")
-          dispatch({
-            type: SUCCESS,
-            payload: {
-              res: true,
-              text: "Successful payment - Your Order has been created",
-            },
-          })
+      if (res === "ERROR")
+        dispatch({
+          type: SUCCESS,
+          payload: {
+            res: false,
+            text: "Error while creating order, please check your billing details",
+          },
+        })
 
-        if (res === "ERROR")
-          dispatch({
-            type: SUCCESS,
-            payload: {
-              res: false,
-              text: "Error while creating order, please check your billing details",
-            },
-          })
-
-        if (res === "PROCESS PAYMENT ERROR")
-          dispatch({
-            type: ERROR,
-            payload: "Error processing the payment check details",
-          })
-        clearCart(cart.id)
-      } catch (err) {
-        console.log(err.message)
-      }
+      if (res === "PROCESS PAYMENT ERROR")
+        dispatch({
+          type: ERROR,
+          payload: "Error processing the payment check details",
+        })
+      clearCart(cart.id)
+    } catch (err) {
+      console.log(err.message)
     }
-    if (cart) checkOut()
-  }, [state.orderDetails.token])
+  }, [cart, state.orderDetails, clearCart, checkout])
+
+  useEffect(() => {
+    if (!cart) return
+    if (!state.orderDetails.token) return
+
+    checkOut()
+  }, [state.orderDetails.token, cart, checkOut])
 
   const handleSubmit = async event => {
     event.preventDefault()
